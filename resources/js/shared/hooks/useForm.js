@@ -6,7 +6,10 @@ const useForm = defaultValues => {
     const onChange = event => {
         setValues({
             ...values,
-            [event.target.name]: event.target.value,
+            [event.target.name]:
+                event.target.type === 'checkbox'
+                    ? event.target.checked
+                    : event.target.value,
         })
     }
 

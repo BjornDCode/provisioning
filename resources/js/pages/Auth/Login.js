@@ -21,6 +21,7 @@ const Login = () => {
     const [values, onChange] = useForm({
         email: '',
         password: '',
+        remember: false,
     })
 
     const onSubmit = () => {
@@ -54,6 +55,15 @@ const Login = () => {
                         onChange={onChange}
                         required
                         autoComplete="current-password"
+                    />
+                </FormGroup>
+                <FormGroup>
+                    <FormLabel>Remember me</FormLabel>
+                    <FormInput
+                        name="remember"
+                        type="checkbox"
+                        checked={values.remember}
+                        onChange={onChange}
                     />
                 </FormGroup>
                 <FormGroup>
