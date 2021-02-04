@@ -26,4 +26,8 @@ Route::get('/needs-verification', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified']);
 
+Route::get('/needs-confirmation', function () {
+    return Inertia::render('Dashboard');
+})->middleware(['auth', 'password.confirm']);
+
 require __DIR__.'/auth.php';
