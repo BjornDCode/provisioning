@@ -15,24 +15,36 @@ import FormInput from '@/shared/components/forms/FormInput'
 import FormError from '@/shared/components/forms/FormError'
 import FormLabel from '@/shared/components/forms/FormLabel'
 
-const Login = () => {
+const Register = () => {
     const { errors } = usePage().props
 
     const [values, onChange] = useForm({
+        name: '',
         email: '',
         password: '',
-        remember: false,
+        password_confirmation: '',
     })
 
     const onSubmit = () => {
-        Inertia.post(route('login'), values)
+        Inertia.post(route('register'), values)
     }
 
     return (
         <Base>
-            <h1>Login</h1>
+            <h1>Register</h1>
 
             <Form onSubmit={onSubmit}>
+                <FormGroup>
+                    <FormLabel>Name</FormLabel>
+                    <FormInput
+                        name="name"
+                        value={values.name}
+                        onChange={onChange}
+                        required
+                        autoFocus
+                    />
+                    {errors.name ? <FormError>{errors.name}</FormError> : null}
+                </FormGroup>
                 <FormGroup>
                     <FormLabel>Email</FormLabel>
                     <FormInput
@@ -41,7 +53,6 @@ const Login = () => {
                         value={values.email}
                         onChange={onChange}
                         required
-                        autoFocus
                     />
                     {errors.email ? (
                         <FormError>{errors.email}</FormError>
@@ -59,23 +70,21 @@ const Login = () => {
                     />
                 </FormGroup>
                 <FormGroup>
-                    <FormLabel>Remember me</FormLabel>
+                    <FormLabel>Confirm password</FormLabel>
                     <FormInput
-                        name="remember"
-                        type="checkbox"
-                        checked={values.remember}
+                        name="password_confirmation"
+                        type="password"
+                        value={values.password_confirmation}
                         onChange={onChange}
+                        required
                     />
                 </FormGroup>
                 <FormGroup>
-                    <Link to={route('password.request')}>
-                        Forgot your password?
-                    </Link>
-                    <Button type="submit">Login</Button>
+                    <Button type="submit">Register</Button>
                 </FormGroup>
             </Form>
         </Base>
     )
 }
 
-export default Login
+export default Register
