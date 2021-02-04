@@ -32,7 +32,7 @@ const Base = ({ children, ...props }) => {
                 )}
             </header>
             <main>{children}</main>
-            {flash.status && <Text>{flash.status}</Text>}
+            {flash.message && <Text>{flash.message}</Text>}
         </div>
     )
 }
