@@ -1,5 +1,6 @@
 import React from 'react'
 import { Inertia } from '@inertiajs/inertia'
+import { usePage } from '@inertiajs/inertia-react'
 
 import useForm from '@/shared/hooks/useForm'
 
@@ -15,6 +16,8 @@ import FormError from '@/shared/components/forms/FormError'
 import FormLabel from '@/shared/components/forms/FormLabel'
 
 const Login = () => {
+    const { errors } = usePage().props
+
     const [values, onChange] = useForm({
         email: '',
         password: '',
@@ -38,6 +41,9 @@ const Login = () => {
                         required
                         autoFocus
                     />
+                    {errors.email ? (
+                        <FormError>{errors.email}</FormError>
+                    ) : null}
                 </FormGroup>
                 <FormGroup>
                     <FormLabel>Password</FormLabel>
