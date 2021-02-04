@@ -1,8 +1,8 @@
 import React from 'react'
 import { Inertia } from '@inertiajs/inertia'
-import { usePage } from '@inertiajs/inertia-react'
 
 import useForm from '@/shared/hooks/useForm'
+import useProps from '@/shared/hooks/useProps'
 
 import Base from '@/shared/components/layouts/Base'
 
@@ -16,7 +16,7 @@ import FormError from '@/shared/components/forms/FormError'
 import FormLabel from '@/shared/components/forms/FormLabel'
 
 const Register = () => {
-    const { errors } = usePage().props
+    const { errors } = useProps()
 
     const [values, onChange] = useForm({
         name: '',

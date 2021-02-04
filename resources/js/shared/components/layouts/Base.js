@@ -1,6 +1,7 @@
 import React, { Fragment } from 'react'
 import { Inertia } from '@inertiajs/inertia'
-import { usePage } from '@inertiajs/inertia-react'
+
+import useProps from '@/shared/hooks/useProps'
 
 import Link from '@/shared/components/primitives/Link'
 
@@ -12,7 +13,7 @@ const Base = ({ children, ...props }) => {
         Inertia.post(route('logout'))
     }
 
-    const { user, flash } = usePage().props
+    const { user, flash } = useProps()
 
     return (
         <div>
