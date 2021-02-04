@@ -1,3 +1,13 @@
-window.axios = require('axios')
+import { App } from '@inertiajs/inertia-react'
+import React from 'react'
+import { render } from 'react-dom'
 
-window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'
+const el = document.getElementById('app')
+
+render(
+    <App
+        initialPage={JSON.parse(el.dataset.page)}
+        resolveComponent={name => require(`./pages/${name}`).default}
+    />,
+    el
+)
