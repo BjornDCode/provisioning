@@ -1,4 +1,5 @@
 const defaultTheme = require('tailwindcss/defaultTheme')
+const colors = require('tailwindcss/colors')
 
 module.exports = {
     purge: [
@@ -12,11 +13,21 @@ module.exports = {
                 sans: ['Poppins', ...defaultTheme.fontFamily.sans],
             },
         },
+
+        colors: {
+            transparent: 'transparent',
+            current: 'currentColor',
+            gray: colors.blueGray,
+            pink: colors.pink,
+            green: colors.emerald,
+            red: colors.rose,
+        },
     },
 
     variants: {
         extend: {
             opacity: ['disabled'],
+            borderWidth: ['first', 'last'],
         },
     },
 }

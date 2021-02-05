@@ -2,10 +2,12 @@ import React from 'react'
 
 import { InertiaLink } from '@inertiajs/inertia-react'
 
+import Text from '@/shared/components/base/Text'
+
 const Link = ({ children, to = '#', ...props }) => (
-    <InertiaLink href={to} {...props}>
+    <Text href={to} Component={InertiaLink} {...props}>
         {children}
-    </InertiaLink>
+    </Text>
 )
 
 export default Link

@@ -1,39 +1,21 @@
-import React, { Fragment } from 'react'
-import { Inertia } from '@inertiajs/inertia'
+import React from 'react'
 
 import useProps from '@/shared/hooks/useProps'
 
-import Link from '@/shared/components/primitives/Link'
-
+import Box from '@/shared/components/base/Box'
 import Text from '@/shared/components/base/Text'
+import Header from '@/shared/components/partials/Header'
 
 const Base = ({ children, ...props }) => {
-    const onLogout = event => {
-        event.preventDefault()
-        Inertia.post(route('logout'))
-    }
-
-    const { user, flash } = useProps()
+    const { flash } = useProps()
 
     return (
-        <div>
-            <header>
-                {!user ? (
-                    <Fragment>
-                        <Link to={route('login')}>Login</Link>
-                        <Link to={route('register')}>Register</Link>
-                    </Fragment>
-                ) : (
-                    <Fragment>
-                        <a href="#" onClick={onLogout}>
-                            Log out
-                        </a>
-                    </Fragment>
-                )}
-            </header>
-            <main>{children}</main>
+        <Box>
+            <Header />
+
+            <Box Component="main">{children}</Box>
             {flash.message && <Text>{flash.message}</Text>}
-        </div>
+        </Box>
     )
 }
 
