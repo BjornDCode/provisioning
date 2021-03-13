@@ -53,7 +53,7 @@ const statesObjectsToClasses = (props, factory = value => value) => {
 }
 
 export const propToClasses = (prop, factory) => {
-    if (!prop) {
+    if (prop === undefined || prop === null) {
         return ''
     }
 

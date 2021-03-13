@@ -1,8 +1,8 @@
-import React, { Fragment, useState, useEffect } from 'react'
+import React, { Fragment, useState } from 'react'
 import { Inertia } from '@inertiajs/inertia'
-import { usePage } from '@inertiajs/inertia-react'
 
 import useProps from '@/shared/hooks/useProps'
+import useOnPageChange from '@/shared/hooks/useOnPageChange'
 import useUnderBreakpoint from '@/shared/hooks/useUnderBreakpoint'
 
 import Icon from '@/shared/components/primitives/Icon'
@@ -65,22 +65,18 @@ const Logo = () => (
 const MobileHeader = ({ authenticated }) => {
     const [open, setOpen] = useState(false)
     const toggle = () => setOpen(!open)
-    const page = usePage().component
 
-    useEffect(() => {
+    useOnPageChange(() => {
         setOpen(false)
-    }, [page])
+    })
 
     return (
         <Stack Component="header" spaceX={2} spaceY={2} spacing={3}>
             <Shelf justify="between">
                 <Logo />
-                <button
-                    onClick={toggle}
-                    className="p-0 rounded focus:outline-none focus:ring focus:ring-green-100"
-                >
+                <button onClick={toggle} className="p-0 rounded">
                     <Icon
-                        name="HiMenuAlt3"
+                        name="Menu"
                         display="block"
                         textColor="green"
                         textShade="400"

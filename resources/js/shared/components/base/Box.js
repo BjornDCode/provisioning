@@ -25,6 +25,12 @@ const borderRadiusToClasses = direction => {
     }
 }
 
+const boxShadowToClasses = value => {
+    const valueModifier = value != 'normal' ? `-${value}` : ''
+
+    return `shadow${valueModifier}`
+}
+
 const Box = ({
     children,
     Component = 'div',
@@ -45,6 +51,7 @@ const Box = ({
     borderColor,
     borderShade,
     display,
+    flex,
     height,
     justify,
     margin,
@@ -56,6 +63,7 @@ const Box = ({
     marginB,
     maxWidth,
     position,
+    shadow,
     space,
     spaceX,
     spaceY,
@@ -65,7 +73,14 @@ const Box = ({
     spaceB,
     textColor,
     textShade,
+    top,
+    bottom,
+    left,
+    right,
     width,
+    inset,
+    insetX,
+    insetY,
     ...props
 }) => {
     const classes = useClasses(
@@ -89,6 +104,7 @@ const Box = ({
             colorPropsToClasses('border')
         ),
         propToClasses(display),
+        propToClasses(flex, value => `flex-${value}`),
         propToClasses(height, height => `h-${height}`),
         propToClasses(justify, value => `justify-${value}`),
         propToClasses(margin, value => `m-${value}`),
@@ -98,8 +114,9 @@ const Box = ({
         propToClasses(marginR, value => `mr-${value}`),
         propToClasses(marginT, value => `mt-${value}`),
         propToClasses(marginB, value => `mb-${value}`),
-        propToClasses(maxWidth, width => `max-${width}`),
+        propToClasses(maxWidth, width => `max-w-${width}`),
         propToClasses(position),
+        propToClasses(shadow, boxShadowToClasses),
         propToClasses(space, space => `p-${space}`),
         propToClasses(spaceY, space => `py-${space}`),
         propToClasses(spaceX, space => `px-${space}`),
@@ -109,6 +126,13 @@ const Box = ({
         propToClasses(spaceB, space => `pb-${space}`),
         propsToClasses([textColor, textShade], colorPropsToClasses('text')),
         propToClasses(width, width => `w-${width}`),
+        propToClasses(top, value => `top-${value}`),
+        propToClasses(bottom, value => `bottom-${value}`),
+        propToClasses(left, value => `left-${value}`),
+        propToClasses(right, value => `right-${value}`),
+        propToClasses(inset, value => `inset-${value}`),
+        propToClasses(insetX, value => `inset-x-${value}`),
+        propToClasses(insetY, value => `inset-y-${value}`),
         className
     )
 

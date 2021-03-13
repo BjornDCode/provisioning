@@ -1,15 +1,19 @@
 import React from 'react'
 
+import { match } from '@/shared/helpers/methods'
+
 import Box from '@/shared/components/base/Box'
 
-import { HiMenuAlt3 } from 'react-icons/hi'
+import { HiMenuAlt3, HiX } from 'react-icons/hi'
 
 const icons = {
-    HiMenuAlt3,
+    Menu: HiMenuAlt3,
+    Close: HiX,
 }
 
 const Icon = ({ name, ...props }) => {
-    const Component = icons[name]
+    const Component = match(name, icons)
+
     return <Box Component={Component} {...props} />
 }
 
