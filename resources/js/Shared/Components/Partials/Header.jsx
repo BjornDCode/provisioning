@@ -1,12 +1,12 @@
 import React, { Fragment, useState } from 'react'
 import { Inertia } from '@inertiajs/inertia'
 
-import useProps from '@/shared/hooks/useProps'
-import useOnPageChange from '@/shared/hooks/useOnPageChange'
-import useUnderBreakpoint from '@/shared/hooks/useUnderBreakpoint'
+import useProps from '@/Shared/Hooks/useProps'
+import useOnPageChange from '@/Shared/Hooks/useOnPageChange'
+import useUnderBreakpoint from '@/Shared/Hooks/useUnderBreakpoint'
 
-import Icon from '@/shared/components/primitives/Icon'
-import Link from '@/shared/components/primitives/Link'
+import Icon from '@/Shared/Components/Leafs/Icon'
+import Link from '@/Shared/Components/Leafs/Link'
 
 const NavItem = ({ children, ...props }) => (
     <Link

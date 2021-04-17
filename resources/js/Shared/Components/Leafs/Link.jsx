@@ -1,8 +1,7 @@
 import React from 'react'
-
-import useClasses from '@/shared/hooks/useClasses'
-
 import { InertiaLink } from '@inertiajs/inertia-react'
+
+import useClasses from '@/Shared/Hooks/useClasses'
 
 const Link = ({ children, to = '#', className, ...props }) => {
     const classes = useClasses(

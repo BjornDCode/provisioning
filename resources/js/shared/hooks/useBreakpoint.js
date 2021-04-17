@@ -1,4 +1,4 @@
-import { breakpoints } from '@/shared/helpers/constants'
+import { breakpoints } from '@/Shared/Helpers/constants'
 
 const useBreakpoint = () => {
     const breakpoint = Object.keys(breakpoints)

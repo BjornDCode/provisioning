@@ -1,9 +1,9 @@
 import React from 'react'
 
-import useProps from '@/shared/hooks/useProps'
+import useProps from '@/Shared/Hooks/useProps'
 
-import Header from '@/shared/components/partials/Header'
-import FlashMessage from '@/shared/components/partials/FlashMessage'
+import Header from '@/Shared/Components/Partials/Header'
+import FlashMessage from '@/Shared/Components/Partials/FlashMessage'
 
 const Base = ({ children, ...props }) => {
     const { flash } = useProps()

@@ -1,6 +1,6 @@
 import React from 'react'
 
-import Base from '@/shared/components/layouts/Base'
+import Base from '@/Shared/Components/Layouts/Base'
 
 const Home = () => (
     <Base>

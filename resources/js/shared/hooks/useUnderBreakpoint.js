@@ -1,5 +1,5 @@
-import useBreakpoint from '@/shared/hooks/useBreakpoint'
-import { breakpoints } from '@/shared/helpers/constants'
+import useBreakpoint from '@/Shared/Hooks/useBreakpoint'
+import { breakpoints } from '@/Shared/Helpers/constants'
 
 const useUnderBreakpoint = breakpoint => {
     const keys = Object.keys(breakpoints)

@@ -1,9 +1,9 @@
 import React, { useState, useCallback } from 'react'
 
-import { match } from '@/shared/helpers/methods'
-import useOnPageChange from '@/shared/hooks/useOnPageChange'
+import { match } from '@/Shared/Helpers/methods'
+import useOnPageChange from '@/Shared/Hooks/useOnPageChange'
 
-import Icon from '@/shared/components/primitives/Icon'
+import Icon from '@/Shared/Components/Leafs/Icon'
 
 const Container = ({ children }) => (
     <div className="fixed inset-x-0 bottom-0 mx-2 mb-4 flex justify-center">

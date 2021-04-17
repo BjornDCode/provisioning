@@ -1,13 +1,13 @@
 import React from 'react'
 import { Inertia } from '@inertiajs/inertia'
 
-import Base from '@/shared/components/layouts/Base'
+import Base from '@/Shared/Components/Layouts/Base'
 
-import Link from '@/shared/components/primitives/Link'
-import Button from '@/shared/components/primitives/Button'
-import Paragraph from '@/shared/components/primitives/Paragraph'
+import Link from '@/Shared/Components/Leafs/Link'
+import Button from '@/Shared/Components/Leafs/Button'
+import Paragraph from '@/Shared/Components/Leafs/Paragraph'
 
-import Form from '@/shared/components/forms/Form'
+import Form from '@/Shared/Components/FormElements/Form'
 
 const VerifyEmail = () => {
     const onLogout = event => {

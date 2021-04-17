@@ -1,8 +1,7 @@
 import React from 'react'
-
-import { match } from '@/shared/helpers/methods'
-
 import { HiMenuAlt3, HiX } from 'react-icons/hi'
+
+import { match } from '@/Shared/Helpers/methods'
 
 const icons = {
     Menu: HiMenuAlt3,

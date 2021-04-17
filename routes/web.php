@@ -15,11 +15,11 @@ use Inertia\Inertia;
 */
 
 Route::get('/', function () {
-    return Inertia::render('Home');
+    return Inertia::render('Shared/Home');
 });
 
 Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
+    return Inertia::render('Shared/Dashboard');
 })->middleware(['auth'])->name('dashboard');
 
 Route::get('/needs-verification', function () {

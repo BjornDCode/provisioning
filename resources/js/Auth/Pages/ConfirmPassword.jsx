@@ -1,19 +1,19 @@
 import React from 'react'
 import { Inertia } from '@inertiajs/inertia'
 
-import useForm from '@/shared/hooks/useForm'
-import useProps from '@/shared/hooks/useProps'
+import useForm from '@/Shared/Hooks/useForm'
+import useProps from '@/Shared/Hooks/useProps'
 
-import Base from '@/shared/components/layouts/Base'
+import Base from '@/Shared/Components/Layouts/Base'
 
-import Button from '@/shared/components/primitives/Button'
-import Paragraph from '@/shared/components/primitives/Paragraph'
+import Button from '@/Shared/Components/Leafs/Button'
+import Paragraph from '@/Shared/Components/Leafs/Paragraph'
 
-import Form from '@/shared/components/forms/Form'
-import FormGroup from '@/shared/components/forms/FormGroup'
-import FormInput from '@/shared/components/forms/FormInput'
-import FormError from '@/shared/components/forms/FormError'
-import FormLabel from '@/shared/components/forms/FormLabel'
+import Form from '@/Shared/Components/FormElements/Form'
+import FormGroup from '@/Shared/Components/FormElements/FormGroup'
+import FormInput from '@/Shared/Components/FormElements/FormInput'
+import FormError from '@/Shared/Components/FormElements/FormError'
+import FormLabel from '@/Shared/Components/FormElements/FormLabel'
 
 const ConfirmPassword = () => {
     const { errors } = useProps()
