@@ -1,7 +1,5 @@
 import React from 'react'
 
-import Text from '@/shared/components/base/Text'
-
-const FormError = ({ children, ...props }) => <Text {...props}>{children}</Text>
+const FormError = ({ children, ...props }) => <span {...props}>{children}</span>
 
 export default FormError

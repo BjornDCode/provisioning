@@ -1,7 +1,5 @@
 import React from 'react'
 
-import Box from '@/shared/components/base/Box'
-
-const FormGroup = ({ children, ...props }) => <Box {...props}>{children}</Box>
+const FormGroup = ({ children, ...props }) => <div {...props}>{children}</div>
 
 export default FormGroup

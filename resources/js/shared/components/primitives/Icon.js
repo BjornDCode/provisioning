@@ -2,8 +2,6 @@ import React from 'react'
 
 import { match } from '@/shared/helpers/methods'
 
-import Box from '@/shared/components/base/Box'
-
 import { HiMenuAlt3, HiX } from 'react-icons/hi'
 
 const icons = {
@@ -14,7 +12,7 @@ const icons = {
 const Icon = ({ name, ...props }) => {
     const Component = match(name, icons)
 
-    return <Box Component={Component} {...props} />
+    return <Component {...props} />
 }
 
 export default Icon

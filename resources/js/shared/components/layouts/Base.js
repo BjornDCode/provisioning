@@ -2,9 +2,6 @@ import React from 'react'
 
 import useProps from '@/shared/hooks/useProps'
 
-import Box from '@/shared/components/base/Box'
-import Text from '@/shared/components/base/Text'
-
 import Header from '@/shared/components/partials/Header'
 import FlashMessage from '@/shared/components/partials/FlashMessage'
 
@@ -12,12 +9,12 @@ const Base = ({ children, ...props }) => {
     const { flash } = useProps()
 
     return (
-        <Box>
+        <div>
             <Header />
 
-            <Box Component="main">{children}</Box>
+            <main>{children}</main>
             <FlashMessage text={flash.message || ''} />
-        </Box>
+        </div>
     )
 }
 

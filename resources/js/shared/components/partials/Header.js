@@ -7,24 +7,10 @@ import useUnderBreakpoint from '@/shared/hooks/useUnderBreakpoint'
 
 import Icon from '@/shared/components/primitives/Icon'
 import Link from '@/shared/components/primitives/Link'
-import Shelf from '@/shared/components/layouts/Shelf'
-import Stack from '@/shared/components/layouts/Stack'
-
-import Box from '@/shared/components/base/Box'
 
 const NavItem = ({ children, ...props }) => (
     <Link
-        display="block"
-        spaceX={{ df: 4, md: 0 }}
-        spaceY={{ df: 3, md: 0 }}
-        borderB={{ df: 1, md: 0 }}
-        borderT={{ first: 1, 'md:first': 0 }}
-        borderColor="gray"
-        borderShade="600"
-        fontSize="sm"
-        fontWeight="medium"
-        textColor={{ df: 'gray', hover: 'green' }}
-        textShade="300"
+        className="block border-b border-gray-600 text-sm font-medium text-gray-300 px-4 py-3 md:border-b-0 first:border-t md:first:border-t-0 md:p-0 hover:text-green-300"
         {...props}
     >
         {children}
@@ -53,12 +39,7 @@ const NavItems = ({ authenticated }) => {
 
 const Logo = () => (
     <Link to="/">
-        <Box
-            width={8}
-            height={8}
-            backgroundColor="green"
-            backgroundShade="400"
-        />
+        <div className="w-8 h-8 bg-green-400 rounded" />
     </Link>
 )
 
@@ -71,36 +52,32 @@ const MobileHeader = ({ authenticated }) => {
     })
 
     return (
-        <Stack Component="header" spaceX={2} spaceY={2} spacing={3}>
-            <Shelf justify="between">
+        <header className="p-2 space-y-3">
+            <div className="flex justify-between">
                 <Logo />
                 <button onClick={toggle} className="p-0 rounded">
                     <Icon
                         name="Menu"
-                        display="block"
-                        textColor="green"
-                        textShade="400"
-                        width={8}
-                        height={8}
+                        className="block text-green-400 w-8 h-8"
                     />
                 </button>
-            </Shelf>
+            </div>
             {open && (
-                <Stack Component="nav">
+                <nav>
                     <NavItems authenticated={authenticated} />
-                </Stack>
+                </nav>
             )}
-        </Stack>
+        </header>
     )
 }
 
 const DesktopHeader = ({ authenticated }) => (
-    <Shelf Component="header" justify="between" spaceX={8} spaceY={4}>
+    <header className="flex justify-between px-8 py-4">
         <Logo />
-        <Shelf Component="nav" align="center" spacing={4}>
+        <nav className="flex items-center space-x-4">
             <NavItems authenticated={authenticated} />
-        </Shelf>
-    </Shelf>
+        </nav>
+    </header>
 )
 
 const Header = () => {

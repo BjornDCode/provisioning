@@ -1,7 +1,5 @@
 import React from 'react'
 
-import Box from '@/shared/components/base/Box'
-
 const Form = ({ children, onSubmit = () => {}, ...props }) => {
     const handleSubmit = event => {
         event.preventDefault()
@@ -9,9 +7,9 @@ const Form = ({ children, onSubmit = () => {}, ...props }) => {
     }
 
     return (
-        <Box Component="form" onSubmit={handleSubmit} {...props}>
+        <form onSubmit={handleSubmit} {...props}>
             {children}
-        </Box>
+        </form>
     )
 }
 
