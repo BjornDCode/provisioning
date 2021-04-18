@@ -20,6 +20,7 @@
     "dependencies": {
         "@inertiajs/inertia": "^0.8.4",
         "@inertiajs/inertia-react": "^0.5.3",
+        "@tailwindcss/forms": "^0.3.2",
         "axios": "^0.21",
         "classnames": "^2.2.6",
         "react": "^17.0.1",

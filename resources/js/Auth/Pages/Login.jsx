@@ -2,9 +2,8 @@ import React from 'react'
 import { Inertia } from '@inertiajs/inertia'
 
 import useForm from '@/Shared/Hooks/useForm'
-import useProps from '@/Shared/Hooks/useProps'
 
-import Base from '@/Shared/Components/Layouts/Base'
+import Auth from '@/Auth/Components/Layouts/Auth'
 
 import Link from '@/Shared/Components/Leafs/Link'
 import Button from '@/Shared/Components/Leafs/Button'
@@ -14,67 +13,66 @@ import FormGroup from '@/Shared/Components/FormElements/FormGroup'
 import FormInput from '@/Shared/Components/FormElements/FormInput'
 import FormError from '@/Shared/Components/FormElements/FormError'
 import FormLabel from '@/Shared/Components/FormElements/FormLabel'
+import TextField from '@/Shared/Components/Fields/TextField'
+import SingleCheckboxField from '@/Shared/Components/Fields/SingleCheckboxField'
 
 const Login = () => {
-    const { errors } = useProps()
-
-    const [values, onChange] = useForm({
+    const { values, onChange, errors, status, disabled, post } = useForm({
         email: '',
         password: '',
         remember: false,
     })
 
     const onSubmit = () => {
-        Inertia.post(route('login'), values)
+        post(route('login'), {
+            ...values,
+            remember: values.remember ? 'on' : '',
+        })
     }
 
     return (
-        <Base>
-            <h1>Login</h1>
-
-            <Form onSubmit={onSubmit}>
-                <FormGroup>
-                    <FormLabel>Email</FormLabel>
-                    <FormInput
-                        type="email"
-                        name="email"
-                        value={values.email}
-                        onChange={onChange}
-                        required
-                        autoFocus
-                    />
-                    {errors.email ? (
-                        <FormError>{errors.email}</FormError>
-                    ) : null}
-                </FormGroup>
-                <FormGroup>
-                    <FormLabel>Password</FormLabel>
-                    <FormInput
-                        name="password"
-                        type="password"
-                        value={values.password}
-                        onChange={onChange}
-                        required
-                        autoComplete="current-password"
-                    />
-                </FormGroup>
-                <FormGroup>
-                    <FormLabel>Remember me</FormLabel>
-                    <FormInput
+        <Auth title="Login">
+            <Form onSubmit={onSubmit} className="space-y-6">
+                <TextField
+                    label="Email"
+                    name="email"
+                    value={values.email}
+                    onChange={onChange}
+                    required
+                    autoFocus
+                    error={errors.email}
+                />
+                <TextField
+                    label="Password"
+                    name="password"
+                    type="password"
+                    value={values.password}
+                    onChange={onChange}
+                    required
+                    autoComplete="current-password"
+                />
+                <FormGroup className="flex items-center justify-between">
+                    <SingleCheckboxField
+                        label="Remember me"
                         name="remember"
                         type="checkbox"
                         checked={values.remember}
                         onChange={onChange}
                     />
-                </FormGroup>
-                <FormGroup>
-                    <Link to={route('password.request')}>
+                    <Link
+                        to={route('password.request')}
+                        className="text-sm text-white underline"
+                    >
                         Forgot your password?
                     </Link>
-                    <Button type="submit">Login</Button>
+                </FormGroup>
+                <FormGroup>
+                    <Button type="submit" size="large">
+                        Login
+                    </Button>
                 </FormGroup>
             </Form>
-        </Base>
+        </Auth>
     )
 }
 

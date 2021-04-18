@@ -55,7 +55,10 @@ const MobileHeader = ({ authenticated }) => {
         <header className="p-2 space-y-3">
             <div className="flex justify-between">
                 <Logo />
-                <button onClick={toggle} className="p-0 rounded">
+                <button
+                    onClick={toggle}
+                    className="p-0 rounded focus:outline-none focus:ring-2 focus:ring-cyan-300"
+                >
                     <Icon
                         name="Menu"
                         className="block text-green-400 w-8 h-8"

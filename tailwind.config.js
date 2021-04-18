@@ -14,7 +14,7 @@ module.exports = {
     theme: {
         extend: {
             fontFamily: {
-                sans: ['Poppins', ...defaultTheme.fontFamily.sans],
+                sans: ['Inter', ...defaultTheme.fontFamily.sans],
             },
         },
 
@@ -30,4 +30,6 @@ module.exports = {
             red: colors.rose,
         },
     },
+
+    plugins: [require('@tailwindcss/forms')],
 }
