@@ -1,5 +1,4 @@
 import React from 'react'
-import { Inertia } from '@inertiajs/inertia'
 
 import useForm from '@/Shared/Hooks/useForm'
 
@@ -8,11 +7,8 @@ import Auth from '@/Auth/Components/Layouts/Auth'
 import Link from '@/Shared/Components/Leafs/Link'
 import Button from '@/Shared/Components/Leafs/Button'
 
-import Form from '@/Shared/Components/FormElements/Form'
+import Form from '@/Auth/Components/FormElements/Form'
 import FormGroup from '@/Shared/Components/FormElements/FormGroup'
-import FormInput from '@/Shared/Components/FormElements/FormInput'
-import FormError from '@/Shared/Components/FormElements/FormError'
-import FormLabel from '@/Shared/Components/FormElements/FormLabel'
 import TextField from '@/Shared/Components/Fields/TextField'
 import SingleCheckboxField from '@/Shared/Components/Fields/SingleCheckboxField'
 
@@ -32,7 +28,7 @@ const Login = () => {
 
     return (
         <Auth title="Login">
-            <Form onSubmit={onSubmit} className="space-y-6">
+            <Form onSubmit={onSubmit}>
                 <TextField
                     label="Email"
                     name="email"

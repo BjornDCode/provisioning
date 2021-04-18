@@ -1,5 +1,15 @@
 import React from 'react'
 
-const Paragraph = ({ children, ...props }) => <p {...props}>{children}</p>
+import useClasses from '@/Shared/Hooks/useClasses'
+
+const Paragraph = ({ children, className, ...props }) => {
+    const classes = useClasses('text-white', className)
+
+    return (
+        <p className={classes} {...props}>
+            {children}
+        </p>
+    )
+}
 
 export default Paragraph

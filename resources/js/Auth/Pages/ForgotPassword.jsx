@@ -1,61 +1,53 @@
 import React from 'react'
-import { Inertia } from '@inertiajs/inertia'
 
 import useForm from '@/Shared/Hooks/useForm'
 import useProps from '@/Shared/Hooks/useProps'
 
-import Base from '@/Shared/Components/Layouts/Base'
+import Auth from '@/Auth/Components/Layouts/Auth'
 
 import Button from '@/Shared/Components/Leafs/Button'
 import Paragraph from '@/Shared/Components/Leafs/Paragraph'
 
-import Form from '@/Shared/Components/FormElements/Form'
+import Form from '@/Auth/Components/FormElements/Form'
 import FormGroup from '@/Shared/Components/FormElements/FormGroup'
-import FormInput from '@/Shared/Components/FormElements/FormInput'
-import FormError from '@/Shared/Components/FormElements/FormError'
-import FormLabel from '@/Shared/Components/FormElements/FormLabel'
+
+import TextField from '@/Shared/Components/Fields/TextField'
 
 const ForgotPassword = () => {
-    const { errors } = useProps()
-
-    const [values, onChange] = useForm({
+    const { values, onChange, errors, status, disabled, post } = useForm({
         email: '',
     })
 
     const onSubmit = () => {
-        Inertia.post(route('password.email'), values)
+        post(route('password.email'), values)
     }
 
     return (
-        <Base>
-            <h1>Forgot password</h1>
-
-            <Paragraph>
+        <Auth title="Forgot password">
+            <Paragraph className="mb-6">
                 Forgot your password? No problem. Just let us know your email
                 address and we will email you a password reset link that will
                 allow you to choose a new one.
             </Paragraph>
 
             <Form onSubmit={onSubmit}>
+                <TextField
+                    label="Email"
+                    type="email"
+                    name="email"
+                    value={values.email}
+                    onChange={onChange}
+                    required
+                    autoFocus
+                    error={errors.email}
+                />
                 <FormGroup>
-                    <FormLabel>Email</FormLabel>
-                    <FormInput
-                        type="email"
-                        name="email"
-                        value={values.email}
-                        onChange={onChange}
-                        required
-                        autoFocus
-                    />
-                    {errors.email ? (
-                        <FormError>{errors.email}</FormError>
-                    ) : null}
-                </FormGroup>
-                <FormGroup>
-                    <Button type="submit">Send reset link</Button>
+                    <Button type="submit" size="large">
+                        Send reset link
+                    </Button>
                 </FormGroup>
             </Form>
-        </Base>
+        </Auth>
     )
 }
 
