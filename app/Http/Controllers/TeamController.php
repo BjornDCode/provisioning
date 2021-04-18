@@ -16,6 +16,7 @@ class TeamController extends Controller
 
         return Inertia::render('Account/Teams/Index', [
             'teams' => TeamResource::collection($user->teams),
+            'memberships' => TeamResource::collection($user->memberships),
         ]);
     }
 

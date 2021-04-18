@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use Tests\TestCase;
+use App\Models\Team;
 use Inertia\Testing\Assert;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -27,23 +28,27 @@ class ManageTeamsTest extends TestCase
         // Given
         $user = $this->registerNewUser();
 
+        $membershipTeam = Team::factory()->create();
+        $membershipTeam->join($user);
+
         // When
         $response = $this->get(route('settings.teams.index'));
 
         // Then
-        $response->assertInertia(function (Assert $page) use ($user) {
+        $response->assertInertia(function (Assert $page) use ($user, $membershipTeam) {
             $page->is('Account/Teams/Index');
             $page->has('teams');
-            // $page->has('membershipTeams');
+            $page->has('memberships');
 
 
             $page->has('teams.0', function (Assert $team) use ($user) {
                 $team->where('id', $user->currentTeam->id)
                      ->where('name', $user->currentTeam->name);
             });
-            // $page->has('membershipTeams.0', function (Assert $team) {
-            //     $team->where('id', $membershipTeam->id);
-            // });
+            $page->has('memberships.0', function (Assert $team) use ($membershipTeam) {
+                $team->where('id', $membershipTeam->id)
+                     ->where('name', $membershipTeam->name);
+            });
         });
     }
 
