@@ -2,9 +2,11 @@
 
 namespace Tests\Feature;
 
+use Tests\TestCase;
+use App\Models\Team;
+use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
 
 class RegistrationTest extends TestCase
 {
@@ -28,5 +30,27 @@ class RegistrationTest extends TestCase
 
         $this->assertAuthenticated();
         $response->assertRedirect(RouteServiceProvider::HOME);
+    }
+
+    /** @test */
+    public function it_creates_a_team_for_a_new_user()
+    {
+        // Given
+        // When
+        $response = $this->post('/register', [
+            'name' => 'Test User',
+            'email' => 'test@example.com',
+            'password' => 'password',
+            'password_confirmation' => 'password',
+        ]);
+
+        // Then
+        $user = User::first();
+        $team = Team::first();
+        $this->assertDatabaseHas('teams', [
+            'name' => "Test User's Team",
+            'owner_id' => $user->id,
+        ]);
+        $this->assertEquals($team->id, $user->current_team_id);
     }
 }

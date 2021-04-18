@@ -1,7 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\TeamController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,6 +17,10 @@ use Inertia\Inertia;
 
 Route::get('/', function () {
     return Inertia::render('Shared/Home');
+});
+
+Route::prefix('settings')->middleware('auth')->group(function() {
+    Route::get('/teams', [TeamController::class, 'index'])->name('settings.teams.index');
 });
 
 Route::get('/dashboard', function () {
