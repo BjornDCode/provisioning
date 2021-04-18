@@ -1,24 +1,18 @@
 import React from 'react'
-import { Inertia } from '@inertiajs/inertia'
 
 import useForm from '@/Shared/Hooks/useForm'
-import useProps from '@/Shared/Hooks/useProps'
 
-import Base from '@/Shared/Components/Layouts/Base'
+import Auth from '@/Auth/Components/Layouts/Auth'
 
 import Link from '@/Shared/Components/Leafs/Link'
 import Button from '@/Shared/Components/Leafs/Button'
 
-import Form from '@/Shared/Components/FormElements/Form'
+import Form from '@/Auth/Components/FormElements/Form'
 import FormGroup from '@/Shared/Components/FormElements/FormGroup'
-import FormInput from '@/Shared/Components/FormElements/FormInput'
-import FormError from '@/Shared/Components/FormElements/FormError'
-import FormLabel from '@/Shared/Components/FormElements/FormLabel'
+import TextField from '@/Shared/Components/Fields/TextField'
 
 const Register = () => {
-    const { errors } = useProps()
-
-    const [values, onChange] = useForm({
+    const { values, onChange, errors, status, disabled, post } = useForm({
         name: '',
         email: '',
         password: '',
@@ -26,64 +20,56 @@ const Register = () => {
     })
 
     const onSubmit = () => {
-        Inertia.post(route('register'), values)
+        console.log('here')
+        post(route('register'), values)
     }
 
     return (
-        <Base>
-            <h1>Register</h1>
-
+        <Auth title="Register">
             <Form onSubmit={onSubmit}>
+                <TextField
+                    label="Name"
+                    name="name"
+                    value={values.name}
+                    onChange={onChange}
+                    required
+                    autoFocus
+                    error={errors.name}
+                />
+                <TextField
+                    label="Email"
+                    type="email"
+                    name="email"
+                    value={values.email}
+                    onChange={onChange}
+                    required
+                    error={errors.email}
+                />
+                <TextField
+                    label="Password"
+                    name="password"
+                    type="password"
+                    value={values.password}
+                    onChange={onChange}
+                    required
+                    autoComplete="current-password"
+                />
+                <TextField
+                    label="Confirm password"
+                    name="password_confirmation"
+                    type="password"
+                    value={values.password_confirmation}
+                    onChange={onChange}
+                    required
+                />
+
                 <FormGroup>
-                    <FormLabel>Name</FormLabel>
-                    <FormInput
-                        name="name"
-                        value={values.name}
-                        onChange={onChange}
-                        required
-                        autoFocus
-                    />
-                    {errors.name ? <FormError>{errors.name}</FormError> : null}
-                </FormGroup>
-                <FormGroup>
-                    <FormLabel>Email</FormLabel>
-                    <FormInput
-                        type="email"
-                        name="email"
-                        value={values.email}
-                        onChange={onChange}
-                        required
-                    />
-                    {errors.email ? (
-                        <FormError>{errors.email}</FormError>
-                    ) : null}
-                </FormGroup>
-                <FormGroup>
-                    <FormLabel>Password</FormLabel>
-                    <FormInput
-                        name="password"
-                        type="password"
-                        value={values.password}
-                        onChange={onChange}
-                        required
-                        autoComplete="current-password"
-                    />
-                </FormGroup>
-                <FormGroup>
-                    <FormLabel>Confirm password</FormLabel>
-                    <FormInput
-                        name="password_confirmation"
-                        type="password"
-                        value={values.password_confirmation}
-                        onChange={onChange}
-                        required
-                    />
-                </FormGroup>
-                <FormGroup>
-                    <Button type="submit">Register</Button>
+                    <Button type="submit" size="large">
+                        Register
+                    </Button>
                 </FormGroup>
             </Form>
-        </Base>
+        </Auth>
     )
 }
 
