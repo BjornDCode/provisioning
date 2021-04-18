@@ -73,16 +73,4 @@ class ManageTeamsTest extends TestCase
         // List invitations
         $this->markTestIncomplete();
     }
-
-    /** @test */
-    public function a_non_authenticated_user_cannot_create_teams()
-    {
-        $this->markTestIncomplete();
-    }
-
-    /** @test */
-    public function a__user_can_create_teams()
-    {
-        $this->markTestIncomplete();
-    }
 }

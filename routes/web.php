@@ -20,7 +20,9 @@ Route::get('/', function () {
 });
 
 Route::prefix('settings')->middleware('auth')->group(function() {
+    Route::get('/teams/{team}', [TeamController::class, 'show'])->name('settings.teams.show');
     Route::get('/teams', [TeamController::class, 'index'])->name('settings.teams.index');
+    Route::post('/teams', [TeamController::class, 'store'])->name('settings.teams.store');
 });
 
 Route::get('/dashboard', function () {
