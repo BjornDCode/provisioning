@@ -18,7 +18,7 @@ class AcceptInvitationsTest extends TestCase
         $user = $this->registerNewUser();
         $team = Team::factory()->create();
 
-        $invitation = $team->invite($user);
+        $invitation = $team->invite($user->email);
 
         // When
         $response = $this->get(
@@ -47,9 +47,25 @@ class AcceptInvitationsTest extends TestCase
     }
 
     /** @test */
-    public function a_new_user_can_accept_an_invitation()
+    public function a_new_user_have_to_create_an_account_before_accepting_the_invite()
     {
-        $this->markTestIncomplete();
+        $this->withExceptionHandling();
+        
+        // Given
+        $team = Team::factory()->create();
+
+        $invitation = $team->invite('test@example.com');
+
+        // When
+        $response = $this->get(
+            route('settings.teams.memberships.store', [
+                'team' => $team->id,
+                'token' => $invitation->token,
+            ])
+        );
+
+        // Then
+        $response->assertRedirect(route('login'));
     }
 
     /** @test */
