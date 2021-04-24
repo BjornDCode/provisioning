@@ -62,7 +62,27 @@ class DeleteInvitationsTest extends TestCase
     /** @test */
     public function a_team_member_cannot_delete_an_invitation()
     {
-        //
+        $this->withExceptionHandling();
+
+        // Given
+        $user = $this->registerNewUser();
+        $team = Team::factory()->create();
+        $invitation = Invitation::factory()->create([
+            'team_id' => $team->id,
+        ]);
+        
+        $team->join($user);
+
+        // When
+        $response = $this->delete(
+            route('settings.teams.invitations.destroy', [
+                'team' => $team->id,
+                'invitation' => $invitation->id,
+            ])
+        );
+
+        // Then
+        $response->assertStatus(403);
     }
 
     /** @test */
