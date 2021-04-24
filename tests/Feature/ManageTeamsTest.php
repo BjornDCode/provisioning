@@ -96,15 +96,16 @@ class ManageTeamsTest extends TestCase
 
         $member = User::factory()->create();
         $team->join($member);
+        $invitation = $team->invite('test@example.com');
 
         // When
         $response = $this->get(route('settings.teams.show', [ 'team' => $team->id ]));
 
         // Then
-        $response->assertInertia(function (Assert $page) use ($member) {
+        $response->assertInertia(function (Assert $page) use ($member, $invitation) {
             $page->is('Account/Teams/Show');
             $page->has('members');
-            // $page->has('invitations');
+            $page->has('invitations');
 
 
             $page->has('members.0', function (Assert $resource) use ($member) {
@@ -112,10 +113,10 @@ class ManageTeamsTest extends TestCase
                          ->where('name', $member->name)
                          ->where('email', $member->email);
             });
-            // $page->has('memberships.0', function (Assert $team) use ($membershipTeam) {
-            //     $team->where('id', $membershipTeam->id)
-            //          ->where('name', $membershipTeam->name);
-            // });
+            $page->has('invitations.0', function (Assert $resource) use ($invitation) {
+                $resource->where('id', $invitation->id)
+                         ->where('email', $invitation->email);
+            });
         });
     }
 }
