@@ -1,7 +1,14 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
+use App\Models\Account\Team;
 use Inertia\Inertia;
+use App\Mail\Invited;
+use App\Models\Account\Invitation;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Account\TeamController;
+use App\Http\Controllers\Account\AccountController;
+use App\Http\Controllers\Account\InvitationsController;
+use App\Http\Controllers\Account\MembershipsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,6 +25,19 @@ Route::get('/', function () {
     return Inertia::render('Shared/Home');
 });
 
+
+Route::prefix('settings')->middleware('auth')->group(function() {
+    Route::patch('/account', [AccountController::class, 'update'])->name('settings.account.update');
+
+    Route::get('/teams/{team}/memberships', [MembershipsController::class, 'store'])->name('settings.teams.memberships.store');
+    Route::post('/teams/{team}/invitations', [InvitationsController::class, 'store'])->name('settings.teams.invitations.store');
+    Route::delete('/teams/{team}/invitations/{invitation}', [InvitationsController::class, 'destroy'])->name('settings.teams.invitations.destroy');
+
+    Route::get('/teams/{team}', [TeamController::class, 'show'])->name('settings.teams.show');
+    Route::get('/teams', [TeamController::class, 'index'])->name('settings.teams.index');
+    Route::post('/teams', [TeamController::class, 'store'])->name('settings.teams.store');
+});
+
 Route::get('/dashboard', function () {
     return Inertia::render('Shared/Dashboard');
 })->middleware(['auth'])->name('dashboard');
@@ -29,5 +49,12 @@ Route::get('/needs-verification', function () {
 Route::get('/needs-confirmation', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'password.confirm']);
+
+Route::get('/mailable', function () {
+    $team = Team::first();
+    $invitation = Invitation::first();
+
+    return new Invited($team, $invitation);
+});
 
 require __DIR__.'/auth.php';
