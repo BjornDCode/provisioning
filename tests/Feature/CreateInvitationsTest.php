@@ -21,7 +21,10 @@ class CreateInvitationsTest extends TestCase
 
         // When
         $response = $this->post(
-            route('settings.teams.invitations.store', [ 'team' => $team->id, ])
+            route('settings.teams.invitations.store', [ 'team' => $team->id, ]),
+            [
+                'email' => 'test@example.com',
+            ]
         );
 
         // Then
@@ -39,7 +42,10 @@ class CreateInvitationsTest extends TestCase
 
         // When
         $response = $this->post(
-            route('settings.teams.invitations.store', [ 'team' => $team->id, ])
+            route('settings.teams.invitations.store', [ 'team' => $team->id, ]),
+            [
+                'email' => 'test@example.com',
+            ]
         );
 
         // Then
@@ -58,7 +64,10 @@ class CreateInvitationsTest extends TestCase
 
         // When
         $response = $this->post(
-            route('settings.teams.invitations.store', [ 'team' => $team->id, ])
+            route('settings.teams.invitations.store', [ 'team' => $team->id, ]),
+            [
+                'email' => 'test@example.com',
+            ]
         );
 
         // Then
@@ -68,7 +77,27 @@ class CreateInvitationsTest extends TestCase
     /** @test */
     public function a_team_owner_can_create_an_invite()
     {
-        $this->markTestIncomplete();
+        // Given
+        $user = $this->registerNewUser();
+
+        // When
+        $response = $this->post(
+            route('settings.teams.invitations.store', [ 'team' => $user->currentTeam->id, ]),
+            [
+                'email' => 'test@example.com',
+            ]
+        );
+
+        // Then
+        $this->assertDatabaseHas('invitations', [
+            'team_id' => $user->currentTeam->id,
+            'email' => 'test@example.com',
+        ]);
+
+        $response->assertRedirect(
+            route('settings.teams.show', [ 'team' => $user->currentTeam->id ])
+        );
+        $response->assertSessionHas('message', 'test@example.com was invited!');
     }
 
     /** @test */
