@@ -101,20 +101,39 @@ class CreateInvitationsTest extends TestCase
     }
 
     /** @test */
+    public function email_is_required()
+    {
+        $this->withExceptionHandling();
+        
+        // Given
+        $user = $this->registerNewUser();
+
+        // When
+        $response = $this
+            ->from(
+                route('settings.teams.show', [ 'team' => $user->currentTeam->id, ])
+            )
+            ->post(
+                route('settings.teams.invitations.store', [ 'team' => $user->currentTeam->id, ]),
+                []
+            );
+
+        // Then
+        $response->assertRedirect(
+            route('settings.teams.show', [ 'team' => $user->currentTeam->id, ])
+        );
+        $response->assertSessionHasErrors('email');
+    }
+
+    /** @test */
     public function a_person_cannot_be_invited_if_they_have_already_been_invited()
     {
         $this->markTestIncomplete();
     }
 
+
     /** @test */
     public function a_user_cannot_be_invited_if_they_are_already_a_member_of_the_team()
-    {
-        $this->markTestIncomplete();
-    }
-
-
-    /** @test */
-    public function email_is_required()
     {
         $this->markTestIncomplete();
     }

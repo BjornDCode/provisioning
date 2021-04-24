@@ -4,13 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Team;
 use Illuminate\Support\Str;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
+use App\Http\Requests\CreateInvitationRequest;
 
 class InvitationsController extends Controller
 {
     
-    public function store(Request $request, Team $team)
+    public function store(CreateInvitationRequest $request, Team $team)
     {
         $this->authorize('update', $team);
 
