@@ -2,8 +2,9 @@
 
 namespace App\Http\Middleware;
 
-use Illuminate\Http\Request;
 use Inertia\Middleware;
+use Illuminate\Http\Request;
+use App\Http\Resources\TeamResource;
 
 class HandleInertiaRequests extends Middleware
 {
@@ -39,6 +40,9 @@ class HandleInertiaRequests extends Middleware
         return array_merge(parent::share($request), [
             'user' => fn () => $request->user()
                 ? $request->user()->only('id', 'name', 'email')
+                : null,
+            'teams' => fn () => $request->user()
+                ? TeamResource::collection($request->user()->allTeams)
                 : null,
             'flash' => [
                 'message' => fn () => $request->session()->get('message'),

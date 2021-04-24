@@ -56,4 +56,9 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->belongsToMany(Team::class, 'memberships')->using(Membership::class);
     }
+
+    public function getAllTeamsAttribute()
+    {
+        return $this->teams->merge($this->memberships);
+    }
 }
