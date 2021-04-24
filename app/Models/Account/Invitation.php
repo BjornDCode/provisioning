@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Account;
 
-use App\Models\Team;
+use App\Models\Account\Team;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 

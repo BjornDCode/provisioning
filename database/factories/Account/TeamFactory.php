@@ -1,9 +1,9 @@
 <?php
 
-namespace Database\Factories;
+namespace Database\Factories\Account;
 
-use App\Models\Team;
-use App\Models\User;
+use App\Models\Account\Team;
+use App\Models\Auth\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class TeamFactory extends Factory

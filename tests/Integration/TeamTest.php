@@ -3,10 +3,10 @@
 namespace Tests\Integration;
 
 use Tests\TestCase;
-use App\Models\Team;
-use App\Models\User;
-use App\Models\Invitation;
-use App\Models\Membership;
+use App\Models\Account\Team;
+use App\Models\Auth\User;
+use App\Models\Account\Invitation;
+use App\Models\Account\Membership;
 use App\Exceptions\ExistingMemberException;
 use App\Exceptions\ExistingInvitationException;
 use Illuminate\Foundation\Testing\RefreshDatabase;

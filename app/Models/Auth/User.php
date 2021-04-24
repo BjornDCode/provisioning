@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Auth;
 
-use App\Models\Team;
+use App\Models\Account\Team;
+use App\Models\Account\Membership;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;

@@ -1,9 +1,9 @@
 <?php
 
-namespace Database\Factories;
+namespace Database\Factories\Account;
 
-use App\Models\Team;
-use App\Models\Invitation;
+use App\Models\Account\Team;
+use App\Models\Account\Invitation;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Factories\Factory;
 

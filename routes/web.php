@@ -1,14 +1,14 @@
 <?php
 
-use App\Models\Team;
+use App\Models\Account\Team;
 use Inertia\Inertia;
 use App\Mail\Invited;
-use App\Models\Invitation;
+use App\Models\Account\Invitation;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\TeamController;
-use App\Http\Controllers\AccountController;
-use App\Http\Controllers\InvitationsController;
-use App\Http\Controllers\MembershipsController;
+use App\Http\Controllers\Account\TeamController;
+use App\Http\Controllers\Account\AccountController;
+use App\Http\Controllers\Account\InvitationsController;
+use App\Http\Controllers\Account\MembershipsController;
 
 /*
 |--------------------------------------------------------------------------

@@ -3,8 +3,8 @@
 namespace Tests\Integration;
 
 use Tests\TestCase;
-use App\Models\Team;
-use App\Models\User;
+use App\Models\Account\Team;
+use App\Models\Auth\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class UserTest extends TestCase

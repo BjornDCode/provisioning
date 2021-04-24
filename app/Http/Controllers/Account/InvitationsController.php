@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Account;
 
-use App\Models\Team;
 use App\Mail\Invited;
-use App\Models\Invitation;
 use Illuminate\Support\Str;
+use App\Models\Account\Team;
+use App\Models\Account\Invitation;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Redirect;
 use App\Http\Requests\CreateInvitationRequest;

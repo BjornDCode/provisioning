@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Models\Team;
-use App\Models\User;
+use App\Models\Account\Team;
+use App\Models\Auth\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 

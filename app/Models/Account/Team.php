@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Account;
 
-use App\Models\User;
-use App\Models\Invitation;
-use App\Models\Membership;
+use App\Models\Auth\User;
+use App\Models\Account\Invitation;
+use App\Models\Account\Membership;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
 use App\Exceptions\ExistingMemberException;

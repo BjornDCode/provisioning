@@ -2,7 +2,7 @@
 
 namespace Tests;
 
-use App\Models\User;
+use App\Models\Auth\User;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Inertia\Testing\Assert;

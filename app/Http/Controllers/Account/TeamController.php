@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Account;
 
-use App\Models\Team;
 use Inertia\Inertia;
+use App\Models\Account\Team;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use App\Http\Resources\TeamResource;
 use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Auth;

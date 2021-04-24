@@ -1,8 +1,8 @@
 <?php
 
-namespace Database\Factories;
+namespace Database\Factories\Account;
 
-use App\Models\Membership;
+use App\Models\Account\Membership;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class MembershipFactory extends Factory

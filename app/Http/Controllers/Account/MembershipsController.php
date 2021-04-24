@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Account;
 
-use App\Models\Team;
-use App\Models\Invitation;
+use App\Models\Account\Team;
 use Illuminate\Http\Request;
+use App\Models\Account\Invitation;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 
