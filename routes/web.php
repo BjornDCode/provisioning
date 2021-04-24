@@ -3,6 +3,7 @@
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TeamController;
+use App\Http\Controllers\InvitationsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,6 +21,8 @@ Route::get('/', function () {
 });
 
 Route::prefix('settings')->middleware('auth')->group(function() {
+    Route::post('/teams/{team}/invitations', [InvitationsController::class, 'store'])->name('settings.teams.invitations.store');
+
     Route::get('/teams/{team}', [TeamController::class, 'show'])->name('settings.teams.show');
     Route::get('/teams', [TeamController::class, 'index'])->name('settings.teams.index');
     Route::post('/teams', [TeamController::class, 'store'])->name('settings.teams.store');
