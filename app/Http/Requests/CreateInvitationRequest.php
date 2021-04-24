@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\User;
 use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -30,6 +31,13 @@ class CreateInvitationRequest extends FormRequest
                 Rule::unique('invitations')->where(function ($query) {
                     return $query->where('team_id', $this->team->id);
                 }),
+                function($attribute, $value, $fail) {
+                    $user = User::where($attribute, $value)->first();
+
+                    if (!is_null($user) && $this->team->hasMember($user)) {
+                        $fail('The user is already a team member.');                        
+                    }
+                }
             ],
         ];
     }

@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use Tests\TestCase;
 use App\Models\Team;
+use App\Models\User;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -158,6 +159,34 @@ class CreateInvitationsTest extends TestCase
     /** @test */
     public function a_user_cannot_be_invited_if_they_are_already_a_member_of_the_team()
     {
-        $this->markTestIncomplete();
+        $this->withExceptionHandling();
+        
+        // Given
+        $user = $this->registerNewUser();
+        $member = User::factory()->create([
+            'email' => 'test@example.com',
+        ]);
+
+        $user->currentTeam->join($member);
+
+        // When
+        $response = $this
+            ->from(
+                route('settings.teams.show', [ 'team' => $user->currentTeam->id, ])
+            )
+            ->post(
+                route('settings.teams.invitations.store', [ 'team' => $user->currentTeam->id, ]),
+                [
+                    'email' => 'test@example.com',
+                ]
+            );
+
+        // Then
+        $response->assertRedirect(
+            route('settings.teams.show', [ 'team' => $user->currentTeam->id, ])
+        );
+        $response->assertSessionHasErrors([
+            'email' => 'The user is already a team member.'
+        ]);
     }
 }
