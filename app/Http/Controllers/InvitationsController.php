@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Team;
 use App\Mail\Invited;
+use App\Models\Invitation;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Redirect;
@@ -27,6 +28,11 @@ class InvitationsController extends Controller
         return Redirect::route('settings.teams.show', [
             'team' => $team->id,
         ])->with('message', "{$request->input('email')} was invited!");
+    }
+
+    public function destroy(Team $team, Invitation $invitation)
+    {
+        $this->authorize('update', $team);
     }
 
 }
