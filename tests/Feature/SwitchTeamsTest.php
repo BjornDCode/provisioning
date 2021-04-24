@@ -62,7 +62,25 @@ class SwitchTeamsTest extends TestCase
     /** @test */
     public function a_user_cannot_switch_to_teams_they_are_not_a_member_of()
     {
-        $this->markTestIncomplete();
+        $this->withExceptionHandling();
+
+        // Given
+        $user = $this->registerNewUser();
+        $team = Team::factory()->create();
+
+        // When
+        $response = $this
+            ->from(route('dashboard'))
+            ->patch(
+                route('settings.account.update'),
+                [
+                    'current_team_id' => $team->id,
+                ]
+            );
+
+        // Then
+        $response->assertRedirect(route('dashboard'));
+        $response->assertSessionHasErrors('current_team_id');
     }
 
     /** @test */
