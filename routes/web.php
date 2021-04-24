@@ -6,6 +6,7 @@ use App\Mail\Invited;
 use App\Models\Invitation;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TeamController;
+use App\Http\Controllers\AccountController;
 use App\Http\Controllers\InvitationsController;
 
 /*
@@ -23,7 +24,10 @@ Route::get('/', function () {
     return Inertia::render('Shared/Home');
 });
 
+
 Route::prefix('settings')->middleware('auth')->group(function() {
+    Route::patch('/account', [AccountController::class, 'update'])->name('settings.account.update');
+
     Route::post('/fake/{team}', function () {})->name('settings.teams.memberships.store');
     Route::post('/teams/{team}/invitations', [InvitationsController::class, 'store'])->name('settings.teams.invitations.store');
     Route::delete('/teams/{team}/invitations/{invitation}', [InvitationsController::class, 'destroy'])->name('settings.teams.invitations.destroy');

@@ -42,7 +42,21 @@ class SwitchTeamsTest extends TestCase
     /** @test */
     public function a_non_authenticated_user_cannot_switch_to_teams()
     {
-        $this->markTestIncomplete();
+        $this->withExceptionHandling();
+
+        // Given
+        $team = Team::factory()->create();
+
+        // When
+        $response = $this->patch(
+            route('settings.account.update'),
+            [
+                'current_team_id' => $team->id,
+            ]
+        );
+
+        // Then
+        $response->assertRedirect(route('login'));
     }
 
     /** @test */
