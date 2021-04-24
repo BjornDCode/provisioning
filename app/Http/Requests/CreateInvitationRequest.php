@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class CreateInvitationRequest extends FormRequest
@@ -24,7 +25,19 @@ class CreateInvitationRequest extends FormRequest
     public function rules()
     {
         return [
-            'email' => 'required',
+            'email' => [
+                'required',
+                Rule::unique('invitations')->where(function ($query) {
+                    return $query->where('team_id', $this->team->id);
+                }),
+            ],
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'email.unique' => 'An invitation already exists for this email.',
         ];
     }
 }
