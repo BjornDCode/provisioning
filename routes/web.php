@@ -1,6 +1,9 @@
 <?php
 
+use App\Models\Team;
 use Inertia\Inertia;
+use App\Mail\Invited;
+use App\Models\Invitation;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TeamController;
 use App\Http\Controllers\InvitationsController;
@@ -21,6 +24,7 @@ Route::get('/', function () {
 });
 
 Route::prefix('settings')->middleware('auth')->group(function() {
+    Route::post('/fake/{team}', function () {})->name('settings.teams.memberships.store');
     Route::post('/teams/{team}/invitations', [InvitationsController::class, 'store'])->name('settings.teams.invitations.store');
 
     Route::get('/teams/{team}', [TeamController::class, 'show'])->name('settings.teams.show');
@@ -39,5 +43,12 @@ Route::get('/needs-verification', function () {
 Route::get('/needs-confirmation', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'password.confirm']);
+
+Route::get('/mailable', function () {
+    $team = Team::first();
+    $invitation = Invitation::first();
+
+    return new Invited($team, $invitation);
+});
 
 require __DIR__.'/auth.php';

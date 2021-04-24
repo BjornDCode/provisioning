@@ -5,6 +5,8 @@ namespace Tests\Feature;
 use Tests\TestCase;
 use App\Models\Team;
 use App\Models\User;
+use App\Mail\Invited;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -99,6 +101,26 @@ class CreateInvitationsTest extends TestCase
             route('settings.teams.show', [ 'team' => $user->currentTeam->id ])
         );
         $response->assertSessionHas('message', 'test@example.com was invited!');
+    }
+
+    /** @test */
+    public function it_sends_an_email_invitation()
+    {
+        Mail::fake();
+
+        // Given
+        $user = $this->registerNewUser();
+
+        // When
+        $response = $this->post(
+            route('settings.teams.invitations.store', [ 'team' => $user->currentTeam->id, ]),
+            [
+                'email' => 'test@example.com',
+            ]
+        );
+
+        // Then
+        Mail::assertQueued(Invited::class);
     }
 
     /** @test */
