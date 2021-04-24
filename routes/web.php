@@ -26,6 +26,7 @@ Route::get('/', function () {
 Route::prefix('settings')->middleware('auth')->group(function() {
     Route::post('/fake/{team}', function () {})->name('settings.teams.memberships.store');
     Route::post('/teams/{team}/invitations', [InvitationsController::class, 'store'])->name('settings.teams.invitations.store');
+    Route::delete('/teams/{team}/invitations/{invitation}', [InvitationsController::class, 'destroy'])->name('settings.teams.invitations.destroy');
 
     Route::get('/teams/{team}', [TeamController::class, 'show'])->name('settings.teams.show');
     Route::get('/teams', [TeamController::class, 'index'])->name('settings.teams.index');
