@@ -13,9 +13,14 @@ class MembershipsController extends Controller
     
     public function store(Request $request, Team $team)
     {
+        $invitation = Invitation::where('token', $request->input('token'))->firstOrFail();
+
+        if (!$invitation->team()->is($team)) {
+            abort(404);
+        }
+
         $team->join(Auth::user());
 
-        $invitation = Invitation::where('token', $request->input('token'));
         $invitation->delete();
 
         Auth::user()->setCurrentTeam($team);

@@ -50,7 +50,7 @@ class AcceptInvitationsTest extends TestCase
     public function a_new_user_have_to_create_an_account_before_accepting_the_invite()
     {
         $this->withExceptionHandling();
-        
+
         // Given
         $team = Team::factory()->create();
 
@@ -69,9 +69,68 @@ class AcceptInvitationsTest extends TestCase
     }
 
     /** @test */
-    public function the_token_has_to_match()
+    public function the_token_has_to_exist()
     {
-        $this->markTestIncomplete();
+        $this->withExceptionHandling();
+
+        // Given
+        $user = $this->registerNewUser();
+        $team = Team::factory()->create();
+
+        $invitation = $team->invite($user->email);
+
+        // When
+        $response = $this->get(
+            route('settings.teams.memberships.store', [
+                'team' => $team->id,
+                'token' => 'fake-token',
+            ])
+        );
+
+        // Then
+        $this->assertDatabaseMissing('memberships', [
+            'user_id' => $user->id,
+            'team_id' => $team->id,
+        ]);
+
+        $this->assertDatabaseHas('invitations', [
+            'id' => $invitation->id,
+        ]);
+
+        $response->assertStatus(404);
+    }
+
+    /** @test */
+    public function the_token_has_to_match_the_team()
+    {
+        $this->withExceptionHandling();
+        
+        // Given
+        $user = $this->registerNewUser();
+        $team = Team::factory()->create();
+        $anotherTeam = Team::factory()->create();
+
+        $invitation = $team->invite($user->email);
+
+        // When
+        $response = $this->get(
+            route('settings.teams.memberships.store', [
+                'team' => $anotherTeam->id,
+                'token' => $invitation->token,
+            ])
+        );
+
+        // Then
+        $this->assertDatabaseMissing('memberships', [
+            'user_id' => $user->id,
+            'team_id' => $team->id,
+        ]);
+
+        $this->assertDatabaseHas('invitations', [
+            'id' => $invitation->id,
+        ]);
+
+        $response->assertStatus(404);
     }
 
 }
