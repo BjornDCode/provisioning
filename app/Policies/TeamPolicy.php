@@ -24,4 +24,10 @@ class TeamPolicy
     {
         return $team->owner->is($user);
     }
+
+    public function update(User $user, Team $team)
+    {
+        return $team->owner->is($user);
+    }
+
 }

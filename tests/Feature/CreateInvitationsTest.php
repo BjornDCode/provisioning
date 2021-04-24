@@ -31,7 +31,19 @@ class CreateInvitationsTest extends TestCase
     /** @test */
     public function a_member_of_another_team_cannot_create_an_invite()
     {
-        $this->markTestIncomplete();
+        $this->withExceptionHandling();
+
+        // Given
+        $user = $this->registerNewUser();
+        $team = Team::factory()->create();
+
+        // When
+        $response = $this->post(
+            route('settings.teams.invitations.store', [ 'team' => $team->id, ])
+        );
+
+        // Then
+        $response->assertStatus(403);
     }
 
     /** @test */
