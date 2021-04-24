@@ -70,7 +70,7 @@ class DeleteInvitationsTest extends TestCase
         $invitation = Invitation::factory()->create([
             'team_id' => $team->id,
         ]);
-        
+
         $team->join($user);
 
         // When
@@ -88,7 +88,29 @@ class DeleteInvitationsTest extends TestCase
     /** @test */
     public function a_team_owner_can_delete_an_invitation()
     {
-        //
+        // Given
+        $user = $this->registerNewUser();
+        $invitation = Invitation::factory()->create([
+            'team_id' => $user->currentTeam->id,
+        ]);
+        
+        // When
+        $response = $this->delete(
+            route('settings.teams.invitations.destroy', [
+                'team' => $user->currentTeam->id,
+                'invitation' => $invitation->id,
+            ])
+        );
+
+        // Then
+        $this->assertDatabaseMissing('invitations', [
+            'id' => $invitation->id,
+        ]);
+
+        $response->assertRedirect(
+            route('settings.teams.show', [ 'team' => $user->currentTeam->id ])
+        );
+        $response->assertSessionHas('message', 'Invitation deleted.');
     }
 
 }

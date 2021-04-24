@@ -33,6 +33,12 @@ class InvitationsController extends Controller
     public function destroy(Team $team, Invitation $invitation)
     {
         $this->authorize('update', $team);
+
+        $invitation->delete();
+
+        return Redirect::route('settings.teams.show', [
+            'team' => $team->id,
+        ])->with('message', "Invitation deleted.");
     }
 
 }
