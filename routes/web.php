@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TeamController;
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\InvitationsController;
+use App\Http\Controllers\MembershipsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,7 +29,7 @@ Route::get('/', function () {
 Route::prefix('settings')->middleware('auth')->group(function() {
     Route::patch('/account', [AccountController::class, 'update'])->name('settings.account.update');
 
-    Route::post('/fake/{team}', function () {})->name('settings.teams.memberships.store');
+    Route::get('/teams/{team}/memberships', [MembershipsController::class, 'store'])->name('settings.teams.memberships.store');
     Route::post('/teams/{team}/invitations', [InvitationsController::class, 'store'])->name('settings.teams.invitations.store');
     Route::delete('/teams/{team}/invitations/{invitation}', [InvitationsController::class, 'destroy'])->name('settings.teams.invitations.destroy');
 

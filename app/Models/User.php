@@ -62,4 +62,10 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->teams->merge($this->memberships);
     }
+
+    public function setCurrentTeam(Team $team): void
+    {
+        $this->current_team_id = $team->id;
+        $this->save();
+    }
 }
