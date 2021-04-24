@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use Tests\TestCase;
 use App\Models\Team;
+use App\Models\User;
 use Inertia\Testing\Assert;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -55,22 +56,66 @@ class ManageTeamsTest extends TestCase
     /** @test */
     public function a_non_authenticated_user_cannot_see_the_single_team_settings_page()
     {
-        $this->markTestIncomplete();
-        //
+        $this->withExceptionHandling();
+
+        // Given
+        $team = Team::factory()->create();
+
+        // When
+        $response = $this->get(route('settings.teams.show', [ 'team' => $team->id ]));
+
+        // Then
+        $response->assertRedirect(route('login'));
     }
 
     /** @test */
-    public function a_user_cannot_see_team_settings_page_for_a_team_they_are_not_a_member_of()
+    public function a_user_cannot_see_team_settings_page_for_a_team_they_are_not_an_owner_of()
     {
-        $this->markTestIncomplete();
-        //
+        $this->withExceptionHandling();
+
+        // Given
+        $user = $this->registerNewUser();
+        $team = Team::factory()->create();
+        $team->join($user);
+
+        // When
+        $response = $this->get(route('settings.teams.show', [ 'team' => $team->id ]));
+
+        // Then
+        $response->assertStatus(403);
     }
 
     /** @test */
     public function it_can_render_the_single_team_settings_page()
     {
-        // List Members
-        // List invitations
-        $this->markTestIncomplete();
+        // Given
+        $user = $this->registerNewUser();
+        $team = Team::factory()->create([
+            'owner_id' => $user->id,
+        ]);
+
+        $member = User::factory()->create();
+        $team->join($member);
+
+        // When
+        $response = $this->get(route('settings.teams.show', [ 'team' => $team->id ]));
+
+        // Then
+        $response->assertInertia(function (Assert $page) use ($member) {
+            $page->is('Account/Teams/Show');
+            $page->has('members');
+            // $page->has('invitations');
+
+
+            $page->has('members.0', function (Assert $resource) use ($member) {
+                $resource->where('id', $member->id)
+                         ->where('name', $member->name)
+                         ->where('email', $member->email);
+            });
+            // $page->has('memberships.0', function (Assert $team) use ($membershipTeam) {
+            //     $team->where('id', $membershipTeam->id)
+            //          ->where('name', $membershipTeam->name);
+            // });
+        });
     }
 }
