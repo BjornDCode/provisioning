@@ -46,14 +46,14 @@ const Settings = ({ title, children }) => (
                     </NavItem>
                     <NavItem
                         to={route('settings.teams.index')}
-                        active={route().current('settings.teams.index')}
+                        active={route().current('settings.teams.*')}
                     >
                         Teams
                     </NavItem>
                 </NavBar>
             </div>
 
-            <div>{children}</div>
+            <div className="space-y-12">{children}</div>
         </div>
     </Base>
 )

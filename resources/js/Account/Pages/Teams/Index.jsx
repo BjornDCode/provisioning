@@ -4,7 +4,7 @@ import useProps from '@/Shared/Hooks/useProps'
 
 import Settings from '@/Account/Components/Layouts/Settings'
 
-import Headline from '@/Shared/Components/Leafs/Headline'
+import Group from '@/Account/Components/Leafs/Group'
 
 import InlineForm from '@/Shared/Components/FormElements/InlineForm'
 
@@ -21,42 +21,34 @@ const Index = () => {
 
     return (
         <Settings title="Teams">
-            <div className="space-y-12">
-                <div className="space-y-4">
-                    <Headline level="2">Your teams</Headline>
+            <Group title="Your teams">
+                <List as="div">
+                    {owned.map(team => (
+                        <ListItemLink
+                            key={team.id}
+                            to={route('settings.teams.show', {
+                                team: team.id,
+                            })}
+                        >
+                            {team.name}
+                        </ListItemLink>
+                    ))}
+                </List>
 
-                    <List as="div">
-                        {owned.map(team => (
-                            <ListItemLink
-                                key={team.id}
-                                to={route('settings.teams.show', {
-                                    team: team.id,
-                                })}
-                            >
-                                {team.name}
-                            </ListItemLink>
-                        ))}
-                    </List>
-
-                    <InlineForm
-                        onSubmit={onCreateTeam}
-                        cta="Create team"
-                        label="New team"
-                        name="name"
-                    />
-                </div>
-                <div>
-                    <Headline level="2" className="mb-4">
-                        Teams you are a member of
-                    </Headline>
-
-                    <List>
-                        {memberships.map(team => (
-                            <ListItem key={team.id}>{team.name}</ListItem>
-                        ))}
-                    </List>
-                </div>
-            </div>
+                <InlineForm
+                    onSubmit={onCreateTeam}
+                    cta="Create team"
+                    label="New team"
+                    name="name"
+                />
+            </Group>
+            <Group title="Teams you are a member of">
+                <List>
+                    {memberships.map(team => (
+                        <ListItem key={team.id}>{team.name}</ListItem>
+                    ))}
+                </List>
+            </Group>
         </Settings>
     )
 }

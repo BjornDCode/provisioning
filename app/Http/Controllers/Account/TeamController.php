@@ -31,6 +31,7 @@ class TeamController extends Controller
         $this->authorize('view', $team);
 
         return Inertia::render('Account/Teams/Show', [
+            'team' => new TeamResource($team),
             'members' => UserResource::collection($team->members),
             'invitations' => InvitationResource::collection($team->invitations),
         ]);
