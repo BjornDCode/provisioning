@@ -71,4 +71,26 @@ class CreateTeamsTest extends TestCase
         $response->assertSessionHasErrors('name');
     }
 
+    /** @test */
+    public function it_sets_the_users_current_team_to_the_new_team()
+    {
+        // Given
+        $user = $this->registerNewUser();
+
+        // When
+        $response = $this->post(
+            route('settings.teams.store'),
+            [
+                'name' => 'New team',
+            ]
+        );
+
+        // Then
+        $team = Team::where('name', 'New team')->first();
+        $this->assertDatabaseHas('users', [
+            'id' => $user->id,
+            'current_team_id' => $team->id,
+        ]);
+    }
+
 }

@@ -42,6 +42,8 @@ class TeamController extends Controller
             $request->validated(),
         );
 
+        Auth::user()->setCurrentTeam($team);
+
         return Redirect::route('settings.teams.show', [
             'team' => $team->id,
         ]);
