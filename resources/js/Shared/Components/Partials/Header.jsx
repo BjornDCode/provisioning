@@ -34,7 +34,12 @@ const NavItems = ({ authenticated }) => {
 
     return authenticated ? (
         <Fragment>
-            <NavItem to={route('settings.account.show')}>Settings</NavItem>
+            <NavItem
+                to={route('settings.account.show')}
+                active={route().current('settings.*')}
+            >
+                Settings
+            </NavItem>
             <NavItem href="#" onClick={onLogout}>
                 Log out
             </NavItem>
