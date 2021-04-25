@@ -1,8 +1,13 @@
-import { App } from '@inertiajs/inertia-react'
 import React from 'react'
+import { App } from '@inertiajs/inertia-react'
 import { render } from 'react-dom'
+import { InertiaProgress } from '@inertiajs/progress'
 
 const el = document.getElementById('app')
+
+InertiaProgress.init({
+    color: '#67E8F9',
+})
 
 render(
     <App
