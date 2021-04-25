@@ -37,9 +37,11 @@ const useForm = defaultValues => {
         })
     }
 
+    const reset = () => setValues(defaultValues)
+
     const disabled = status !== 'idle'
 
-    return { values, onChange, errors, status, disabled, post }
+    return { values, onChange, errors, status, disabled, post, reset }
 }
 
 export default useForm

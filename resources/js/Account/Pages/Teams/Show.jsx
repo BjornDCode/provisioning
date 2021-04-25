@@ -12,6 +12,8 @@ import IconButton from '@/Shared/Components/Leafs/IconButton'
 import List from '@/Shared/Components/Leafs/List'
 import ListItem from '@/Shared/Components/Leafs/ListItem'
 
+import InlineForm from '@/Shared/Components/FormElements/InlineForm'
+
 const ListItemWithAction = ({ onAction, children }) => (
     <ListItem Right={() => <IconButton name="Close" onClick={onAction} />}>
         {children}
@@ -20,6 +22,13 @@ const ListItemWithAction = ({ onAction, children }) => (
 
 const Show = () => {
     const { team, members = [], invitations = [] } = useProps()
+
+    const onCreateInvitation = ({ values, post }) => {
+        post(
+            route('settings.teams.invitations.store', { team: team.id }),
+            values
+        )
+    }
 
     const onDeleteInvitation = id => {
         Inertia.delete(
@@ -65,6 +74,12 @@ const Show = () => {
                 {invitations.length === 0 && (
                     <Paragraph>No invitations yet.</Paragraph>
                 )}
+                <InlineForm
+                    onSubmit={onCreateInvitation}
+                    cta="Invite someone"
+                    label="Email"
+                    name="email"
+                />
             </Group>
         </Settings>
     )

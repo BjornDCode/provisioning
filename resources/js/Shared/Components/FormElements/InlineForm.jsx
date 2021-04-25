@@ -9,12 +9,15 @@ import TextField from '@/Shared/Components/Fields/TextField'
 import Button from '@/Shared/Components/Leafs/Button'
 
 const InlineForm = ({ onSubmit, cta, value, error, label, name }) => {
-    const { values, onChange, errors, status, disabled, post } = useForm({
-        [name]: '',
-    })
+    const { values, onChange, errors, status, disabled, post, reset } = useForm(
+        {
+            [name]: '',
+        }
+    )
 
     const handleSubmit = () => {
         onSubmit({ values, post })
+        reset()
     }
 
     return (

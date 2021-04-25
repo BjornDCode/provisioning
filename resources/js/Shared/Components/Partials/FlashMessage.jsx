@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react'
+import React, { useState, useCallback, useEffect } from 'react'
 
 import { match } from '@/Shared/Helpers/methods'
 import useOnPageChange from '@/Shared/Hooks/useOnPageChange'
@@ -36,6 +36,10 @@ const FlashMessage = ({ level = 'success', text = '', ...props }) => {
     useOnPageChange(() => {
         setOpen(!!text.length)
     })
+
+    useEffect(() => {
+        setOpen(!!text.length)
+    }, [text])
 
     const onClose = useCallback(() => setOpen(false), [])
 
