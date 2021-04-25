@@ -39,7 +39,7 @@ class TeamController extends Controller
     public function store(CreateTeamRequest $request)
     {
         $team = Auth::user()->teams()->create(
-            $request->input(),
+            $request->validated(),
         );
 
         return Redirect::route('settings.teams.show', [
