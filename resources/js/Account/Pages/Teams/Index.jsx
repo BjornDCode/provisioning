@@ -5,6 +5,7 @@ import useProps from '@/Shared/Hooks/useProps'
 import Settings from '@/Account/Components/Layouts/Settings'
 
 import Group from '@/Account/Components/Leafs/Group'
+import Paragraph from '@/Shared/Components/Leafs/Paragraph'
 
 import InlineForm from '@/Shared/Components/FormElements/InlineForm'
 
@@ -43,11 +44,16 @@ const Index = () => {
                 />
             </Group>
             <Group title="Teams you are a member of">
-                <List>
-                    {memberships.map(team => (
-                        <ListItem key={team.id}>{team.name}</ListItem>
-                    ))}
-                </List>
+                {memberships.length > 0 && (
+                    <List>
+                        {memberships.map(team => (
+                            <ListItem key={team.id}>{team.name}</ListItem>
+                        ))}
+                    </List>
+                )}
+                {memberships.length === 0 && (
+                    <Paragraph>You are not part of any teams yet.</Paragraph>
+                )}
             </Group>
         </Settings>
     )
