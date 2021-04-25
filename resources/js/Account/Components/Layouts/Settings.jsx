@@ -53,7 +53,7 @@ const Settings = ({ title, children }) => (
                 </NavBar>
             </div>
 
-            <div className="bg-pink-500">{children}</div>
+            <div>{children}</div>
         </div>
     </Base>
 )
