@@ -8,6 +8,7 @@ import useUnderBreakpoint from '@/Shared/Hooks/useUnderBreakpoint'
 
 import Icon from '@/Shared/Components/Leafs/Icon'
 import Link from '@/Shared/Components/Leafs/Link'
+import NavBar from '@/Shared/Components/Partials/NavBar'
 
 const NavItem = ({ children, active, ...props }) => {
     const classes = useClasses(
@@ -33,6 +34,7 @@ const NavItems = ({ authenticated }) => {
 
     return authenticated ? (
         <Fragment>
+            <NavItem to={route('settings.account.show')}>Settings</NavItem>
             <NavItem href="#" onClick={onLogout}>
                 Log out
             </NavItem>
@@ -92,9 +94,9 @@ const MobileHeader = ({ authenticated }) => {
 const DesktopHeader = ({ authenticated }) => (
     <header className="flex justify-between px-8 py-4">
         <Logo />
-        <nav className="flex items-center space-x-1">
+        <NavBar>
             <NavItems authenticated={authenticated} />
-        </nav>
+        </NavBar>
     </header>
 )
 

@@ -1,10 +1,11 @@
 <?php
 
-use App\Models\Account\Team;
 use Inertia\Inertia;
 use App\Mail\Invited;
+use App\Models\Account\Team;
 use App\Models\Account\Invitation;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\BillingController;
 use App\Http\Controllers\Account\TeamController;
 use App\Http\Controllers\Account\AccountController;
 use App\Http\Controllers\Account\InvitationsController;
@@ -27,7 +28,10 @@ Route::get('/', function () {
 
 
 Route::prefix('settings')->middleware('auth')->group(function() {
+    Route::get('/account', [AccountController::class, 'show'])->name('settings.account.show');
     Route::patch('/account', [AccountController::class, 'update'])->name('settings.account.update');
+
+    Route::get('/billing', [BillingController::class, 'show'])->name('settings.billing.show');
 
     Route::get('/teams/{team}/memberships', [MembershipsController::class, 'store'])->name('settings.teams.memberships.store');
     Route::post('/teams/{team}/invitations', [InvitationsController::class, 'store'])->name('settings.teams.invitations.store');
