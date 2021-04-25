@@ -20,7 +20,6 @@ const Register = () => {
     })
 
     const onSubmit = () => {
-        console.log('here')
         post(route('register'), values)
     }
 

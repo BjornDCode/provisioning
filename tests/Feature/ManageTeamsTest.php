@@ -38,11 +38,11 @@ class ManageTeamsTest extends TestCase
         // Then
         $response->assertInertia(function (Assert $page) use ($user, $membershipTeam) {
             $page->is('Account/Teams/Index');
-            $page->has('teams');
+            $page->has('owned');
             $page->has('memberships');
 
 
-            $page->has('teams.0', function (Assert $team) use ($user) {
+            $page->has('owned.0', function (Assert $team) use ($user) {
                 $team->where('id', $user->currentTeam->id)
                      ->where('name', $user->currentTeam->name);
             });
