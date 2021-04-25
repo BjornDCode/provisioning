@@ -1,11 +1,13 @@
 import React from 'react'
-import { HiMenuAlt3, HiX } from 'react-icons/hi'
+import { HiMenuAlt3, HiX, HiChevronDown, HiCheck } from 'react-icons/hi'
 
 import { match } from '@/Shared/Helpers/methods'
 
 const icons = {
     Menu: HiMenuAlt3,
     Close: HiX,
+    ChevronDown: HiChevronDown,
+    Checkmark: HiCheck,
 }
 
 const Icon = ({ name, ...props }) => {

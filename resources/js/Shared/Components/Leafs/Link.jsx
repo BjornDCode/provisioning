@@ -5,7 +5,7 @@ import useClasses from '@/Shared/Hooks/useClasses'
 
 const Link = ({ children, to = '#', className, ...props }) => {
     const classes = useClasses(
-        'focus:rounded focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-700 focus:ring-cyan-500',
+        'focus:rounded focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-700 focus:ring-cyan-300',
         className
     )
 

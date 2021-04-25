@@ -9,6 +9,7 @@ import useUnderBreakpoint from '@/Shared/Hooks/useUnderBreakpoint'
 import Icon from '@/Shared/Components/Leafs/Icon'
 import Link from '@/Shared/Components/Leafs/Link'
 import NavBar from '@/Shared/Components/Partials/NavBar'
+import TeamSwitcher from '@/Shared/Components/Partials/TeamSwitcher'
 
 const NavItem = ({ children, active, ...props }) => {
     const classes = useClasses(
@@ -76,7 +77,11 @@ const MobileHeader = ({ authenticated }) => {
     return (
         <header className="p-2 space-y-3">
             <div className="flex justify-between">
-                <Logo />
+                <div className="flex items-center">
+                    <Logo />
+
+                    {authenticated && <TeamSwitcher className="ml-4" />}
+                </div>
                 <button
                     onClick={toggle}
                     className="p-0 rounded focus:outline-none focus:ring-2 focus:ring-cyan-300"
@@ -97,8 +102,11 @@ const MobileHeader = ({ authenticated }) => {
 }
 
 const DesktopHeader = ({ authenticated }) => (
-    <header className="flex justify-between px-8 py-4">
-        <Logo />
+    <header className="flex justify-between px-8 py-4 lg:px-12 lg:py-6">
+        <div className="flex items-center">
+            <Logo />
+            {authenticated && <TeamSwitcher className="ml-4" />}
+        </div>
         <NavBar>
             <NavItems authenticated={authenticated} />
         </NavBar>

@@ -24,6 +24,10 @@ class UsersSeeder extends Seeder
             'owner_id' => $user->id,
         ]);
 
+        $membershipteam = Team::factory()->create();
+
+        $membershipteam->join($user);
+
         $user->current_team_id = $team->id;
         $user->save();
 
