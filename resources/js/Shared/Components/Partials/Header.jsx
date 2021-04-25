@@ -2,20 +2,28 @@ import React, { Fragment, useState } from 'react'
 import { Inertia } from '@inertiajs/inertia'
 
 import useProps from '@/Shared/Hooks/useProps'
+import useClasses from '@/Shared/Hooks/useClasses'
 import useOnPageChange from '@/Shared/Hooks/useOnPageChange'
 import useUnderBreakpoint from '@/Shared/Hooks/useUnderBreakpoint'
 
 import Icon from '@/Shared/Components/Leafs/Icon'
 import Link from '@/Shared/Components/Leafs/Link'
 
-const NavItem = ({ children, ...props }) => (
-    <Link
-        className="block border-b border-gray-600 text-sm font-medium text-gray-300 px-4 py-3 md:border-b-0 first:border-t md:first:border-t-0 md:p-0 hover:text-green-300"
-        {...props}
-    >
-        {children}
-    </Link>
-)
+const NavItem = ({ children, active, ...props }) => {
+    const classes = useClasses(
+        'block border-b border-gray-600 text-sm text-gray-300 font-medium px-4 py-3 md:border-b-0 first:border-t md:first:border-t-0 md:py-2 md:rounded-md',
+        {
+            'md:bg-gray-800': active,
+            'hover:bg-gray-800 hover:text-green-300': !active,
+        }
+    )
+
+    return (
+        <Link className={classes} {...props}>
+            {children}
+        </Link>
+    )
+}
 
 const NavItems = ({ authenticated }) => {
     const onLogout = event => {
@@ -31,8 +39,15 @@ const NavItems = ({ authenticated }) => {
         </Fragment>
     ) : (
         <Fragment>
-            <NavItem to={route('login')}>Login</NavItem>
-            <NavItem to={route('register')}>Register</NavItem>
+            <NavItem to={route('login')} active={route().current('login')}>
+                Login
+            </NavItem>
+            <NavItem
+                to={route('register')}
+                active={route().current('register')}
+            >
+                Register
+            </NavItem>
         </Fragment>
     )
 }
@@ -77,7 +92,7 @@ const MobileHeader = ({ authenticated }) => {
 const DesktopHeader = ({ authenticated }) => (
     <header className="flex justify-between px-8 py-4">
         <Logo />
-        <nav className="flex items-center space-x-4">
+        <nav className="flex items-center space-x-1">
             <NavItems authenticated={authenticated} />
         </nav>
     </header>
