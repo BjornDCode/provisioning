@@ -44,6 +44,9 @@ class HandleInertiaRequests extends Middleware
             'teams' => fn () => $request->user()
                 ? TeamResource::collection($request->user()->allTeams)
                 : null,
+            'currentTeam' => fn () => $request->user()
+                ? new TeamResource($request->user()->currentTeam)
+                : null,
             'flash' => [
                 'message' => fn () => $request->session()->get('message'),
                 'status' => fn () => $request->session()->get('status'),

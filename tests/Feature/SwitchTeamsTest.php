@@ -40,6 +40,24 @@ class SwitchTeamsTest extends TestCase
     }
 
     /** @test */
+    public function it_shows_a_users_current_team()
+    {
+        // Given
+        $user = $this->registerNewUser();
+
+        // When
+        $response = $this->get(route('dashboard'));
+
+        // Then
+        $response->assertInertia(function (Assert $page) use ($user) {
+            $page->has('currentTeam', function (Assert $team) use ($user) {
+                $team->where('id', $user->currentTeam->id)
+                     ->where('name', $user->currentTeam->name);
+            });
+        });
+    }
+
+    /** @test */
     public function a_non_authenticated_user_cannot_switch_to_teams()
     {
         $this->withExceptionHandling();
