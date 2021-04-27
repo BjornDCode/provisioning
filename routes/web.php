@@ -6,6 +6,7 @@ use App\Models\Account\Team;
 use App\Models\Account\Invitation;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BillingController;
+use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\Account\TeamController;
 use App\Http\Controllers\Account\AccountController;
 use App\Http\Controllers\Account\InvitationsController;
@@ -26,6 +27,7 @@ Route::get('/', function () {
     return Inertia::render('Shared/Home');
 });
 
+Route::post('/projects', [ProjectController::class, 'store'])->name('projects.store');
 
 Route::prefix('settings')->middleware('auth')->group(function() {
     Route::get('/account', [AccountController::class, 'show'])->name('settings.account.show');
