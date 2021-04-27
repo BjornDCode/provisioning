@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\ProjectType;
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class CreateProjectRequest extends FormRequest
@@ -24,7 +26,11 @@ class CreateProjectRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'name' => 'required',
+            'type' => [
+                'required',
+                Rule::in(ProjectType::all()),
+            ],
         ];
     }
 }
