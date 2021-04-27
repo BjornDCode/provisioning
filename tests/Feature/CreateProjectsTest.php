@@ -13,7 +13,20 @@ class CreateProjectsTest extends TestCase
     /** @test */
     public function non_authenticated_users_cannot_create_teams()
     {
-        $this->markTestIncomplete();
+        $this->withExceptionHandling();
+
+        // Given
+        // When
+        $response = $this->post(
+            route('projects.store'),
+            [
+                'name' => 'Cool project',
+                'type' => 'laravel',
+            ]
+        );
+
+        // Then
+        $response->assertRedirect(route('login'));
     }
 
     /** @test */

@@ -27,22 +27,25 @@ Route::get('/', function () {
     return Inertia::render('Shared/Home');
 });
 
-Route::post('/projects', [ProjectController::class, 'store'])->name('projects.store');
+Route::middleware(['auth'])->group(function () {
+    Route::post('/projects', [ProjectController::class, 'store'])->name('projects.store');
 
-Route::prefix('settings')->middleware('auth')->group(function() {
-    Route::get('/account', [AccountController::class, 'show'])->name('settings.account.show');
-    Route::patch('/account', [AccountController::class, 'update'])->name('settings.account.update');
+    Route::prefix('settings')->group(function() {
+        Route::get('/account', [AccountController::class, 'show'])->name('settings.account.show');
+        Route::patch('/account', [AccountController::class, 'update'])->name('settings.account.update');
 
-    Route::get('/billing', [BillingController::class, 'show'])->name('settings.billing.show');
+        Route::get('/billing', [BillingController::class, 'show'])->name('settings.billing.show');
 
-    Route::get('/teams/{team}/memberships', [MembershipsController::class, 'store'])->name('settings.teams.memberships.store');
-    Route::post('/teams/{team}/invitations', [InvitationsController::class, 'store'])->name('settings.teams.invitations.store');
-    Route::delete('/teams/{team}/invitations/{invitation}', [InvitationsController::class, 'destroy'])->name('settings.teams.invitations.destroy');
+        Route::get('/teams/{team}/memberships', [MembershipsController::class, 'store'])->name('settings.teams.memberships.store');
+        Route::post('/teams/{team}/invitations', [InvitationsController::class, 'store'])->name('settings.teams.invitations.store');
+        Route::delete('/teams/{team}/invitations/{invitation}', [InvitationsController::class, 'destroy'])->name('settings.teams.invitations.destroy');
 
-    Route::get('/teams/{team}', [TeamController::class, 'show'])->name('settings.teams.show');
-    Route::get('/teams', [TeamController::class, 'index'])->name('settings.teams.index');
-    Route::post('/teams', [TeamController::class, 'store'])->name('settings.teams.store');
+        Route::get('/teams/{team}', [TeamController::class, 'show'])->name('settings.teams.show');
+        Route::get('/teams', [TeamController::class, 'index'])->name('settings.teams.index');
+        Route::post('/teams', [TeamController::class, 'store'])->name('settings.teams.store');
+    });
 });
+
 
 Route::get('/dashboard', function () {
     return Inertia::render('Shared/Dashboard');
