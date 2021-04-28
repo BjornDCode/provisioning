@@ -1,5 +1,9 @@
 import React from 'react'
 
-const Index = () => {}
+import Authenticated from '@/Shared/Components/Layouts/Authenticated'
+
+const Index = () => {
+    return <Authenticated title="Projects"></Authenticated>
+}
 
 export default Index

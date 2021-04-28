@@ -36,6 +36,12 @@ const NavItems = ({ authenticated }) => {
     return authenticated ? (
         <Fragment>
             <NavItem
+                to={route('projects.index')}
+                active={route().current('projects.*')}
+            >
+                Projects
+            </NavItem>
+            <NavItem
                 to={route('settings.account.show')}
                 active={route().current('settings.*')}
             >

@@ -1,5 +1,9 @@
 import React from 'react'
 
-const Create = () => {}
+import Authenticated from '@/Shared/Components/Layouts/Authenticated'
+
+const Create = () => {
+    return <Authenticated title="Create project"></Authenticated>
+}
 
 export default Create
