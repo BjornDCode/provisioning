@@ -5,10 +5,10 @@ use App\Mail\Invited;
 use App\Models\Account\Team;
 use App\Models\Account\Invitation;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\BillingController;
-use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\Account\TeamController;
 use App\Http\Controllers\Account\AccountController;
+use App\Http\Controllers\Account\BillingController;
+use App\Http\Controllers\Pipeline\ProjectController;
 use App\Http\Controllers\Account\InvitationsController;
 use App\Http\Controllers\Account\MembershipsController;
 

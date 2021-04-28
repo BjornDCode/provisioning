@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Pipeline;
 
 use Inertia\Inertia;
 use App\Models\Project;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Resources\ProjectResource;
 use App\Http\Requests\CreateProjectRequest;
