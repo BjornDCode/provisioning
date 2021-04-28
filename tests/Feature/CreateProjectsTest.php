@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use Tests\TestCase;
+use App\Models\Project;
 use Inertia\Testing\Assert;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -178,7 +179,26 @@ class CreateProjectsTest extends TestCase
     /** @test */
     public function it_redirects_to_the_first_step_in_the_flow_after_creation()
     {
-        $this->markTestIncomplete();
+        // Given
+        $user = $this->registerNewUser();
+
+        // When
+        $response = $this->post(
+            route('projects.store'),
+            [
+                'name' => 'Cool project',
+                'type' => 'laravel',
+            ]
+        );
+
+        // Then
+        $project = Project::first();
+        $response->assertRedirect(
+            route('steps.create', [
+                'project' => $project->id,
+                'step' => 'git-provider',
+            ])
+        );
     }
 
 }

@@ -12,7 +12,7 @@ class Factory
     public static function create(ProjectType $type)
     {
         return match ($type->toString()) {
-            ProjectType::LARAVEL => new LaravelFlow(),
+            ProjectType::LARAVEL => new LaravelFlow,
             default => throw new InvalidProjectTypeException,
         };
     }

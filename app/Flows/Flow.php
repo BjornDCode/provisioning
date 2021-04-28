@@ -11,9 +11,11 @@ abstract class Flow
 
     public function next(): Step
     {
-        return collect($this->steps())->first(function ($step) {
-            return !$step->completed();
+        $class = collect($this->steps())->first(function ($step) {
+            return ! (new $step)->completed();
         });
+
+        return new $class;
     }
 
 }

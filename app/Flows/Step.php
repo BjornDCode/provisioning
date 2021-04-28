@@ -7,4 +7,6 @@ interface Step
 
     public function completed(): bool;
 
+    public function slug(): string;
+
 }
