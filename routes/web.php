@@ -29,6 +29,7 @@ Route::get('/', function () {
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/projects/create', [ProjectController::class, 'create'])->name('projects.create');
+    Route::get('/projects', [ProjectController::class, 'index'])->name('projects.index');
     Route::post('/projects', [ProjectController::class, 'store'])->name('projects.store');
 
     Route::prefix('settings')->group(function() {

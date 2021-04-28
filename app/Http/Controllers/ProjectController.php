@@ -5,10 +5,20 @@ namespace App\Http\Controllers;
 use Inertia\Inertia;
 use App\Models\Project;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Resources\ProjectResource;
 use App\Http\Requests\CreateProjectRequest;
 
 class ProjectController extends Controller
 {
+
+    public function index()
+    {
+        return Inertia::render('Pipeline/Projects/Index', [
+            'projects' => ProjectResource::collection(
+                Auth::user()->currentTeam->projects
+            ),
+        ]);
+    }
 
     public function create()
     {
