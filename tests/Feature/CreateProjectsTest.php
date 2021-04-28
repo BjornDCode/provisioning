@@ -2,9 +2,10 @@
 
 namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
+use Inertia\Testing\Assert;
+use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class CreateProjectsTest extends TestCase
 {
@@ -157,6 +158,21 @@ class CreateProjectsTest extends TestCase
             'type' => 'laravel',
             'team_id' => $user->currentTeam->id,
         ]);
+    }
+
+    /** @test */
+    public function it_can_render_the_create_page()
+    {
+        // Given
+        $user = $this->registerNewUser();
+
+        // When
+        $response = $this->get(route('projects.create'));
+
+        // Then
+        $response->assertInertia(function (Assert $page) {
+            $page->is('Pipeline/Projects/Create');
+        });
     }
 
     /** @test */
