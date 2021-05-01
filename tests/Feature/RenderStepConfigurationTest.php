@@ -4,7 +4,9 @@ namespace Tests\Feature;
 
 use Tests\TestCase;
 use App\Models\Project;
+use App\Enums\GitProvider;
 use Inertia\Testing\Assert;
+use App\Models\StepConfiguration;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -79,6 +81,32 @@ class RenderStepConfigurationTest extends TestCase
     /** @test */
     public function it_renders_the_page_with_existing_data_if_the_step_has_already_been_configured()
     {
-        $this->markTestIncomplete();
+        // Given
+        $user = $this->registerNewUser();
+        $project = Project::factory()->create([
+            'team_id' => $user->currentTeam->id,
+        ]);
+        $configuration = StepConfiguration::factory()->create([
+            'project_id' => $project->id,
+            'type' => 'git-provider',
+            'details' => [
+                'chosen' => GitProvider::GITHUB,
+            ],
+        ]);
+
+        // When
+        $response = $this->get(
+            route('steps.configure', [ 
+                'project' => $project->id,
+                'step' => 'git-provider',
+            ])
+        );
+
+        // Then
+        $response->assertInertia(function (Assert $page) use ($configuration) {
+            $page->is('Pipeline/Steps/Configure');
+
+            $page->where('configuration.id', $configuration->id);
+        });
     }
 }
