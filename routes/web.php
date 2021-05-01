@@ -29,7 +29,7 @@ Route::get('/', function () {
 });
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/projects/{project}/{step}', [StepController::class, 'create'])->name('steps.create');
+    Route::get('/projects/{project}/{step}', [StepController::class, 'configure'])->name('steps.configure');
 
     Route::get('/projects/create', [ProjectController::class, 'create'])->name('projects.create');
     Route::get('/projects', [ProjectController::class, 'index'])->name('projects.index');
