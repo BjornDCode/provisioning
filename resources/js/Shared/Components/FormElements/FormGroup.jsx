@@ -1,5 +1,9 @@
-import React from 'react'
+import React, { forwardRef } from 'react'
 
-const FormGroup = ({ children, ...props }) => <div {...props}>{children}</div>
+const FormGroup = forwardRef(({ children, ...props }, ref) => (
+    <div ref={ref} {...props}>
+        {children}
+    </div>
+))
 
 export default FormGroup

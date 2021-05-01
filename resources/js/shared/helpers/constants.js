@@ -9,3 +9,66 @@ export const breakpoints = {
 }
 
 export const colors = config.theme.colors
+
+export const projectTypes = [
+    {
+        key: 'laravel',
+        label: 'Laravel',
+        icon: 'Laravel',
+        disabled: false,
+    },
+    {
+        key: 'symfony',
+        label: 'Symfony',
+        icon: 'Symfony',
+        disabled: true,
+    },
+    {
+        key: 'wordpress',
+        label: 'WordPress',
+        icon: 'Wordpress',
+        disabled: true,
+    },
+    {
+        key: 'drupal',
+        label: 'Drupal',
+        icon: 'Drupal',
+        disabled: true,
+    },
+    {
+        key: 'dotnet',
+        label: '.NET',
+        icon: 'Dotnet',
+        disabled: true,
+    },
+    {
+        key: 'django',
+        label: 'Django',
+        icon: 'Django',
+        disabled: true,
+    },
+    {
+        key: 'rails',
+        label: 'Rails',
+        icon: 'Rails',
+        disabled: true,
+    },
+    {
+        key: 'react',
+        label: 'React',
+        icon: 'React',
+        disabled: true,
+    },
+    {
+        key: 'angular',
+        label: 'Angular',
+        icon: 'Angular',
+        disabled: true,
+    },
+    {
+        key: 'ember',
+        label: 'Ember',
+        icon: 'Ember',
+        disabled: true,
+    },
+]
