@@ -10,6 +10,27 @@ export const breakpoints = {
 
 export const colors = config.theme.colors
 
+export const gitProviders = [
+    {
+        key: 'github',
+        label: 'GitHub',
+        icon: 'Github',
+        disabled: false,
+    },
+    {
+        key: 'gitlab',
+        label: 'GitLab',
+        icon: 'Gitlab',
+        disabled: true,
+    },
+    {
+        key: 'bitbucket',
+        label: 'Bitbucket',
+        icon: 'Bitbucket',
+        disabled: true,
+    },
+]
+
 export const projectTypes = [
     {
         key: 'laravel',

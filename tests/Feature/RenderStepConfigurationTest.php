@@ -90,7 +90,7 @@ class RenderStepConfigurationTest extends TestCase
             'project_id' => $project->id,
             'type' => 'git-provider',
             'details' => [
-                'chosen' => GitProvider::GITHUB,
+                'value' => GitProvider::GITHUB,
             ],
         ]);
 

@@ -19,6 +19,8 @@ import {
     DiEmber,
 } from 'react-icons/di'
 
+import { FaBitbucket, FaGitlab, FaGithub } from 'react-icons/fa'
+
 import { match } from '@/Shared/Helpers/methods'
 
 const icons = {
@@ -38,6 +40,10 @@ const icons = {
     React: DiReact,
     Angular: DiAngularSimple,
     Ember: DiEmber,
+
+    Bitbucket: FaBitbucket,
+    Gitlab: FaGitlab,
+    Github: FaGithub,
 }
 
 const Icon = ({ name, ...props }) => {
