@@ -3,6 +3,8 @@
 namespace App\Steps\Shared;
 
 use App\Steps\Step;
+use App\Enums\GitProvider as GitProviderType;
+use Illuminate\Validation\Rule;
 
 class GitProvider implements Step
 {
@@ -22,5 +24,14 @@ class GitProvider implements Step
         return false;
     }
 
+    public function validationRules(): array
+    {
+        return [
+            'value' => [
+                'required', 
+                Rule::in(GitProviderType::all())
+            ],
+        ];        
+    }
 
 }

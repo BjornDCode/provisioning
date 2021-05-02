@@ -35,6 +35,14 @@ class StepConfigurationController extends Controller
     {
         $this->authorize('update', $project);
 
+        $step = StepFactory::create(
+            StepType::fromString($type)
+        );
+
+        $request->validate(
+            $step->validationRules()
+        );
+
         StepConfiguration::updateOrCreate([
             'project_id' => $project->id,
             'type' => $type,

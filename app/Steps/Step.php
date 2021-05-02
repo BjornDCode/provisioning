@@ -11,4 +11,6 @@ interface Step
 
     public function component(): string;
 
+    public function validationRules(): array;
+
 }
