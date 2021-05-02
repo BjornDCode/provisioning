@@ -9,6 +9,12 @@ use App\Exceptions\InvalidTypeException;
 class StepTypeTest extends TestCase
 {
     /** @test */
+    public function it_can_be_new_or_existing()
+    {
+        $this->assertEquals('new-or-existing-repository', StepType::NEW_OR_EXISTING_REPOSITORY);
+    }
+
+    /** @test */
     public function it_can_be_git_provider()
     {
         $this->assertEquals('git-provider', StepType::GIT_PROVIDER);
@@ -24,6 +30,7 @@ class StepTypeTest extends TestCase
     public function it_can_return_all_types()
     {
         $this->assertEquals([
+            'new-or-existing-repository',
             'git-provider',
             'github-authentication',
         ], StepType::all());

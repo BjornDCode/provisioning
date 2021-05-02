@@ -3,18 +3,28 @@ import React from 'react'
 import useForm from '@/Shared/Hooks/useForm'
 import useProps from '@/Shared/Hooks/useProps'
 
-import { gitProviders } from '@/Shared/Helpers/constants'
-
 import Authenticated from '@/Shared/Components/Layouts/Authenticated'
 
 import Button from '@/Shared/Components/Leafs/Button'
 
 import Form from '@/Shared/Components/FormElements/Form'
 import FormGroup from '@/Shared/Components/FormElements/FormGroup'
-import RadioGridField from '@/Shared/Components/Fields/RadioGridField'
+import TwoChoiceField from '@/Shared/Components/Fields/TwoChoiceField'
 
-const GitProvider = () => {
+const options = [
+    {
+        key: 'new',
+        label: 'New',
+    },
+    {
+        key: 'existing',
+        label: 'Existing',
+    },
+]
+
+const NewOrExistingRepository = () => {
     const { configuration, project } = useProps()
+    console.log(project)
 
     const { values, onChange, errors, status, disabled, post } = useForm({
         value: configuration ? configuration.details.value : '',
@@ -24,21 +34,21 @@ const GitProvider = () => {
         post(
             route('steps.configuration.configure', {
                 project: project.id,
-                step: 'git-provider',
+                step: 'new-or-existing-repository',
             }),
             values
         )
     }
 
     return (
-        <Authenticated title="Choose Git provider">
+        <Authenticated title="New or existing repository">
             <Form className="space-y-6" onSubmit={onSubmit}>
-                <RadioGridField
-                    label="Git provider"
+                <TwoChoiceField
+                    label="Repository"
                     name="value"
                     value={values.value}
                     onChange={onChange}
-                    options={gitProviders}
+                    options={options}
                     required
                     error={errors.value}
                 />
@@ -51,4 +61,4 @@ const GitProvider = () => {
     )
 }
 
-export default GitProvider
+export default NewOrExistingRepository

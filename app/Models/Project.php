@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\StepType;
 use App\Models\Account\Team;
 use App\Models\StepConfiguration;
 use Illuminate\Database\Eloquent\Model;
@@ -27,11 +28,25 @@ class Project extends Model
         return $this->hasMany(StepConfiguration::class);
     }
 
+    public function getConfig(StepType $type): StepConfiguration|null
+    {
+        return $this->configs()->where('type', $type->toString())->first();
+    }
+
+    public function hasConfig(StepType $type): bool
+    {
+        return !is_null($this->getConfig($type));
+    }
+
     public function getGitProviderAttribute()
     {
-        $providerConfig = $this->configs()->where('type', 'git-provider')->first();
+        $config = $this->getConfig(
+            StepType::fromString(
+                StepType::GIT_PROVIDER
+            )
+        );
 
-        return $providerConfig?->details['value'];
+        return $config?->details['value'];
     }
 
 }

@@ -8,7 +8,7 @@ use App\Enums\StepType;
 use Illuminate\Validation\Rule;
 use App\Enums\GitProvider as GitProviderType;
 
-class GitProvider implements Step
+class NewOrExistingRepository implements Step
 {
 
     public function __construct(
@@ -17,19 +17,19 @@ class GitProvider implements Step
 
     public function type(): string
     {
-        return StepType::GIT_PROVIDER;
+        return StepType::NEW_OR_EXISTING_REPOSITORY;
     }
 
     public function component(): string
     {
-        return 'GitProvider';
+        return 'NewOrExistingRepository';
     }
     
     public function completed(): bool
     {
         return $this->flow->project->hasConfig(
             StepType::fromString(
-                StepType::GIT_PROVIDER,
+                StepType::NEW_OR_EXISTING_REPOSITORY,
             )
         );
     }
@@ -38,8 +38,8 @@ class GitProvider implements Step
     {
         return [
             'value' => [
-                'required', 
-                Rule::in(GitProviderType::all())
+                'required',
+                Rule::in(['new', 'existing']),
             ],
         ];        
     }

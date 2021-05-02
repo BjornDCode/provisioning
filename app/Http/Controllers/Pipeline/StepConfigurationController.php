@@ -10,6 +10,7 @@ use App\Models\StepConfiguration;
 use App\Http\Controllers\Controller;
 use App\Flows\Factory as FlowFactory;
 use App\Steps\Factory as StepFactory;
+use App\Http\Resources\ProjectResource;
 use Illuminate\Support\Facades\Redirect;
 use App\Http\Resources\StepConfigurationResource;
 
@@ -29,6 +30,7 @@ class StepConfigurationController extends Controller
         );
 
         return Inertia::render("Pipeline/Steps/{$step->component()}", [
+            'project' => new ProjectResource($project),
             'configuration' => !is_null($configuration) 
                 ? new StepConfigurationResource($configuration) 
                 : null

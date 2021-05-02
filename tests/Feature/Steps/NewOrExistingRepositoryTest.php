@@ -1,44 +1,42 @@
 <?php
 
-namespace Tests\Feature\Flows;
+namespace Tests\Feature\Steps;
 
 use Tests\TestCase;
 use App\Enums\StepType;
 use App\Models\Project;
-use App\Models\StepConfiguration;
+use Inertia\Testing\Assert;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class LaravelFlowTest extends TestCase
+class NewOrExistingRepositoryTest extends TestCase
 {
     use RefreshDatabase;
 
     /** @test */
-    public function it_redirects_to_new_or_existing_step_after_creating_a_project()
+    public function it_renders_the_git_provider_step_page()
     {
         // Given
         $user = $this->registerNewUser();
+        $project = Project::factory()->create([
+            'team_id' => $user->currentTeam->id,
+        ]);
 
         // When
-        $response = $this->post(
-            route('projects.store'),
-            [
-                'name' => 'Cool project',
-                'type' => 'laravel',
-            ]
-        );
-
-        // Then
-        $project = Project::first();
-        $response->assertRedirect(
-            route('steps.configuration.render', [
+        $response = $this->get(
+            route('steps.configuration.render', [ 
                 'project' => $project->id,
                 'step' => StepType::NEW_OR_EXISTING_REPOSITORY,
             ])
         );
+
+        // Then
+        $response->assertInertia(function (Assert $page) {
+            $page->is('Pipeline/Steps/NewOrExistingRepository');
+        });
     }
 
     /** @test */
-    public function it_redirects_to_git_provider_step()
+    public function it_can_save_the_configuration()
     {
         // Given
         $user = $this->registerNewUser();
@@ -59,49 +57,56 @@ class LaravelFlowTest extends TestCase
             );
 
         // Then
-        $response->assertRedirect(
-            route('steps.configuration.render', [ 
-                'project' => $project->id,
-                'step' => StepType::GIT_PROVIDER,
-            ])
-        );
+        $this->assertDatabaseHas('step_configurations', [
+            'project_id' => $project->id,
+            'type' => 'new-or-existing-repository',
+            'details->value' => 'new',
+        ]);
     }
 
     /** @test */
-    public function it_redirects_to_the_github_authenication_step()
+    public function it_must_be_a_valid_answer()
     {
+        $this->withExceptionHandling();
+
         // Given
         $user = $this->registerNewUser();
         $project = Project::factory()->create([
             'team_id' => $user->currentTeam->id,
         ]);
-        StepConfiguration::factory()->create([
-            'project_id' => $project->id,
-            'type' => StepType::NEW_OR_EXISTING_REPOSITORY,
-            'details' => [
-                'value' => 'new',
-            ],
-        ]);
 
         // When
         $response = $this
+            ->from(
+                route('steps.configuration.render', [ 
+                    'project' => $project->id,
+                    'step' => StepType::NEW_OR_EXISTING_REPOSITORY,
+                ]),
+            )
             ->post(
                 route('steps.configuration.configure', [ 
                     'project' => $project->id,
-                    'step' => StepType::GIT_PROVIDER,
+                    'step' => StepType::NEW_OR_EXISTING_REPOSITORY,
                 ]),
                 [
-                    'value' => 'github', 
+                    'value' => 'invalid', 
                 ]
             );
 
         // Then
+        $this->assertDatabaseMissing('step_configurations', [
+            'project_id' => $project->id,
+            'type' => 'new-or-existing-repository',
+            'details->value' => 'invalid',
+        ]);
+
         $response->assertRedirect(
             route('steps.configuration.render', [ 
                 'project' => $project->id,
-                'step' => StepType::GITHUB_AUTHENTICATION,
-            ])
+                'step' => StepType::NEW_OR_EXISTING_REPOSITORY,
+            ]),
         );
+        $response->assertSessionHasErrors('value');
     }
 
 }

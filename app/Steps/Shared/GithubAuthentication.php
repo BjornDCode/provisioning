@@ -3,13 +3,14 @@
 namespace App\Steps\Shared;
 
 use App\Steps\Step;
+use App\Enums\StepType;
 
 class GithubAuthentication implements Step
 {
 
     public function type(): string
     {
-        return 'github-account';
+        return StepType::GITHUB_AUTHENTICATION;
     }
 
     public function component(): string

@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use Tests\TestCase;
+use App\Enums\StepType;
 use App\Models\Project;
 use Inertia\Testing\Assert;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -196,7 +197,7 @@ class CreateProjectsTest extends TestCase
         $response->assertRedirect(
             route('steps.configuration.render', [
                 'project' => $project->id,
-                'step' => 'git-provider',
+                'step' => StepType::NEW_OR_EXISTING_REPOSITORY,
             ])
         );
     }
