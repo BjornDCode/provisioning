@@ -12,4 +12,11 @@ class StepConfiguration extends Model
     protected $casts = [
         'details' => 'array',
     ];
+
+    protected $fillable = [
+        'project_id',
+        'type',
+        'details',
+    ];
+
 }

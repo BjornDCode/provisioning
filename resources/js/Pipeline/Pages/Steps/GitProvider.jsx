@@ -13,15 +13,21 @@ import Form from '@/Shared/Components/FormElements/Form'
 import FormGroup from '@/Shared/Components/FormElements/FormGroup'
 import RadioGridField from '@/Shared/Components/Fields/RadioGridField'
 
-const Configure = () => {
-    const { configuration } = useProps()
+const GitProvider = () => {
+    const { configuration, project } = useProps()
 
     const { values, onChange, errors, status, disabled, post } = useForm({
         value: configuration ? configuration.details.value : '',
     })
 
     const onSubmit = () => {
-        post(route('projects.store'), values)
+        post(
+            route('steps.configuration.configure', {
+                project: project.id,
+                step: 'git-provider',
+            }),
+            values
+        )
     }
 
     return (
@@ -38,11 +44,11 @@ const Configure = () => {
                 />
 
                 <FormGroup className="flex justify-end">
-                    <Button type="submit">Create</Button>
+                    <Button type="submit">Next</Button>
                 </FormGroup>
             </Form>
         </Authenticated>
     )
 }
 
-export default Configure
+export default GitProvider

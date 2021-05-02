@@ -3,7 +3,7 @@
 namespace App\Enums;
 
 use ReflectionClass;
-use App\Exceptions\InvalidProjectTypeException;
+use App\Exceptions\InvalidTypeException;
 
 abstract class Enum
 {
@@ -23,7 +23,7 @@ abstract class Enum
     public static function fromString(string $value)
     {
         if (!collect(self::all())->contains($value)) {
-            throw new InvalidProjectTypeException();            
+            throw new InvalidTypeException();            
         }
 
         $class = get_called_class();

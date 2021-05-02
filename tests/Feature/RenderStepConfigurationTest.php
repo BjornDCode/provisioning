@@ -24,7 +24,7 @@ class RenderStepConfigurationTest extends TestCase
 
         // When
         $response = $this->get(
-            route('steps.configure', [ 
+            route('steps.configuration.render', [ 
                 'project' => $project->id,
                 'step' => 'git-provider',
             ])
@@ -45,7 +45,7 @@ class RenderStepConfigurationTest extends TestCase
 
         // When
         $response = $this->get(
-            route('steps.configure', [ 
+            route('steps.configuration.render', [ 
                 'project' => $project->id,
                 'step' => 'git-provider',
             ])
@@ -66,7 +66,7 @@ class RenderStepConfigurationTest extends TestCase
 
         // When
         $response = $this->get(
-            route('steps.configure', [ 
+            route('steps.configuration.render', [ 
                 'project' => $project->id,
                 'step' => 'git-provider',
             ])
@@ -74,7 +74,7 @@ class RenderStepConfigurationTest extends TestCase
 
         // Then
         $response->assertInertia(function (Assert $page) {
-            $page->is('Pipeline/Steps/Configure');
+            $page->is('Pipeline/Steps/GitProvider');
         });
     }
 
@@ -96,7 +96,7 @@ class RenderStepConfigurationTest extends TestCase
 
         // When
         $response = $this->get(
-            route('steps.configure', [ 
+            route('steps.configuration.render', [ 
                 'project' => $project->id,
                 'step' => 'git-provider',
             ])
@@ -104,7 +104,7 @@ class RenderStepConfigurationTest extends TestCase
 
         // Then
         $response->assertInertia(function (Assert $page) use ($configuration) {
-            $page->is('Pipeline/Steps/Configure');
+            $page->is('Pipeline/Steps/GitProvider');
 
             $page->where('configuration.id', $configuration->id);
         });
