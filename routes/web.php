@@ -6,12 +6,12 @@ use App\Models\Account\Team;
 use App\Models\Account\Invitation;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Account\TeamController;
-use App\Http\Controllers\Pipeline\StepController;
 use App\Http\Controllers\Account\AccountController;
 use App\Http\Controllers\Account\BillingController;
 use App\Http\Controllers\Pipeline\ProjectController;
 use App\Http\Controllers\Account\InvitationsController;
 use App\Http\Controllers\Account\MembershipsController;
+use App\Http\Controllers\Pipeline\StepConfigurationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,7 +29,8 @@ Route::get('/', function () {
 });
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/projects/{project}/{step}', [StepController::class, 'configure'])->name('steps.configure');
+    Route::get('/projects/{project}/{step}', [StepConfigurationController::class, 'render'])->name('steps.configuration.render');
+    Route::post('/projects/{project}/{step}', [StepConfigurationController::class, 'configure'])->name('steps.configuration.configure');
 
     Route::get('/projects/create', [ProjectController::class, 'create'])->name('projects.create');
     Route::get('/projects', [ProjectController::class, 'index'])->name('projects.index');

@@ -6,14 +6,15 @@ use Inertia\Inertia;
 use App\Enums\StepType;
 use App\Models\Project;
 use Illuminate\Http\Request;
+use App\Models\StepConfiguration;
 use App\Http\Controllers\Controller;
 use App\Steps\Factory as StepFactory;
 use App\Http\Resources\StepConfigurationResource;
 
-class StepController extends Controller
+class StepConfigurationController extends Controller
 {
     
-    public function configure(Project $project, $type)
+    public function render(Project $project, $type)
     {
         $this->authorize('update', $project);
 
@@ -28,6 +29,19 @@ class StepController extends Controller
                 ? new StepConfigurationResource($configuration) 
                 : null
         ]);
+    }
+
+    public function configure(Request $request, Project $project, $type)
+    {
+        $this->authorize('update', $project);
+
+        StepConfiguration::updateOrCreate([
+            'project_id' => $project->id,
+            'type' => $type,
+        ], [
+            'details' => $request->input(),
+        ]);
+
     }
 
 }

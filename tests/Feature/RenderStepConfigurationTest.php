@@ -24,7 +24,7 @@ class RenderStepConfigurationTest extends TestCase
 
         // When
         $response = $this->get(
-            route('steps.configure', [ 
+            route('steps.configuration.render', [ 
                 'project' => $project->id,
                 'step' => 'git-provider',
             ])
@@ -45,7 +45,7 @@ class RenderStepConfigurationTest extends TestCase
 
         // When
         $response = $this->get(
-            route('steps.configure', [ 
+            route('steps.configuration.render', [ 
                 'project' => $project->id,
                 'step' => 'git-provider',
             ])
@@ -66,7 +66,7 @@ class RenderStepConfigurationTest extends TestCase
 
         // When
         $response = $this->get(
-            route('steps.configure', [ 
+            route('steps.configuration.render', [ 
                 'project' => $project->id,
                 'step' => 'git-provider',
             ])
@@ -96,7 +96,7 @@ class RenderStepConfigurationTest extends TestCase
 
         // When
         $response = $this->get(
-            route('steps.configure', [ 
+            route('steps.configuration.render', [ 
                 'project' => $project->id,
                 'step' => 'git-provider',
             ])

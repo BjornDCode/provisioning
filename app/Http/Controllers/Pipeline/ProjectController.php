@@ -43,7 +43,7 @@ class ProjectController extends Controller
             )
         );
 
-        return Redirect::route('steps.configure', [
+        return Redirect::route('steps.configuration.render', [
             'project' => $project->id,
             'step' => $flow->next()->type(),
         ]);

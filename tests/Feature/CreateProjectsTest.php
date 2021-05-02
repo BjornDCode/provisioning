@@ -194,7 +194,7 @@ class CreateProjectsTest extends TestCase
         // Then
         $project = Project::first();
         $response->assertRedirect(
-            route('steps.configure', [
+            route('steps.configuration.render', [
                 'project' => $project->id,
                 'step' => 'git-provider',
             ])
