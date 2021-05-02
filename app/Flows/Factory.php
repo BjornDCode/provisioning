@@ -2,6 +2,7 @@
 
 namespace App\Flows;
 
+use App\Models\Project;
 use App\Enums\ProjectType;
 use App\Flows\Laravel\Flow as LaravelFlow;
 use App\Exceptions\InvalidProjectTypeException;
@@ -9,10 +10,10 @@ use App\Exceptions\InvalidProjectTypeException;
 class Factory
 {
 
-    public static function create(ProjectType $type)
+    public static function create(Project $project)
     {
-        return match ($type->toString()) {
-            ProjectType::LARAVEL => new LaravelFlow,
+        return match ($project->type) {
+            ProjectType::LARAVEL => new LaravelFlow($project),
             default => throw new InvalidProjectTypeException,
         };
     }

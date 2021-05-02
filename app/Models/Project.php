@@ -27,4 +27,11 @@ class Project extends Model
         return $this->hasMany(StepConfiguration::class);
     }
 
+    public function getGitProviderAttribute()
+    {
+        $providerConfig = $this->configs()->where('type', 'git-provider')->first();
+
+        return $providerConfig?->details['value'];
+    }
+
 }

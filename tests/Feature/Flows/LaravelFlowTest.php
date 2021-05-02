@@ -3,6 +3,7 @@
 namespace Tests\Feature\Flows;
 
 use Tests\TestCase;
+use App\Models\Project;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class LaravelFlowTest extends TestCase
@@ -10,18 +11,58 @@ class LaravelFlowTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    public function it_renders_the_git_provider_step()
+    public function it_redirects_to_git_provider_step_after_creating_a_project()
     {
-        // Render flow url
-        // Assert it redirects to the git provider step first
+        // Given
+        $user = $this->registerNewUser();
 
-        $this->markTestIncomplete();
+        // When
+        $response = $this->post(
+            route('projects.store'),
+            [
+                'name' => 'Cool project',
+                'type' => 'laravel',
+            ]
+        );
+
+        // Then
+        $project = Project::first();
+        $response->assertRedirect(
+            route('steps.configuration.render', [
+                'project' => $project->id,
+                'step' => 'git-provider',
+            ])
+        );
     }
 
     /** @test */
     public function it_redirects_to_the_github_authenication_step()
     {
-        $this->markTestIncomplete();
+        // Given
+        $user = $this->registerNewUser();
+        $project = Project::factory()->create([
+            'team_id' => $user->currentTeam->id,
+        ]);
+
+        // When
+        $response = $this
+            ->post(
+                route('steps.configuration.configure', [ 
+                    'project' => $project->id,
+                    'step' => 'git-provider',
+                ]),
+                [
+                    'value' => 'github', 
+                ]
+            );
+
+        // Then
+        $response->assertRedirect(
+            route('steps.configuration.render', [ 
+                'project' => $project->id,
+                'step' => 'github-account',
+            ])
+        );
     }
 
 }

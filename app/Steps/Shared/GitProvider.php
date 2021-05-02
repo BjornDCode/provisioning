@@ -2,12 +2,17 @@
 
 namespace App\Steps\Shared;
 
+use App\Flows\Flow;
 use App\Steps\Step;
-use App\Enums\GitProvider as GitProviderType;
 use Illuminate\Validation\Rule;
+use App\Enums\GitProvider as GitProviderType;
 
 class GitProvider implements Step
 {
+
+    public function __construct(
+        public Flow $flow
+    ) {}
 
     public function type(): string
     {
@@ -21,7 +26,7 @@ class GitProvider implements Step
     
     public function completed(): bool
     {
-        return false;
+        return !is_null($this->flow->project->gitProvider);
     }
 
     public function validationRules(): array

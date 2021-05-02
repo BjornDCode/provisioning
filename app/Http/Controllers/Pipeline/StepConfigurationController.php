@@ -8,7 +8,9 @@ use App\Models\Project;
 use Illuminate\Http\Request;
 use App\Models\StepConfiguration;
 use App\Http\Controllers\Controller;
+use App\Flows\Factory as FlowFactory;
 use App\Steps\Factory as StepFactory;
+use Illuminate\Support\Facades\Redirect;
 use App\Http\Resources\StepConfigurationResource;
 
 class StepConfigurationController extends Controller
@@ -20,8 +22,10 @@ class StepConfigurationController extends Controller
 
         $configuration = $project->configs()->where('type', $type)->first();
 
+        $flow = FlowFactory::create($project);
         $step = StepFactory::create(
-            StepType::fromString($type)
+            StepType::fromString($type),
+            $flow,
         );
 
         return Inertia::render("Pipeline/Steps/{$step->component()}", [
@@ -35,8 +39,10 @@ class StepConfigurationController extends Controller
     {
         $this->authorize('update', $project);
 
+        $flow = FlowFactory::create($project);
         $step = StepFactory::create(
-            StepType::fromString($type)
+            StepType::fromString($type),
+            $flow,
         );
 
         $request->validate(
@@ -50,6 +56,11 @@ class StepConfigurationController extends Controller
             'details' => $request->input(),
         ]);
 
+
+        return Redirect::route('steps.configuration.render', [
+            'project' => $project->id,
+            'step' => $flow->next()->type(),
+        ]);
     }
 
 }

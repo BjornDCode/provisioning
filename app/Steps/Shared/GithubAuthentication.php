@@ -22,4 +22,9 @@ class GithubAuthentication implements Step
         return false;
     }
 
+    public function validationRules(): array
+    {
+        return [];        
+    }
+
 }

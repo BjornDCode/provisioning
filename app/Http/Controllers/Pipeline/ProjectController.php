@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Pipeline;
 
 use Inertia\Inertia;
 use App\Models\Project;
-use App\Enums\ProjectType;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Flows\Factory as FlowFactory;
@@ -37,11 +36,7 @@ class ProjectController extends Controller
             'team_id' => Auth::user()->currentTeam->id,
         ]);
 
-        $flow = FlowFactory::create(
-            ProjectType::fromString(
-                $request->input('type')
-            )
-        );
+        $flow = FlowFactory::create($project);
 
         return Redirect::route('steps.configuration.render', [
             'project' => $project->id,
