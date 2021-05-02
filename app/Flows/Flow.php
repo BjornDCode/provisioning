@@ -2,7 +2,7 @@
 
 namespace App\Flows;
 
-use App\Flows\Step;
+use App\Steps\Step;
 
 abstract class Flow
 {

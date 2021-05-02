@@ -1,20 +1,26 @@
 <?php
 
-namespace App\Flows\Shared;
+namespace App\Steps\Shared;
 
-use App\Flows\Step;
+use App\Steps\Step;
 
 class GitProvider implements Step
 {
 
-    public function slug(): string
+    public function type(): string
     {
         return 'git-provider';
+    }
+
+    public function component(): string
+    {
+        return 'GitProvider';
     }
     
     public function completed(): bool
     {
         return false;
     }
+
 
 }

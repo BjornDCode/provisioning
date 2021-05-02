@@ -4,7 +4,7 @@ namespace Tests\Unit;
 
 use App\Enums\ProjectType;
 use PHPUnit\Framework\TestCase;
-use App\Exceptions\InvalidProjectTypeException;
+use App\Exceptions\InvalidTypeException;
 
 class ProjectTypeTest extends TestCase
 {
@@ -31,7 +31,7 @@ class ProjectTypeTest extends TestCase
     /** @test */
     public function it_validates_the_type()
     {
-        $this->expectException(InvalidProjectTypeException::class);
+        $this->expectException(InvalidTypeException::class);
 
         ProjectType::fromString('invalid');
     }

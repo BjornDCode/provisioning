@@ -74,7 +74,7 @@ class RenderStepConfigurationTest extends TestCase
 
         // Then
         $response->assertInertia(function (Assert $page) {
-            $page->is('Pipeline/Steps/Configure');
+            $page->is('Pipeline/Steps/GitProvider');
         });
     }
 
@@ -104,7 +104,7 @@ class RenderStepConfigurationTest extends TestCase
 
         // Then
         $response->assertInertia(function (Assert $page) use ($configuration) {
-            $page->is('Pipeline/Steps/Configure');
+            $page->is('Pipeline/Steps/GitProvider');
 
             $page->where('configuration.id', $configuration->id);
         });

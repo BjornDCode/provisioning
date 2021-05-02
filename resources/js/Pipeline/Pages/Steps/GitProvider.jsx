@@ -13,7 +13,7 @@ import Form from '@/Shared/Components/FormElements/Form'
 import FormGroup from '@/Shared/Components/FormElements/FormGroup'
 import RadioGridField from '@/Shared/Components/Fields/RadioGridField'
 
-const Configure = () => {
+const GitProvider = () => {
     const { configuration } = useProps()
 
     const { values, onChange, errors, status, disabled, post } = useForm({
@@ -45,4 +45,4 @@ const Configure = () => {
     )
 }
 
-export default Configure
+export default GitProvider

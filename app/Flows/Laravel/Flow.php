@@ -3,7 +3,8 @@
 namespace App\Flows\Laravel;
 
 use App\Flows\Flow as BaseFlow;
-use App\Flows\Shared\GitProvider;
+use App\Steps\Shared\GitProvider;
+use App\Steps\Shared\GithubAuthentication;
 
 class Flow extends BaseFlow
 {
@@ -12,6 +13,7 @@ class Flow extends BaseFlow
     {
         return [
             GitProvider::class,
+            GithubAuthentication::class,
         ];
     }
 
