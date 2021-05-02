@@ -2,10 +2,11 @@
 
 namespace App\Models\Account;
 
+use App\Models\Project;
 use App\Models\Auth\User;
+use Illuminate\Support\Str;
 use App\Models\Account\Invitation;
 use App\Models\Account\Membership;
-use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
 use App\Exceptions\ExistingMemberException;
 use App\Exceptions\ExistingInvitationException;
@@ -32,6 +33,11 @@ class Team extends Model
     public function invitations()
     {
         return $this->hasMany(Invitation::class);
+    }
+
+    public function projects()
+    {
+        return $this->hasMany(Project::class);
     }
 
     public function hasMember(User $user): bool

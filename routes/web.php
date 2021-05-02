@@ -5,9 +5,11 @@ use App\Mail\Invited;
 use App\Models\Account\Team;
 use App\Models\Account\Invitation;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\BillingController;
 use App\Http\Controllers\Account\TeamController;
+use App\Http\Controllers\Pipeline\StepController;
 use App\Http\Controllers\Account\AccountController;
+use App\Http\Controllers\Account\BillingController;
+use App\Http\Controllers\Pipeline\ProjectController;
 use App\Http\Controllers\Account\InvitationsController;
 use App\Http\Controllers\Account\MembershipsController;
 
@@ -26,21 +28,29 @@ Route::get('/', function () {
     return Inertia::render('Shared/Home');
 });
 
+Route::middleware(['auth'])->group(function () {
+    Route::get('/projects/{project}/{step}', [StepController::class, 'configure'])->name('steps.configure');
 
-Route::prefix('settings')->middleware('auth')->group(function() {
-    Route::get('/account', [AccountController::class, 'show'])->name('settings.account.show');
-    Route::patch('/account', [AccountController::class, 'update'])->name('settings.account.update');
+    Route::get('/projects/create', [ProjectController::class, 'create'])->name('projects.create');
+    Route::get('/projects', [ProjectController::class, 'index'])->name('projects.index');
+    Route::post('/projects', [ProjectController::class, 'store'])->name('projects.store');
 
-    Route::get('/billing', [BillingController::class, 'show'])->name('settings.billing.show');
+    Route::prefix('settings')->group(function() {
+        Route::get('/account', [AccountController::class, 'show'])->name('settings.account.show');
+        Route::patch('/account', [AccountController::class, 'update'])->name('settings.account.update');
 
-    Route::get('/teams/{team}/memberships', [MembershipsController::class, 'store'])->name('settings.teams.memberships.store');
-    Route::post('/teams/{team}/invitations', [InvitationsController::class, 'store'])->name('settings.teams.invitations.store');
-    Route::delete('/teams/{team}/invitations/{invitation}', [InvitationsController::class, 'destroy'])->name('settings.teams.invitations.destroy');
+        Route::get('/billing', [BillingController::class, 'show'])->name('settings.billing.show');
 
-    Route::get('/teams/{team}', [TeamController::class, 'show'])->name('settings.teams.show');
-    Route::get('/teams', [TeamController::class, 'index'])->name('settings.teams.index');
-    Route::post('/teams', [TeamController::class, 'store'])->name('settings.teams.store');
+        Route::get('/teams/{team}/memberships', [MembershipsController::class, 'store'])->name('settings.teams.memberships.store');
+        Route::post('/teams/{team}/invitations', [InvitationsController::class, 'store'])->name('settings.teams.invitations.store');
+        Route::delete('/teams/{team}/invitations/{invitation}', [InvitationsController::class, 'destroy'])->name('settings.teams.invitations.destroy');
+
+        Route::get('/teams/{team}', [TeamController::class, 'show'])->name('settings.teams.show');
+        Route::get('/teams', [TeamController::class, 'index'])->name('settings.teams.index');
+        Route::post('/teams', [TeamController::class, 'store'])->name('settings.teams.store');
+    });
 });
+
 
 Route::get('/dashboard', function () {
     return Inertia::render('Shared/Dashboard');
