@@ -29,6 +29,8 @@ Route::get('/', function () {
 });
 
 Route::middleware(['auth'])->group(function () {
+    Route::get('/accounts/{provider}/redirect', [AccountController::class, 'redirect'])->name('accounts.redirect');
+
     Route::get('/projects/{project}/{step}', [StepConfigurationController::class, 'render'])->name('steps.configuration.render');
     Route::post('/projects/{project}/{step}', [StepConfigurationController::class, 'configure'])->name('steps.configuration.configure');
 
