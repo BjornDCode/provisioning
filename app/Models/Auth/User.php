@@ -2,6 +2,7 @@
 
 namespace App\Models\Auth;
 
+use App\Models\Account;
 use App\Models\Account\Team;
 use App\Models\Account\Membership;
 use Illuminate\Notifications\Notifiable;
@@ -57,6 +58,11 @@ class User extends Authenticatable implements MustVerifyEmail
     public function memberships()
     {
         return $this->belongsToMany(Team::class, 'memberships')->using(Membership::class);
+    }
+
+    public function accounts()
+    {
+        return $this->hasMany(Account::class);
     }
 
     public function getAllTeamsAttribute()

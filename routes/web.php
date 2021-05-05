@@ -5,6 +5,7 @@ use App\Mail\Invited;
 use App\Models\Account\Team;
 use App\Models\Account\Invitation;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AccountController as ExternalAccountController;
 use App\Http\Controllers\Account\TeamController;
 use App\Http\Controllers\Account\AccountController;
 use App\Http\Controllers\Account\BillingController;
@@ -29,7 +30,8 @@ Route::get('/', function () {
 });
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/accounts/{provider}/redirect', [AccountController::class, 'redirect'])->name('accounts.redirect');
+    Route::get('/accounts/{provider}/redirect', [ExternalAccountController::class, 'redirect'])->name('accounts.redirect');
+    Route::get('/accounts/{provider}/callback', [ExternalAccountController::class, 'callback'])->name('accounts.callback');
 
     Route::get('/projects/{project}/{step}', [StepConfigurationController::class, 'render'])->name('steps.configuration.render');
     Route::post('/projects/{project}/{step}', [StepConfigurationController::class, 'configure'])->name('steps.configuration.configure');
