@@ -44,4 +44,9 @@ class GitProvider implements Step
         ];        
     }
 
+    public function context(): array
+    {
+        return [];
+    }
+
 }

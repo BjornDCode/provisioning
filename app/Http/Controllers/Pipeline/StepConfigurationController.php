@@ -29,12 +29,18 @@ class StepConfigurationController extends Controller
             $flow,
         );
 
-        return Inertia::render("Pipeline/Steps/{$step->component()}", [
-            'project' => new ProjectResource($project),
-            'configuration' => !is_null($configuration) 
-                ? new StepConfigurationResource($configuration) 
-                : null
-        ]);
+        return Inertia::render(
+            "Pipeline/Steps/{$step->component()}", 
+            array_merge(
+                [
+                    'project' => new ProjectResource($project),
+                    'configuration' => !is_null($configuration) 
+                        ? new StepConfigurationResource($configuration) 
+                        : null
+                ],
+                $step->context(),
+            )
+    );
     }
 
     public function configure(Request $request, Project $project, $type)

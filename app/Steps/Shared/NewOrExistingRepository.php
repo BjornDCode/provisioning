@@ -44,4 +44,9 @@ class NewOrExistingRepository implements Step
         ];        
     }
 
+    public function context(): array
+    {
+        return [];
+    }
+
 }
