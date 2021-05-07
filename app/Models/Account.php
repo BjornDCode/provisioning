@@ -12,6 +12,7 @@ class Account extends Model
 
     protected $fillable = [
         'identifier',
+        'email',
         'type',
         'token',
         'refresh_token',

@@ -79,6 +79,7 @@ class CreateExternalAccountTest extends TestCase
         // Then
         $this->assertDatabaseHas('accounts', [
             'identifier' => 'BjornUsername',
+            'email' => 'test@example.com',
             'user_id' => $user->id,
             'type' => 'github',
         ]);

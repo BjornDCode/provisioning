@@ -33,6 +33,7 @@ class AccountController extends Controller
 
         Auth::user()->accounts()->create([
             'identifier' => $user->nickname,
+            'email' => $user->email,
             'type' => $provider,
             'token' => $user->token,            
             'refresh_token' => $user->refreshToken,            

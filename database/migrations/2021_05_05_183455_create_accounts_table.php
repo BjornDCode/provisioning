@@ -16,6 +16,7 @@ class CreateAccountsTable extends Migration
         Schema::create('accounts', function (Blueprint $table) {
             $table->id();
             $table->string('identifier');
+            $table->string('email');
             $table->bigInteger('user_id')->unsigned();
             $table->enum('type', [
                 'github',
