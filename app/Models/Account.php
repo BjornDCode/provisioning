@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Auth\User;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Account extends Model
 {
@@ -16,5 +17,10 @@ class Account extends Model
         'refresh_token',
         'expires_at',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
 }

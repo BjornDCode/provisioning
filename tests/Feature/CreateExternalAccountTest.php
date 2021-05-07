@@ -59,6 +59,10 @@ class CreateExternalAccountTest extends TestCase
             $oauthUser,
             [
                 'redirect' => $fromRoute,
+            ],
+            [
+                'read:user',
+                'repo',
             ]
         );
 

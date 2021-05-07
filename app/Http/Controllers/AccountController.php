@@ -14,6 +14,10 @@ class AccountController extends Controller
     public function redirect(Request $request, $provider)
     {
         return Socialite::driver($provider)
+            ->scopes([
+                'read:user',
+                'repo',
+            ])
             ->with([
                 'state' => RequestState::fromArray([
                     'redirect' => url()->previous(),
