@@ -2,9 +2,9 @@
 
 namespace App\Support;
 
-use App\Models\Account;
-use App\Models\Pipeline;
 use Illuminate\Support\Str;
+use App\Models\Pipeline\Account;
+use App\Models\Pipeline\Pipeline;
 use App\Clients\Github\ApiClient;
 use Symfony\Component\Process\Process;
 use Illuminate\Support\Facades\Storage;

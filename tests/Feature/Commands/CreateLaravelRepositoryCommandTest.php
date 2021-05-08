@@ -1,12 +1,12 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\Commands;
 
 use Mockery;
 use Tests\TestCase;
-use App\Models\Account;
-use App\Models\Pipeline;
 use Mockery\MockInterface;
+use App\Models\Pipeline\Account;
+use App\Models\Pipeline\Pipeline;
 use App\Clients\Github\ApiClient;
 use App\Clients\Github\TestApiClient;
 use Illuminate\Support\Facades\Storage;

@@ -5,7 +5,7 @@ use App\Mail\Invited;
 use App\Models\Account\Team;
 use App\Models\Account\Invitation;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AccountController as ExternalAccountController;
+use App\Http\Controllers\Pipeline\AccountController as ExternalAccountController;
 use App\Http\Controllers\Account\TeamController;
 use App\Http\Controllers\Account\AccountController;
 use App\Http\Controllers\Account\BillingController;

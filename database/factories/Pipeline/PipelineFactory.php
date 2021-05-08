@@ -1,9 +1,9 @@
 <?php
 
-namespace Database\Factories;
+namespace Database\Factories\Pipeline;
 
-use App\Models\Pipeline;
 use App\Models\Account\Team;
+use App\Models\Pipeline\Pipeline;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class PipelineFactory extends Factory

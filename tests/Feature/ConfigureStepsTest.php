@@ -3,8 +3,8 @@
 namespace Tests\Feature;
 
 use Tests\TestCase;
-use App\Models\Pipeline;
-use App\Models\StepConfiguration;
+use App\Models\Pipeline\Pipeline;
+use App\Models\Pipeline\StepConfiguration;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Pipeline;
 
 use App\Enums\PipelineType;
 use Illuminate\Validation\Rule;

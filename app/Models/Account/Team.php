@@ -2,9 +2,9 @@
 
 namespace App\Models\Account;
 
-use App\Models\Pipeline;
 use App\Models\Auth\User;
 use Illuminate\Support\Str;
+use App\Models\Pipeline\Pipeline;
 use App\Models\Account\Invitation;
 use App\Models\Account\Membership;
 use Illuminate\Database\Eloquent\Model;

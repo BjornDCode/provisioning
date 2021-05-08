@@ -1,10 +1,10 @@
 <?php
 
-namespace Database\Factories;
+namespace Database\Factories\Pipeline;
 
-use App\Models\Account;
 use App\Models\Auth\User;
 use Illuminate\Support\Str;
+use App\Models\Pipeline\Account;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class AccountFactory extends Factory

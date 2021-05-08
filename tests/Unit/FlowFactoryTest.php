@@ -2,8 +2,8 @@
 
 namespace Tests\Unit;
 
-use App\Models\Pipeline;
 use PHPUnit\Framework\TestCase;
+use App\Models\Pipeline\Pipeline;
 use App\Flows\Factory as FlowFactory;
 use App\Flows\Laravel\Flow as LaravelFlow;
 

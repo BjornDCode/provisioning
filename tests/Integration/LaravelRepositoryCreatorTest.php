@@ -3,8 +3,8 @@
 namespace Tests\Integration;
 
 use Tests\TestCase;
-use App\Models\Account;
-use App\Models\Pipeline;
+use App\Models\Pipeline\Account;
+use App\Models\Pipeline\Pipeline;
 use Illuminate\Support\Facades\Storage;
 use App\Support\LaravelRepositoryCreator;
 use Illuminate\Foundation\Testing\RefreshDatabase;

@@ -1,9 +1,9 @@
 <?php
 
-namespace Database\Factories;
+namespace Database\Factories\Pipeline;
 
-use App\Models\Pipeline;
-use App\Models\StepConfiguration;
+use App\Models\Pipeline\Pipeline;
+use App\Models\Pipeline\StepConfiguration;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class StepConfigurationFactory extends Factory

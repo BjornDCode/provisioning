@@ -2,8 +2,8 @@
 
 namespace App\Flows;
 
-use App\Models\Pipeline;
 use App\Enums\PipelineType;
+use App\Models\Pipeline\Pipeline;
 use App\Flows\Laravel\Flow as LaravelFlow;
 use App\Exceptions\InvalidPipelineTypeException;
 

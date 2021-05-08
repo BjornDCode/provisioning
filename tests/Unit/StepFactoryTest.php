@@ -4,9 +4,9 @@ namespace Tests\Unit;
 
 use Tests\TestCase;
 use App\Enums\StepType;
-use App\Models\Pipeline;
 use App\Enums\GitProvider;
 use App\Flows\Laravel\Flow;
+use App\Models\Pipeline\Pipeline;
 use App\Steps\Factory as StepFactory;
 use App\Steps\Shared\GithubAuthentication;
 use App\Steps\Shared\GitProvider as GitProviderStep;

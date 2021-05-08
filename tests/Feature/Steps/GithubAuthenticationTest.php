@@ -4,9 +4,9 @@ namespace Tests\Feature\Steps;
 
 use Tests\TestCase;
 use App\Enums\StepType;
-use App\Models\Account;
-use App\Models\Pipeline;
 use Inertia\Testing\Assert;
+use App\Models\Pipeline\Account;
+use App\Models\Pipeline\Pipeline;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class GithubAuthenticationTest extends TestCase

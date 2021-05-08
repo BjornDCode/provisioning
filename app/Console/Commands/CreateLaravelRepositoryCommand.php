@@ -3,10 +3,10 @@
 namespace App\Console\Commands;
 
 use Exception;
-use App\Models\Account;
-use App\Models\Pipeline;
 use Illuminate\Support\Str;
 use Illuminate\Console\Command;
+use App\Models\Pipeline\Account;
+use App\Models\Pipeline\Pipeline;
 use Illuminate\Support\Facades\Http;
 use Symfony\Component\Process\Process;
 use Illuminate\Support\Facades\Storage;

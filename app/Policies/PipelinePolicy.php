@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\Models\Pipeline;
 use App\Models\Auth\User;
+use App\Models\Pipeline\Pipeline;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class PipelinePolicy

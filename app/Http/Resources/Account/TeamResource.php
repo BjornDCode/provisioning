@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Resources;
+namespace App\Http\Resources\Account;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class StepConfigurationResource extends JsonResource
+class TeamResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,8 +16,7 @@ class StepConfigurationResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'type' => $this->type,
-            'details' => $this->details,
+            'name' => $this->name,
         ];
     }
 }

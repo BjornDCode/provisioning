@@ -2,10 +2,10 @@
 
 namespace App\Providers;
 
-use App\Models\Pipeline;
 use App\Models\Account\Team;
 use App\Policies\TeamPolicy;
 use App\Policies\PipelinePolicy;
+use App\Models\Pipeline\Pipeline;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 

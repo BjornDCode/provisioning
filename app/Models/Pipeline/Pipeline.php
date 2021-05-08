@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Pipeline;
 
 use App\Enums\StepType;
 use App\Models\Account\Team;
-use App\Models\StepConfiguration;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Pipeline\StepConfiguration;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Pipeline extends Model

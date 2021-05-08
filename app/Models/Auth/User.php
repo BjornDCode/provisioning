@@ -2,8 +2,8 @@
 
 namespace App\Models\Auth;
 
-use App\Models\Account;
 use App\Models\Account\Team;
+use App\Models\Pipeline\Account;
 use App\Models\Account\Membership;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;

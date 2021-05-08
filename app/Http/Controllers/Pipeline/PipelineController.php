@@ -3,13 +3,13 @@
 namespace App\Http\Controllers\Pipeline;
 
 use Inertia\Inertia;
-use App\Models\Pipeline;
+use App\Models\Pipeline\Pipeline;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Flows\Factory as FlowFactory;
-use App\Http\Resources\PipelineResource;
 use Illuminate\Support\Facades\Redirect;
-use App\Http\Requests\CreatePipelineRequest;
+use App\Http\Resources\Pipeline\PipelineResource;
+use App\Http\Requests\Pipeline\CreatePipelineRequest;
 
 class PipelineController extends Controller
 {

@@ -3,8 +3,8 @@
 namespace Tests\Feature\Steps;
 
 use Tests\TestCase;
-use App\Models\Pipeline;
 use Inertia\Testing\Assert;
+use App\Models\Pipeline\Pipeline;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class GitProviderStepTest extends TestCase

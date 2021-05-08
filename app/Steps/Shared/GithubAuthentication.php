@@ -5,9 +5,9 @@ namespace App\Steps\Shared;
 use App\Flows\Flow;
 use App\Steps\Step;
 use App\Enums\StepType;
-use App\Models\Account;
+use App\Models\Pipeline\Account;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Resources\AccountResource;
+use App\Http\Resources\Pipeline\AccountResource;
 
 class GithubAuthentication implements Step
 {

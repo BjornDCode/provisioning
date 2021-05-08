@@ -4,15 +4,15 @@ namespace App\Http\Controllers\Pipeline;
 
 use Inertia\Inertia;
 use App\Enums\StepType;
-use App\Models\Pipeline;
 use Illuminate\Http\Request;
-use App\Models\StepConfiguration;
+use App\Models\Pipeline\Pipeline;
 use App\Http\Controllers\Controller;
 use App\Flows\Factory as FlowFactory;
 use App\Steps\Factory as StepFactory;
-use App\Http\Resources\PipelineResource;
 use Illuminate\Support\Facades\Redirect;
-use App\Http\Resources\StepConfigurationResource;
+use App\Models\Pipeline\StepConfiguration;
+use App\Http\Resources\Pipeline\PipelineResource;
+use App\Http\Resources\Pipeline\StepConfigurationResource;
 
 class StepConfigurationController extends Controller
 {

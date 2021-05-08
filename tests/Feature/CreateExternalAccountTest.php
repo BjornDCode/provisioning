@@ -4,8 +4,8 @@ namespace Tests\Feature;
 
 use Tests\TestCase;
 use App\Enums\StepType;
-use App\Models\Pipeline;
 use Laravel\Socialite\Two\User;
+use App\Models\Pipeline\Pipeline;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class CreateExternalAccountTest extends TestCase

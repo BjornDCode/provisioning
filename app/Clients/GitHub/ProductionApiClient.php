@@ -2,7 +2,7 @@
 
 namespace App\Clients\Github;
 
-use App\Models\Account;
+use App\Models\Pipeline\Account;
 use App\Clients\Github\ApiClient;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;

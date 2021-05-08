@@ -2,8 +2,8 @@
 
 namespace App\Flows\Laravel;
 
-use App\Models\Pipeline;
 use App\Flows\Flow as BaseFlow;
+use App\Models\Pipeline\Pipeline;
 use App\Steps\Shared\GitProvider;
 use App\Steps\Shared\GithubAuthentication;
 use App\Steps\Shared\NewOrExistingRepository;

@@ -2,7 +2,7 @@
 
 namespace App\Clients\Github;
 
-use App\Models\Account;
+use App\Models\Pipeline\Account;
 use Illuminate\Http\Client\Response;
 
 interface ApiClient

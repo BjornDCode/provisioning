@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Resources;
+namespace App\Http\Resources\Pipeline;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class InvitationResource extends JsonResource
+class PipelineResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,7 +16,8 @@ class InvitationResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'email' => $this->email,
+            'name' => $this->name,
+            'type' => $this->type,
         ];
     }
 }

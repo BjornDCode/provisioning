@@ -4,9 +4,9 @@ namespace Tests\Feature\Flows;
 
 use Tests\TestCase;
 use App\Enums\StepType;
-use App\Models\Account;
-use App\Models\Pipeline;
-use App\Models\StepConfiguration;
+use App\Models\Pipeline\Account;
+use App\Models\Pipeline\Pipeline;
+use App\Models\Pipeline\StepConfiguration;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class LaravelFlowTest extends TestCase

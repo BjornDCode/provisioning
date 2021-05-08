@@ -4,7 +4,7 @@ namespace App\Http\Middleware;
 
 use Inertia\Middleware;
 use Illuminate\Http\Request;
-use App\Http\Resources\TeamResource;
+use App\Http\Resources\Account\TeamResource;
 
 class HandleInertiaRequests extends Middleware
 {
