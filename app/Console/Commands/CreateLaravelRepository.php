@@ -19,7 +19,7 @@ class CreateLaravelRepository extends Command
      *
      * @var string
      */
-    protected $signature = 'repository:create';
+    protected $signature = 'repository:create {--project=} {--account=}';
 
     /**
      * The console command description.
@@ -45,8 +45,21 @@ class CreateLaravelRepository extends Command
      */
     public function handle(ApiClient $githubClient)
     {
-        $project = Project::find(1);
-        $account = Account::find(1);
+        $projectId = $this->option('project');
+        $accountId = $this->option('account');
+
+        if (is_null($projectId)) {
+            $this->error('Project is required');
+            return 1;
+        }
+
+        if (is_null($accountId)) {
+            $this->error('Account is required');
+            return 1;
+        }
+
+        $project = Project::find($projectId);
+        $account = Account::find($accountId);
 
         // Ensure directory exists
         if (!Storage::exists("repositories/{$project->team->id}")) {
@@ -97,7 +110,7 @@ class CreateLaravelRepository extends Command
             'git',
             'config',
             'user.email',
-            '"' . $account->user->email . '"'
+            '"' . $account->email . '"'
         ]);
         $process->run();
 
