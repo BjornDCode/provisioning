@@ -9,13 +9,17 @@ abstract class Flow
 
     abstract public function steps(): array;
 
-    public function next(): Step
+    public function next(): Step|null
     {
-        $class = collect($this->steps())->first(function ($step) {
+        $step = collect($this->steps())->first(function ($step) {
             return ! (new $step($this))->completed();
         });
 
-        return new $class($this);
+        if (is_null($step)) {
+            return null;
+        }
+
+        return new $step($this);
     }
 
 }

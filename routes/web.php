@@ -37,6 +37,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/projects/{project}/{step}', [StepConfigurationController::class, 'configure'])->name('steps.configuration.configure');
 
     Route::get('/projects/create', [ProjectController::class, 'create'])->name('projects.create');
+    Route::get('/projects/{project}', [ProjectController::class, 'show'])->name('projects.show');
     Route::get('/projects', [ProjectController::class, 'index'])->name('projects.index');
     Route::post('/projects', [ProjectController::class, 'store'])->name('projects.store');
 

@@ -28,7 +28,11 @@ class GithubAuthentication implements Step
     
     public function completed(): bool
     {
-        return false;
+        return $this->flow->project->hasConfig(
+            StepType::fromString(
+                StepType::GITHUB_AUTHENTICATION,
+            )
+        );;
     }
 
     public function validationRules(): array

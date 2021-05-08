@@ -64,10 +64,17 @@ class StepConfigurationController extends Controller
             'details' => $request->input(),
         ]);
 
+        $next = $flow->next();
+
+        if (is_null($next)) {
+            return Redirect::route('projects.show', [
+                'project' => $project->id,
+            ]);
+        }
 
         return Redirect::route('steps.configuration.render', [
             'project' => $project->id,
-            'step' => $flow->next()->type(),
+            'step' => $next->type(),
         ]);
     }
 
