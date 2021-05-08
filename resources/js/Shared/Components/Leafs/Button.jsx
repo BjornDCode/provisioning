@@ -3,12 +3,15 @@ import React from 'react'
 import useClasses from '@/Shared/Hooks/useClasses'
 
 const Button = ({
+    as = 'button',
     children,
     className,
     variant = 'primary',
     size = 'medium',
     ...props
 }) => {
+    const Component = as
+
     const classes = useClasses(
         'block leading-none text-sm font-medium rounded-md shadow focus:outline-none focus:ring-2 focus:ring-cyan-300 focus:ring-offset-2 focus:ring-offset-gray-700',
         {
@@ -25,9 +28,9 @@ const Button = ({
     )
 
     return (
-        <button className={classes} {...props}>
+        <Component className={classes} {...props}>
             {children}
-        </button>
+        </Component>
     )
 }
 

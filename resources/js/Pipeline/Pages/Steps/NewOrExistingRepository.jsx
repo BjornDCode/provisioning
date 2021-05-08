@@ -24,7 +24,6 @@ const options = [
 
 const NewOrExistingRepository = () => {
     const { configuration, project } = useProps()
-    console.log(project)
 
     const { values, onChange, errors, status, disabled, post } = useForm({
         value: configuration ? configuration.details.value : '',

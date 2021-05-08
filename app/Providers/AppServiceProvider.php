@@ -3,7 +3,10 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use App\Support\LaravelRepositoryCreator;
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Clients\Github\ApiClient as GithubApiClient;
+use App\Clients\Github\ProductionApiClient as GithubProductionApiClient;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -14,7 +17,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->bind(GithubApiClient::class, GithubProductionApiClient::class);
+        $this->app->bind(LaravelRepositoryCreator::class);
     }
 
     /**

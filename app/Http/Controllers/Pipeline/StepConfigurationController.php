@@ -29,12 +29,18 @@ class StepConfigurationController extends Controller
             $flow,
         );
 
-        return Inertia::render("Pipeline/Steps/{$step->component()}", [
-            'project' => new ProjectResource($project),
-            'configuration' => !is_null($configuration) 
-                ? new StepConfigurationResource($configuration) 
-                : null
-        ]);
+        return Inertia::render(
+            "Pipeline/Steps/{$step->component()}", 
+            array_merge(
+                [
+                    'project' => new ProjectResource($project),
+                    'configuration' => !is_null($configuration) 
+                        ? new StepConfigurationResource($configuration) 
+                        : null
+                ],
+                $step->context(),
+            )
+    );
     }
 
     public function configure(Request $request, Project $project, $type)
@@ -58,10 +64,17 @@ class StepConfigurationController extends Controller
             'details' => $request->input(),
         ]);
 
+        $next = $flow->next();
+
+        if (is_null($next)) {
+            return Redirect::route('projects.show', [
+                'project' => $project->id,
+            ]);
+        }
 
         return Redirect::route('steps.configuration.render', [
             'project' => $project->id,
-            'step' => $flow->next()->type(),
+            'step' => $next->type(),
         ]);
     }
 

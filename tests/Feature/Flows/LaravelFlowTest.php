@@ -4,6 +4,7 @@ namespace Tests\Feature\Flows;
 
 use Tests\TestCase;
 use App\Enums\StepType;
+use App\Models\Account;
 use App\Models\Project;
 use App\Models\StepConfiguration;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -100,6 +101,52 @@ class LaravelFlowTest extends TestCase
             route('steps.configuration.render', [ 
                 'project' => $project->id,
                 'step' => StepType::GITHUB_AUTHENTICATION,
+            ])
+        );
+    }
+
+    /** @test */
+    public function it_redirects_the_the_project_overview_page()
+    {
+        // Given
+        $user = $this->registerNewUser();
+        $project = Project::factory()->create([
+            'team_id' => $user->currentTeam->id,
+        ]);
+        $account = Account::factory()->create([
+            'user_id' => $user->id,
+        ]);
+        StepConfiguration::factory()->create([
+            'project_id' => $project->id,
+            'type' => StepType::NEW_OR_EXISTING_REPOSITORY,
+            'details' => [
+                'value' => 'new',
+            ],
+        ]);
+        StepConfiguration::factory()->create([
+            'project_id' => $project->id,
+            'type' => StepType::GIT_PROVIDER,
+            'details' => [
+                'value' => 'github',
+            ],
+        ]);
+
+        // When
+        $response = $this
+            ->post(
+                route('steps.configuration.configure', [ 
+                    'project' => $project->id,
+                    'step' => StepType::GITHUB_AUTHENTICATION,
+                ]),
+                [
+                    'account_id' => $account->id, 
+                ]
+            );
+
+        // Then
+        $response->assertRedirect(
+            route('projects.show', [ 
+                'project' => $project->id,
             ])
         );
     }

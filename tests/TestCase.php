@@ -2,13 +2,18 @@
 
 namespace Tests;
 
+use Mockery;
+use App\RequestState;
 use App\Models\Auth\User;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Inertia\Testing\Assert;
 use InvalidArgumentException;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Auth\Events\Registered;
+use Laravel\Socialite\Facades\Socialite;
 use PHPUnit\Framework\Assert as PHPUnit;
+use Laravel\Socialite\Two\GithubProvider;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 
 abstract class TestCase extends BaseTestCase
@@ -47,6 +52,30 @@ abstract class TestCase extends BaseTestCase
         event(new Registered($user));
 
         return $user;
+    }
+
+    public function mockSocialite(string $provider, \Laravel\Socialite\Two\User $user, array $state = [], array $scopes = [])
+    {
+        $state = RequestState::fromArray($state);
+        $providerClass = match($provider) {
+            'github' => GithubProvider::class,
+        };
+
+        $redirect = new RedirectResponse(
+            route("accounts.callback", [
+                'provider' => $provider,
+                'state' => $state,
+            ]),
+        );
+
+        $driver = Mockery::mock($providerClass);
+        $driver->shouldReceive('scopes')->with($scopes)->andReturn($driver);
+        $driver->shouldReceive('redirect')->andReturn($redirect);
+        $driver->shouldReceive('stateless')->andReturn($driver);
+        $driver->shouldReceive('with')->with(['state' => $state])->andReturn($driver);
+        $driver->shouldReceive('user')->andReturn($user);
+
+        Socialite::shouldReceive('driver')->with($provider)->andReturn($driver);
     }
 
 }

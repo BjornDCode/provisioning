@@ -6,6 +6,7 @@ import useClasses from '@/Shared/Hooks/useClasses'
 import FormGroup from '@/Shared/Components/FormElements/FormGroup'
 import FormError from '@/Shared/Components/FormElements/FormError'
 import FormLabel from '@/Shared/Components/FormElements/FormLabel'
+import RadioCircle from '@/Shared/Components/FormElements/RadioCircle'
 
 const TwoChoiceField = ({
     name,
@@ -60,15 +61,7 @@ const TwoChoiceField = ({
                                 >
                                     {option.label}
                                 </span>
-                                <div
-                                    className={useClasses(
-                                        'w-4 h-4 rounded-full',
-                                        {
-                                            'bg-green-300': checked,
-                                            'bg-gray-700 group-hover:ring-1 group-hover:ring-green-300': !checked,
-                                        }
-                                    )}
-                                ></div>
+                                <RadioCircle checked={checked} />
                             </Fragment>
                         )}
                     </RadioGroup.Option>

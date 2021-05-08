@@ -13,4 +13,6 @@ interface Step
 
     public function validationRules(): array;
 
+    public function context(): array;
+
 }
