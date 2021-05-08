@@ -7,9 +7,11 @@ use App\Models\Account;
 use App\Models\Auth\User;
 use App\Clients\Github\ApiClient;
 use App\Exceptions\InvalidCredentialsException;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class RealGithubApiClientTest extends TestCase
 {
+    use RefreshDatabase;
 
     /** @test */
     public function it_requires_authentication()

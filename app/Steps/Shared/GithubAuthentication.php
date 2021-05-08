@@ -44,8 +44,12 @@ class GithubAuthentication implements Step
                 function ($attribute, $value, $fail) {
                     $account = Account::find($value);
                     
+                    if (is_null($account)){
+                        return $fail('Account does not exist.');
+                    }
+
                     if (!Auth::user()->currentTeam->hasMember($account->user)) {
-                        $fail('Invalid account.');
+                        return $fail('Invalid account.');
                     }
                 }
             ]
