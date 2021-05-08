@@ -5,6 +5,7 @@ namespace App\Steps\Shared;
 use App\Flows\Flow;
 use App\Steps\Step;
 use App\Enums\StepType;
+use App\Models\Account;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Resources\AccountResource;
 
@@ -32,7 +33,19 @@ class GithubAuthentication implements Step
 
     public function validationRules(): array
     {
-        return [];        
+        return [
+            'account_id' => [
+                'required',
+                'exists:accounts,id',
+                function ($attribute, $value, $fail) {
+                    $account = Account::find($value);
+                    
+                    if (!Auth::user()->currentTeam->hasMember($account->user)) {
+                        $fail('Invalid account.');
+                    }
+                }
+            ]
+        ];        
     }
 
     public function context(): array

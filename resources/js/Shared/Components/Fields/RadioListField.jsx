@@ -35,7 +35,7 @@ const RadioGridField = ({
     return (
         <RadioGroup
             as={FormGroup}
-            className="relative overflow-hidden"
+            className="relative"
             name={name}
             value={value}
             onChange={handleChange}

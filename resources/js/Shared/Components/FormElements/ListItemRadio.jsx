@@ -21,7 +21,6 @@ const ListItemRadio = ({ value, children }) => {
                     )}
                     Right={() => <RadioCircle checked={checked} />}
                 >
-                    {console.log(active)}
                     {children}
                 </ListItem>
             )}

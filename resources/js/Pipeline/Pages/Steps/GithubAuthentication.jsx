@@ -26,13 +26,13 @@ const GithubAuthentication = () => {
     })
 
     const onSubmit = () => {
-        // post(
-        //     route('steps.configuration.configure', {
-        //         project: project.id,
-        //         step: 'git-provider',
-        //     }),
-        //     values
-        // )
+        post(
+            route('steps.configuration.configure', {
+                project: project.id,
+                step: 'github-authentication',
+            }),
+            values
+        )
     }
 
     return (
@@ -52,6 +52,7 @@ const GithubAuthentication = () => {
                 <FormGroup className="flex justify-between">
                     <LinkButton
                         as="a"
+                        variant="secondary"
                         href={route('accounts.redirect', {
                             provider: 'github',
                         })}
