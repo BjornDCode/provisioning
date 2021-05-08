@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Models\Project;
+use App\Models\Pipeline;
 use App\Models\StepConfiguration;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -24,7 +24,7 @@ class StepConfigurationFactory extends Factory
     {
         return [
             'type' => 'git-provider',
-            'project_id' => Project::factory()->create()->id,
+            'pipeline_id' => Pipeline::factory()->create()->id,
             'details' => [],
         ];
     }

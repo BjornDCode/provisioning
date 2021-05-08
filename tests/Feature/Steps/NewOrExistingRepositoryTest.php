@@ -4,7 +4,7 @@ namespace Tests\Feature\Steps;
 
 use Tests\TestCase;
 use App\Enums\StepType;
-use App\Models\Project;
+use App\Models\Pipeline;
 use Inertia\Testing\Assert;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -17,14 +17,14 @@ class NewOrExistingRepositoryTest extends TestCase
     {
         // Given
         $user = $this->registerNewUser();
-        $project = Project::factory()->create([
+        $pipeline = Pipeline::factory()->create([
             'team_id' => $user->currentTeam->id,
         ]);
 
         // When
         $response = $this->get(
             route('steps.configuration.render', [ 
-                'project' => $project->id,
+                'pipeline' => $pipeline->id,
                 'step' => StepType::NEW_OR_EXISTING_REPOSITORY,
             ])
         );
@@ -40,7 +40,7 @@ class NewOrExistingRepositoryTest extends TestCase
     {
         // Given
         $user = $this->registerNewUser();
-        $project = Project::factory()->create([
+        $pipeline = Pipeline::factory()->create([
             'team_id' => $user->currentTeam->id,
         ]);
 
@@ -48,7 +48,7 @@ class NewOrExistingRepositoryTest extends TestCase
         $response = $this
             ->post(
                 route('steps.configuration.configure', [ 
-                    'project' => $project->id,
+                    'pipeline' => $pipeline->id,
                     'step' => StepType::NEW_OR_EXISTING_REPOSITORY,
                 ]),
                 [
@@ -58,7 +58,7 @@ class NewOrExistingRepositoryTest extends TestCase
 
         // Then
         $this->assertDatabaseHas('step_configurations', [
-            'project_id' => $project->id,
+            'pipeline_id' => $pipeline->id,
             'type' => 'new-or-existing-repository',
             'details->value' => 'new',
         ]);
@@ -71,7 +71,7 @@ class NewOrExistingRepositoryTest extends TestCase
 
         // Given
         $user = $this->registerNewUser();
-        $project = Project::factory()->create([
+        $pipeline = Pipeline::factory()->create([
             'team_id' => $user->currentTeam->id,
         ]);
 
@@ -79,13 +79,13 @@ class NewOrExistingRepositoryTest extends TestCase
         $response = $this
             ->from(
                 route('steps.configuration.render', [ 
-                    'project' => $project->id,
+                    'pipeline' => $pipeline->id,
                     'step' => StepType::NEW_OR_EXISTING_REPOSITORY,
                 ]),
             )
             ->post(
                 route('steps.configuration.configure', [ 
-                    'project' => $project->id,
+                    'pipeline' => $pipeline->id,
                     'step' => StepType::NEW_OR_EXISTING_REPOSITORY,
                 ]),
                 [
@@ -95,14 +95,14 @@ class NewOrExistingRepositoryTest extends TestCase
 
         // Then
         $this->assertDatabaseMissing('step_configurations', [
-            'project_id' => $project->id,
+            'pipeline_id' => $pipeline->id,
             'type' => 'new-or-existing-repository',
             'details->value' => 'invalid',
         ]);
 
         $response->assertRedirect(
             route('steps.configuration.render', [ 
-                'project' => $project->id,
+                'pipeline' => $pipeline->id,
                 'step' => StepType::NEW_OR_EXISTING_REPOSITORY,
             ]),
         );

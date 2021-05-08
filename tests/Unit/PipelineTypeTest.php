@@ -2,16 +2,16 @@
 
 namespace Tests\Unit;
 
-use App\Enums\ProjectType;
+use App\Enums\PipelineType;
 use PHPUnit\Framework\TestCase;
 use App\Exceptions\InvalidTypeException;
 
-class ProjectTypeTest extends TestCase
+class PipelineTypeTest extends TestCase
 {
     /** @test */
     public function it_can_be_laravel()
     {
-        $this->assertEquals('laravel', ProjectType::LARAVEL);
+        $this->assertEquals('laravel', PipelineType::LARAVEL);
     }
 
     /** @test */
@@ -19,13 +19,13 @@ class ProjectTypeTest extends TestCase
     {
         $this->assertEquals([
             'laravel',
-        ], ProjectType::all());
+        ], PipelineType::all());
     }
 
     /** @test */
     public function it_can_be_instantiated()
     {
-        $this->assertInstanceOf(ProjectType::class, ProjectType::fromString('laravel'));
+        $this->assertInstanceOf(PipelineType::class, PipelineType::fromString('laravel'));
     }
 
     /** @test */
@@ -33,13 +33,13 @@ class ProjectTypeTest extends TestCase
     {
         $this->expectException(InvalidTypeException::class);
 
-        ProjectType::fromString('invalid');
+        PipelineType::fromString('invalid');
     }
 
     /** @test */
     public function it_can_convert_to_string()
     {
-        $type = ProjectType::fromString('laravel');
+        $type = PipelineType::fromString('laravel');
         
         $this->assertEquals('laravel', $type->toString());
     }

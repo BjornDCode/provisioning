@@ -4,7 +4,7 @@ namespace Tests\Feature;
 
 use Tests\TestCase;
 use App\Enums\StepType;
-use App\Models\Project;
+use App\Models\Pipeline;
 use Laravel\Socialite\Two\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -17,7 +17,7 @@ class CreateExternalAccountTest extends TestCase
     {
         // Given 
         $user = $this->registerNewUser();
-        $project = Project::factory()->create();
+        $pipeline = Pipeline::factory()->create();
 
         // When
         $response = $this->get(
@@ -39,7 +39,7 @@ class CreateExternalAccountTest extends TestCase
     {
         // Given
         $user = $this->registerNewUser();
-        $project = Project::factory()->create([
+        $pipeline = Pipeline::factory()->create([
             'team_id' => $user->currentTeam->id,
         ]);
 
@@ -50,7 +50,7 @@ class CreateExternalAccountTest extends TestCase
         $oauthUser->token = 'test_token';
 
         $fromRoute = route('steps.configuration.render', [
-            'project' => $project->id,
+            'pipeline' => $pipeline->id,
             'step' => StepType::GITHUB_AUTHENTICATION,
         ]);
 

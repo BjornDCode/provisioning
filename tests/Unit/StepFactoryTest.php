@@ -4,7 +4,7 @@ namespace Tests\Unit;
 
 use Tests\TestCase;
 use App\Enums\StepType;
-use App\Models\Project;
+use App\Models\Pipeline;
 use App\Enums\GitProvider;
 use App\Flows\Laravel\Flow;
 use App\Steps\Factory as StepFactory;
@@ -17,12 +17,12 @@ class StepFactoryTest extends TestCase
     /** @test */
     public function it_can_instantiate_a_git_provider_step()
     {
-        $project = new Project([
+        $pipeline = new Pipeline([
             'name' => 'HEL',
             'type' => 'laravel',
         ]);
 
-        $flow = new Flow($project);
+        $flow = new Flow($pipeline);
 
         $this->assertInstanceOf(
             GitProviderStep::class, 
@@ -35,12 +35,12 @@ class StepFactoryTest extends TestCase
     /** @test */
     public function it_can_instantiate_a_github_authentication_step()
     {
-        $project = new Project([
+        $pipeline = new Pipeline([
             'name' => 'HEL',
             'type' => 'laravel',
         ]);
 
-        $flow = new Flow($project);
+        $flow = new Flow($pipeline);
 
         $this->assertInstanceOf(
             GithubAuthentication::class, 

@@ -2,11 +2,11 @@
 
 namespace App\Http\Requests;
 
-use App\Enums\ProjectType;
+use App\Enums\PipelineType;
 use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreateProjectRequest extends FormRequest
+class CreatePipelineRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -29,7 +29,7 @@ class CreateProjectRequest extends FormRequest
             'name' => 'required',
             'type' => [
                 'required',
-                Rule::in(ProjectType::all()),
+                Rule::in(PipelineType::all()),
             ],
         ];
     }

@@ -28,7 +28,7 @@ class GithubAuthentication implements Step
     
     public function completed(): bool
     {
-        return $this->flow->project->hasConfig(
+        return $this->flow->pipeline->hasConfig(
             StepType::fromString(
                 StepType::GITHUB_AUTHENTICATION,
             )

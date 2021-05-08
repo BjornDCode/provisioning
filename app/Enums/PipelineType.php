@@ -3,7 +3,7 @@
 namespace App\Enums;
 
 
-class ProjectType extends Enum
+class PipelineType extends Enum
 {
     const LARAVEL = 'laravel'; 
 }

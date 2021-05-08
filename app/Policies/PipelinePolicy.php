@@ -2,11 +2,11 @@
 
 namespace App\Policies;
 
-use App\Models\Project;
+use App\Models\Pipeline;
 use App\Models\Auth\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class ProjectPolicy
+class PipelinePolicy
 {
     use HandlesAuthorization;
 
@@ -20,8 +20,8 @@ class ProjectPolicy
         //
     }
 
-    public function update(User $user, Project $project)
+    public function update(User $user, Pipeline $pipeline)
     {
-        return $project->team->hasMember($user);
+        return $pipeline->team->hasMember($user);
     }
 }

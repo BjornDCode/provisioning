@@ -36,10 +36,10 @@ const NavItems = ({ authenticated }) => {
     return authenticated ? (
         <Fragment>
             <NavItem
-                to={route('projects.index')}
-                active={route().current('projects.*')}
+                to={route('pipelines.index')}
+                active={route().current('pipelines.*')}
             >
-                Projects
+                Pipelines
             </NavItem>
             <NavItem
                 to={route('settings.account.show')}

@@ -14,7 +14,7 @@ import FormGroup from '@/Shared/Components/FormElements/FormGroup'
 import RadioGridField from '@/Shared/Components/Fields/RadioGridField'
 
 const GitProvider = () => {
-    const { configuration, project } = useProps()
+    const { configuration, pipeline } = useProps()
 
     const { values, onChange, errors, status, disabled, post } = useForm({
         value: configuration ? configuration.details.value : '',
@@ -23,7 +23,7 @@ const GitProvider = () => {
     const onSubmit = () => {
         post(
             route('steps.configuration.configure', {
-                project: project.id,
+                pipeline: pipeline.id,
                 step: 'git-provider',
             }),
             values

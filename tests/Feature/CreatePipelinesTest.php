@@ -4,12 +4,12 @@ namespace Tests\Feature;
 
 use Tests\TestCase;
 use App\Enums\StepType;
-use App\Models\Project;
+use App\Models\Pipeline;
 use Inertia\Testing\Assert;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class CreateProjectsTest extends TestCase
+class CreatePipelinesTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -21,9 +21,9 @@ class CreateProjectsTest extends TestCase
         // Given
         // When
         $response = $this->post(
-            route('projects.store'),
+            route('pipelines.store'),
             [
-                'name' => 'Cool project',
+                'name' => 'Cool pipeline',
                 'type' => 'laravel',
             ]
         );
@@ -33,23 +33,23 @@ class CreateProjectsTest extends TestCase
     }
 
     /** @test */
-    public function an_authenticated_user_can_create_projects_for_teams_they_are_a_member_of()
+    public function an_authenticated_user_can_create_pipelines_for_teams_they_are_a_member_of()
     {
         // Given
         $user = $this->registerNewUser();
 
         // When
         $response = $this->post(
-            route('projects.store'),
+            route('pipelines.store'),
             [
-                'name' => 'Cool project',
+                'name' => 'Cool pipeline',
                 'type' => 'laravel',
             ]
         );
 
         // Then
-        $this->assertDatabaseHas('projects', [
-            'name' => 'Cool project',
+        $this->assertDatabaseHas('pipelines', [
+            'name' => 'Cool pipeline',
             'type' => 'laravel',
             'team_id' => $user->currentTeam->id,
         ]);
@@ -65,9 +65,9 @@ class CreateProjectsTest extends TestCase
 
         // When
         $response = $this
-            ->from(route('projects.create'))
+            ->from(route('pipelines.create'))
             ->post(
-                route('projects.store'),
+                route('pipelines.store'),
                 [
                     'name' => '',
                     'type' => 'laravel',
@@ -75,10 +75,10 @@ class CreateProjectsTest extends TestCase
             );
 
         // Then
-        $response->assertRedirect(route('projects.create'));
+        $response->assertRedirect(route('pipelines.create'));
         $response->assertSessionHasErrors('name');
 
-        $this->assertDatabaseMissing('projects', [
+        $this->assertDatabaseMissing('pipelines', [
             'team_id' => $user->currentTeam->id,
         ]);
     }
@@ -93,26 +93,26 @@ class CreateProjectsTest extends TestCase
 
         // When
         $response = $this
-            ->from(route('projects.create'))
+            ->from(route('pipelines.create'))
             ->post(
-                route('projects.store'),
+                route('pipelines.store'),
                 [
-                    'name' => 'Cool project',
+                    'name' => 'Cool pipeline',
                     'type' => '',
                 ]
             );
 
         // Then
-        $response->assertRedirect(route('projects.create'));
+        $response->assertRedirect(route('pipelines.create'));
         $response->assertSessionHasErrors('type');
 
-        $this->assertDatabaseMissing('projects', [
+        $this->assertDatabaseMissing('pipelines', [
             'team_id' => $user->currentTeam->id,
         ]);
     }
 
     /** @test */
-    public function it_has_to_be_a_valid_project_type()
+    public function it_has_to_be_a_valid_pipeline_type()
     {
         $this->withExceptionHandling();
 
@@ -121,42 +121,42 @@ class CreateProjectsTest extends TestCase
 
         // When
         $response = $this
-            ->from(route('projects.create'))
+            ->from(route('pipelines.create'))
             ->post(
-                route('projects.store'),
+                route('pipelines.store'),
                 [
-                    'name' => 'Cool project',
-                    'type' => 'invalid-project-type',
+                    'name' => 'Cool pipeline',
+                    'type' => 'invalid-pipeline-type',
                 ]
             );
 
         // Then
-        $response->assertRedirect(route('projects.create'));
+        $response->assertRedirect(route('pipelines.create'));
         $response->assertSessionHasErrors('type');
 
-        $this->assertDatabaseMissing('projects', [
+        $this->assertDatabaseMissing('pipelines', [
             'team_id' => $user->currentTeam->id,
         ]);
     }
 
     /** @test */
-    public function it_can_create_laravel_projects()
+    public function it_can_create_laravel_pipelines()
     {
         // Given
         $user = $this->registerNewUser();
 
         // When
         $response = $this->post(
-            route('projects.store'),
+            route('pipelines.store'),
             [
-                'name' => 'Cool project',
+                'name' => 'Cool pipeline',
                 'type' => 'laravel',
             ]
         );
 
         // Then
-        $this->assertDatabaseHas('projects', [
-            'name' => 'Cool project',
+        $this->assertDatabaseHas('pipelines', [
+            'name' => 'Cool pipeline',
             'type' => 'laravel',
             'team_id' => $user->currentTeam->id,
         ]);
@@ -169,11 +169,11 @@ class CreateProjectsTest extends TestCase
         $user = $this->registerNewUser();
 
         // When
-        $response = $this->get(route('projects.create'));
+        $response = $this->get(route('pipelines.create'));
 
         // Then
         $response->assertInertia(function (Assert $page) {
-            $page->is('Pipeline/Projects/Create');
+            $page->is('Pipeline/Create');
         });
     }
 
@@ -185,18 +185,18 @@ class CreateProjectsTest extends TestCase
 
         // When
         $response = $this->post(
-            route('projects.store'),
+            route('pipelines.store'),
             [
-                'name' => 'Cool project',
+                'name' => 'Cool pipeline',
                 'type' => 'laravel',
             ]
         );
 
         // Then
-        $project = Project::first();
+        $pipeline = Pipeline::first();
         $response->assertRedirect(
             route('steps.configuration.render', [
-                'project' => $project->id,
+                'pipeline' => $pipeline->id,
                 'step' => StepType::NEW_OR_EXISTING_REPOSITORY,
             ])
         );

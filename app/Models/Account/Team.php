@@ -2,7 +2,7 @@
 
 namespace App\Models\Account;
 
-use App\Models\Project;
+use App\Models\Pipeline;
 use App\Models\Auth\User;
 use Illuminate\Support\Str;
 use App\Models\Account\Invitation;
@@ -35,9 +35,9 @@ class Team extends Model
         return $this->hasMany(Invitation::class);
     }
 
-    public function projects()
+    public function pipelines()
     {
-        return $this->hasMany(Project::class);
+        return $this->hasMany(Pipeline::class);
     }
 
     public function hasMember(User $user): bool

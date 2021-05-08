@@ -4,11 +4,11 @@ namespace Tests\Integration;
 
 use Tests\TestCase;
 use App\Enums\StepType;
-use App\Models\Project;
+use App\Models\Pipeline;
 use App\Models\StepConfiguration;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class ProjectTest extends TestCase
+class PipelineTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -16,11 +16,11 @@ class ProjectTest extends TestCase
     public function it_can_return_its_git_provider_if_it_exists()
     {
         // Given
-        $projectWithConfig = Project::factory()->create();
-        $projectWithoutConfig = Project::factory()->create();
+        $pipelineWithConfig = Pipeline::factory()->create();
+        $pipelineWithoutConfig = Pipeline::factory()->create();
 
         StepConfiguration::factory()->create([
-            'project_id' => $projectWithConfig->id,
+            'pipeline_id' => $pipelineWithConfig->id,
             'type' => StepType::GIT_PROVIDER,
             'details' => [
                 'value' => 'laravel',
@@ -29,18 +29,18 @@ class ProjectTest extends TestCase
 
         // When
         // Then
-        $this->assertEquals('laravel', $projectWithConfig->gitProvider);
-        $this->assertNull($projectWithoutConfig->gitProvider);
+        $this->assertEquals('laravel', $pipelineWithConfig->gitProvider);
+        $this->assertNull($pipelineWithoutConfig->gitProvider);
     }
 
     /** @test */
     public function it_knows_whether_it_has_a_config_for_a_certain_step_type()
     {
         // Given
-        $project = Project::factory()->create();
+        $pipeline = Pipeline::factory()->create();
 
         StepConfiguration::factory()->create([
-            'project_id' => $project->id,
+            'pipeline_id' => $pipeline->id,
             'type' => StepType::GIT_PROVIDER,
             'details' => [
                 'value' => 'laravel',
@@ -50,10 +50,10 @@ class ProjectTest extends TestCase
         // When
         // Then
         $this->assertTrue(
-            $project->hasConfig(StepType::fromString('git-provider'))
+            $pipeline->hasConfig(StepType::fromString('git-provider'))
         );
         $this->assertFalse(
-            $project->hasConfig(StepType::fromString('new-or-existing-repository'))
+            $pipeline->hasConfig(StepType::fromString('new-or-existing-repository'))
         );
     }
 
@@ -62,10 +62,10 @@ class ProjectTest extends TestCase
     public function it_can_get_a_config_for_a_certain_step_type()
     {
         // Given
-        $project = Project::factory()->create();
+        $pipeline = Pipeline::factory()->create();
 
         StepConfiguration::factory()->create([
-            'project_id' => $project->id,
+            'pipeline_id' => $pipeline->id,
             'type' => StepType::GIT_PROVIDER,
             'details' => [
                 'value' => 'laravel',
@@ -76,10 +76,10 @@ class ProjectTest extends TestCase
         // Then
         $this->assertEquals(
             'laravel',
-            $project->getConfig(StepType::fromString('git-provider'))['details']['value']
+            $pipeline->getConfig(StepType::fromString('git-provider'))['details']['value']
         );
         $this->assertNull(
-            $project->getConfig(StepType::fromString('new-or-existing-repository'))
+            $pipeline->getConfig(StepType::fromString('new-or-existing-repository'))
         );
     }
 

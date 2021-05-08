@@ -14,7 +14,7 @@ class StepConfiguration extends Model
     ];
 
     protected $fillable = [
-        'project_id',
+        'pipeline_id',
         'type',
         'details',
     ];

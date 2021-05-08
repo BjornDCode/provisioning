@@ -2,18 +2,18 @@
 
 namespace Database\Factories;
 
-use App\Models\Project;
+use App\Models\Pipeline;
 use App\Models\Account\Team;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class ProjectFactory extends Factory
+class PipelineFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = Project::class;
+    protected $model = Pipeline::class;
 
     /**
      * Define the model's default state.

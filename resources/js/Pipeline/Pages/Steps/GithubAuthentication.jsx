@@ -14,7 +14,7 @@ import FormGroup from '@/Shared/Components/FormElements/FormGroup'
 import RadioListField from '@/Shared/Components/Fields/RadioListField'
 
 const GithubAuthentication = () => {
-    const { configuration, project, accounts = [] } = useProps()
+    const { configuration, pipeline, accounts = [] } = useProps()
 
     const options = accounts.map(account => ({
         key: account.id,
@@ -28,7 +28,7 @@ const GithubAuthentication = () => {
     const onSubmit = () => {
         post(
             route('steps.configuration.configure', {
-                project: project.id,
+                pipeline: pipeline.id,
                 step: 'github-authentication',
             }),
             values

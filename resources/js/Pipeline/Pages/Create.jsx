@@ -1,7 +1,7 @@
 import React from 'react'
 
 import useForm from '@/Shared/Hooks/useForm'
-import { projectTypes } from '@/Shared/Helpers/constants'
+import { pipelineTypes } from '@/Shared/Helpers/constants'
 
 import Authenticated from '@/Shared/Components/Layouts/Authenticated'
 
@@ -19,11 +19,11 @@ const Create = () => {
     })
 
     const onSubmit = () => {
-        post(route('projects.store'), values)
+        post(route('pipelines.store'), values)
     }
 
     return (
-        <Authenticated title="Create new project">
+        <Authenticated title="Create new pipeline">
             <Form className="space-y-6" onSubmit={onSubmit}>
                 <TextField
                     label="Name"
@@ -40,7 +40,7 @@ const Create = () => {
                     name="type"
                     value={values.type}
                     onChange={onChange}
-                    options={projectTypes}
+                    options={pipelineTypes}
                     required
                     error={errors.type}
                 />

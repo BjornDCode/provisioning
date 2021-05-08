@@ -8,7 +8,7 @@ use App\Models\StepConfiguration;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Project extends Model
+class Pipeline extends Model
 {
     use HasFactory;
 

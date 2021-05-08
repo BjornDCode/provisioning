@@ -3,7 +3,7 @@
 namespace Tests\Feature;
 
 use Tests\TestCase;
-use App\Models\Project;
+use App\Models\Pipeline;
 use App\Models\StepConfiguration;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -18,13 +18,13 @@ class ConfigureStepsTest extends TestCase
         $this->withExceptionHandling();
 
         // Given
-        $project = Project::factory()->create();
+        $pipeline = Pipeline::factory()->create();
 
         // When
         $response = $this
             ->post(
                 route('steps.configuration.configure', [ 
-                    'project' => $project->id,
+                    'pipeline' => $pipeline->id,
                     'step' => 'git-provider',
                 ]),
                 [
@@ -37,19 +37,19 @@ class ConfigureStepsTest extends TestCase
     }
 
     /** @test */
-    public function an_authenticated_user_cannot_configure_a_step_for_another_teams_project()
+    public function an_authenticated_user_cannot_configure_a_step_for_another_teams_pipeline()
     {
         $this->withExceptionHandling();
 
         // Given
         $user = $this->registerNewUser();
-        $project = Project::factory()->create();
+        $pipeline = Pipeline::factory()->create();
 
         // When
         $response = $this
             ->post(
                 route('steps.configuration.configure', [ 
-                    'project' => $project->id,
+                    'pipeline' => $pipeline->id,
                     'step' => 'git-provider',
                 ]),
                 [
@@ -66,7 +66,7 @@ class ConfigureStepsTest extends TestCase
     {
         // Given
         $user = $this->registerNewUser();
-        $project = Project::factory()->create([
+        $pipeline = Pipeline::factory()->create([
             'team_id' => $user->currentTeam->id,
         ]);
 
@@ -74,7 +74,7 @@ class ConfigureStepsTest extends TestCase
         $response = $this
             ->post(
                 route('steps.configuration.configure', [ 
-                    'project' => $project->id,
+                    'pipeline' => $pipeline->id,
                     'step' => 'git-provider',
                 ]),
                 [
@@ -84,7 +84,7 @@ class ConfigureStepsTest extends TestCase
 
         // Then
         $this->assertDatabaseHas('step_configurations', [
-            'project_id' => $project->id,
+            'pipeline_id' => $pipeline->id,
             'type' => 'git-provider',
             'details->value' => 'github',
         ]);
@@ -95,11 +95,11 @@ class ConfigureStepsTest extends TestCase
     {
         // Given
         $user = $this->registerNewUser();
-        $project = Project::factory()->create([
+        $pipeline = Pipeline::factory()->create([
             'team_id' => $user->currentTeam->id,
         ]);
         $configuration = StepConfiguration::factory()->create([
-            'project_id' => $project->id,
+            'pipeline_id' => $pipeline->id,
             'type' => 'git-provider',
             'details' => [
                 'value' => 'gitlab',
@@ -110,7 +110,7 @@ class ConfigureStepsTest extends TestCase
         $response = $this
             ->post(
                 route('steps.configuration.configure', [ 
-                    'project' => $project->id,
+                    'pipeline' => $pipeline->id,
                     'step' => 'git-provider',
                 ]),
                 [
@@ -121,7 +121,7 @@ class ConfigureStepsTest extends TestCase
         // Then
         $this->assertDatabaseHas('step_configurations', [
             'id' => $configuration->id,
-            'project_id' => $project->id,
+            'pipeline_id' => $pipeline->id,
             'type' => 'git-provider',
             'details->value' => 'github',
         ]);
