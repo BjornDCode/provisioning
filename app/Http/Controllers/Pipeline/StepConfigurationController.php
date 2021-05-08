@@ -4,26 +4,26 @@ namespace App\Http\Controllers\Pipeline;
 
 use Inertia\Inertia;
 use App\Enums\StepType;
-use App\Models\Project;
 use Illuminate\Http\Request;
-use App\Models\StepConfiguration;
+use App\Models\Pipeline\Pipeline;
 use App\Http\Controllers\Controller;
 use App\Flows\Factory as FlowFactory;
 use App\Steps\Factory as StepFactory;
-use App\Http\Resources\ProjectResource;
 use Illuminate\Support\Facades\Redirect;
-use App\Http\Resources\StepConfigurationResource;
+use App\Models\Pipeline\StepConfiguration;
+use App\Http\Resources\Pipeline\PipelineResource;
+use App\Http\Resources\Pipeline\StepConfigurationResource;
 
 class StepConfigurationController extends Controller
 {
     
-    public function render(Project $project, $type)
+    public function render(Pipeline $pipeline, $type)
     {
-        $this->authorize('update', $project);
+        $this->authorize('update', $pipeline);
 
-        $configuration = $project->configs()->where('type', $type)->first();
+        $configuration = $pipeline->configs()->where('type', $type)->first();
 
-        $flow = FlowFactory::create($project);
+        $flow = FlowFactory::create($pipeline);
         $step = StepFactory::create(
             StepType::fromString($type),
             $flow,
@@ -33,7 +33,7 @@ class StepConfigurationController extends Controller
             "Pipeline/Steps/{$step->component()}", 
             array_merge(
                 [
-                    'project' => new ProjectResource($project),
+                    'pipeline' => new PipelineResource($pipeline),
                     'configuration' => !is_null($configuration) 
                         ? new StepConfigurationResource($configuration) 
                         : null
@@ -43,11 +43,11 @@ class StepConfigurationController extends Controller
     );
     }
 
-    public function configure(Request $request, Project $project, $type)
+    public function configure(Request $request, Pipeline $pipeline, $type)
     {
-        $this->authorize('update', $project);
+        $this->authorize('update', $pipeline);
 
-        $flow = FlowFactory::create($project);
+        $flow = FlowFactory::create($pipeline);
         $step = StepFactory::create(
             StepType::fromString($type),
             $flow,
@@ -58,7 +58,7 @@ class StepConfigurationController extends Controller
         );
 
         StepConfiguration::updateOrCreate([
-            'project_id' => $project->id,
+            'pipeline_id' => $pipeline->id,
             'type' => $type,
         ], [
             'details' => $request->input(),
@@ -67,13 +67,13 @@ class StepConfigurationController extends Controller
         $next = $flow->next();
 
         if (is_null($next)) {
-            return Redirect::route('projects.show', [
-                'project' => $project->id,
+            return Redirect::route('pipelines.show', [
+                'pipeline' => $pipeline->id,
             ]);
         }
 
         return Redirect::route('steps.configuration.render', [
-            'project' => $project->id,
+            'pipeline' => $pipeline->id,
             'step' => $next->type(),
         ]);
     }

@@ -3,8 +3,8 @@
 namespace Tests\Integration;
 
 use Tests\TestCase;
-use App\Models\Account;
-use App\Models\Project;
+use App\Models\Pipeline\Account;
+use App\Models\Pipeline\Pipeline;
 use Illuminate\Support\Facades\Storage;
 use App\Support\LaravelRepositoryCreator;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -38,17 +38,17 @@ class LaravelRepositoryCreatorTest extends TestCase
 
         // Given
         $service = new LaravelRepositoryCreator();
-        $project = Project::factory()->create([
+        $pipeline = Pipeline::factory()->create([
             'name' => 'Test',
         ]);
         $account = Account::factory()->create();
 
         // When
-        $service->execute($project, $account);
+        $service->execute($pipeline, $account);
 
         // Then 
         $this->assertTrue(
-            Storage::exists("repositories/{$project->team->id}/{$project->name}/.env")
+            Storage::exists("repositories/{$pipeline->team->id}/{$pipeline->name}/.env")
         );
     }
 
@@ -59,17 +59,17 @@ class LaravelRepositoryCreatorTest extends TestCase
 
         // Given
         $service = new LaravelRepositoryCreator();
-        $project = Project::factory()->create([
+        $pipeline = Pipeline::factory()->create([
             'name' => 'Test',
         ]);
         $account = Account::factory()->create();
 
         // When
-        $service->execute($project, $account);
+        $service->execute($pipeline, $account);
 
         // Then 
         $this->assertTrue(
-            Storage::exists("repositories/{$project->team->id}/{$project->name}/.git")
+            Storage::exists("repositories/{$pipeline->team->id}/{$pipeline->name}/.git")
         );
     }
 

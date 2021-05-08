@@ -2,19 +2,19 @@
 
 namespace App\Flows;
 
-use App\Models\Project;
-use App\Enums\ProjectType;
+use App\Enums\PipelineType;
+use App\Models\Pipeline\Pipeline;
 use App\Flows\Laravel\Flow as LaravelFlow;
-use App\Exceptions\InvalidProjectTypeException;
+use App\Exceptions\InvalidPipelineTypeException;
 
 class Factory
 {
 
-    public static function create(Project $project)
+    public static function create(Pipeline $pipeline)
     {
-        return match ($project->type) {
-            ProjectType::LARAVEL => new LaravelFlow($project),
-            default => throw new InvalidProjectTypeException,
+        return match ($pipeline->type) {
+            PipelineType::LARAVEL => new LaravelFlow($pipeline),
+            default => throw new InvalidPipelineTypeException,
         };
     }
 

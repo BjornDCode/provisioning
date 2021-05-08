@@ -4,9 +4,9 @@ namespace Tests\Feature\Flows;
 
 use Tests\TestCase;
 use App\Enums\StepType;
-use App\Models\Account;
-use App\Models\Project;
-use App\Models\StepConfiguration;
+use App\Models\Pipeline\Account;
+use App\Models\Pipeline\Pipeline;
+use App\Models\Pipeline\StepConfiguration;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class LaravelFlowTest extends TestCase
@@ -14,25 +14,25 @@ class LaravelFlowTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    public function it_redirects_to_new_or_existing_step_after_creating_a_project()
+    public function it_redirects_to_new_or_existing_step_after_creating_a_pipeline()
     {
         // Given
         $user = $this->registerNewUser();
 
         // When
         $response = $this->post(
-            route('projects.store'),
+            route('pipelines.store'),
             [
-                'name' => 'Cool project',
+                'name' => 'Cool pipeline',
                 'type' => 'laravel',
             ]
         );
 
         // Then
-        $project = Project::first();
+        $pipeline = Pipeline::first();
         $response->assertRedirect(
             route('steps.configuration.render', [
-                'project' => $project->id,
+                'pipeline' => $pipeline->id,
                 'step' => StepType::NEW_OR_EXISTING_REPOSITORY,
             ])
         );
@@ -43,7 +43,7 @@ class LaravelFlowTest extends TestCase
     {
         // Given
         $user = $this->registerNewUser();
-        $project = Project::factory()->create([
+        $pipeline = Pipeline::factory()->create([
             'team_id' => $user->currentTeam->id,
         ]);
 
@@ -51,7 +51,7 @@ class LaravelFlowTest extends TestCase
         $response = $this
             ->post(
                 route('steps.configuration.configure', [ 
-                    'project' => $project->id,
+                    'pipeline' => $pipeline->id,
                     'step' => StepType::NEW_OR_EXISTING_REPOSITORY,
                 ]),
                 [
@@ -62,7 +62,7 @@ class LaravelFlowTest extends TestCase
         // Then
         $response->assertRedirect(
             route('steps.configuration.render', [ 
-                'project' => $project->id,
+                'pipeline' => $pipeline->id,
                 'step' => StepType::GIT_PROVIDER,
             ])
         );
@@ -73,11 +73,11 @@ class LaravelFlowTest extends TestCase
     {
         // Given
         $user = $this->registerNewUser();
-        $project = Project::factory()->create([
+        $pipeline = Pipeline::factory()->create([
             'team_id' => $user->currentTeam->id,
         ]);
         StepConfiguration::factory()->create([
-            'project_id' => $project->id,
+            'pipeline_id' => $pipeline->id,
             'type' => StepType::NEW_OR_EXISTING_REPOSITORY,
             'details' => [
                 'value' => 'new',
@@ -88,7 +88,7 @@ class LaravelFlowTest extends TestCase
         $response = $this
             ->post(
                 route('steps.configuration.configure', [ 
-                    'project' => $project->id,
+                    'pipeline' => $pipeline->id,
                     'step' => StepType::GIT_PROVIDER,
                 ]),
                 [
@@ -99,32 +99,32 @@ class LaravelFlowTest extends TestCase
         // Then
         $response->assertRedirect(
             route('steps.configuration.render', [ 
-                'project' => $project->id,
+                'pipeline' => $pipeline->id,
                 'step' => StepType::GITHUB_AUTHENTICATION,
             ])
         );
     }
 
     /** @test */
-    public function it_redirects_the_the_project_overview_page()
+    public function it_redirects_the_the_pipeline_overview_page()
     {
         // Given
         $user = $this->registerNewUser();
-        $project = Project::factory()->create([
+        $pipeline = Pipeline::factory()->create([
             'team_id' => $user->currentTeam->id,
         ]);
         $account = Account::factory()->create([
             'user_id' => $user->id,
         ]);
         StepConfiguration::factory()->create([
-            'project_id' => $project->id,
+            'pipeline_id' => $pipeline->id,
             'type' => StepType::NEW_OR_EXISTING_REPOSITORY,
             'details' => [
                 'value' => 'new',
             ],
         ]);
         StepConfiguration::factory()->create([
-            'project_id' => $project->id,
+            'pipeline_id' => $pipeline->id,
             'type' => StepType::GIT_PROVIDER,
             'details' => [
                 'value' => 'github',
@@ -135,7 +135,7 @@ class LaravelFlowTest extends TestCase
         $response = $this
             ->post(
                 route('steps.configuration.configure', [ 
-                    'project' => $project->id,
+                    'pipeline' => $pipeline->id,
                     'step' => StepType::GITHUB_AUTHENTICATION,
                 ]),
                 [
@@ -145,8 +145,8 @@ class LaravelFlowTest extends TestCase
 
         // Then
         $response->assertRedirect(
-            route('projects.show', [ 
-                'project' => $project->id,
+            route('pipelines.show', [ 
+                'pipeline' => $pipeline->id,
             ])
         );
     }

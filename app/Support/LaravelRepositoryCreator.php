@@ -2,9 +2,9 @@
 
 namespace App\Support;
 
-use App\Models\Account;
-use App\Models\Project;
 use Illuminate\Support\Str;
+use App\Models\Pipeline\Account;
+use App\Models\Pipeline\Pipeline;
 use App\Clients\Github\ApiClient;
 use Symfony\Component\Process\Process;
 use Illuminate\Support\Facades\Storage;
@@ -12,27 +12,27 @@ use Illuminate\Support\Facades\Storage;
 class LaravelRepositoryCreator
 {
 
-    public function execute(Project $project, Account $account)
+    public function execute(Pipeline $pipeline, Account $account)
     {
         $githubClient = app()->make(ApiClient::class);
         
         // Ensure directory exists
-        if (!Storage::exists("repositories/{$project->team->id}")) {
-            Storage::makeDirectory("repositories/{$project->team->id}");
+        if (!Storage::exists("repositories/{$pipeline->team->id}")) {
+            Storage::makeDirectory("repositories/{$pipeline->team->id}");
         }
 
-        // Ensure project folder doesn't exist
-        if (Storage::exists("repositories/{$project->team->id}/{$project->name}")) {
-            Storage::deleteDirectory("repositories/{$project->team->id}/{$project->name}");
+        // Ensure pipeline folder doesn't exist
+        if (Storage::exists("repositories/{$pipeline->team->id}/{$pipeline->name}")) {
+            Storage::deleteDirectory("repositories/{$pipeline->team->id}/{$pipeline->name}");
         }
 
-        // Create project directory
-        Storage::makeDirectory("repositories/{$project->team->id}/{$project->name}");
+        // Create pipeline directory
+        Storage::makeDirectory("repositories/{$pipeline->team->id}/{$pipeline->name}");
 
-        // Move the script into the project directory
-        chdir("storage/app/repositories/{$project->team->id}/{$project->name}");
+        // Move the script into the pipeline directory
+        chdir("storage/app/repositories/{$pipeline->team->id}/{$pipeline->name}");
 
-        // Scaffold project with composer
+        // Scaffold pipeline with composer
         $process = new Process([
             'composer', 
             'create-project',
@@ -98,7 +98,7 @@ class LaravelRepositoryCreator
 
 
         // Create repository on GitHub
-        $response = $githubClient->authenticate($account)->createRepository($project->name);
+        $response = $githubClient->authenticate($account)->createRepository($pipeline->name);
         $gitUrl = $response->collect()->get('clone_url');
 
         // Set remote

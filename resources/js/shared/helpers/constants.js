@@ -31,7 +31,7 @@ export const gitProviders = [
     },
 ]
 
-export const projectTypes = [
+export const pipelineTypes = [
     {
         key: 'laravel',
         label: 'Laravel',

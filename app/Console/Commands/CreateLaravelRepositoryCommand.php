@@ -3,10 +3,10 @@
 namespace App\Console\Commands;
 
 use Exception;
-use App\Models\Account;
-use App\Models\Project;
 use Illuminate\Support\Str;
 use Illuminate\Console\Command;
+use App\Models\Pipeline\Account;
+use App\Models\Pipeline\Pipeline;
 use Illuminate\Support\Facades\Http;
 use Symfony\Component\Process\Process;
 use Illuminate\Support\Facades\Storage;
@@ -20,7 +20,7 @@ class CreateLaravelRepositoryCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'laravel:create {--project=} {--account=}';
+    protected $signature = 'laravel:create {--pipeline=} {--account=}';
 
     /**
      * The console command description.
@@ -46,11 +46,11 @@ class CreateLaravelRepositoryCommand extends Command
      */
     public function handle(LaravelRepositoryCreator $service)
     {
-        $projectId = $this->option('project');
+        $pipelineId = $this->option('pipeline');
         $accountId = $this->option('account');
 
-        if (is_null($projectId)) {
-            $this->error('Project is required.');
+        if (is_null($pipelineId)) {
+            $this->error('Pipeline is required.');
             return 1;
         }
 
@@ -59,11 +59,11 @@ class CreateLaravelRepositoryCommand extends Command
             return 1;
         }
 
-        $project = Project::find($projectId);
+        $pipeline = Pipeline::find($pipelineId);
         $account = Account::find($accountId);
 
         try {
-            $service->execute($project, $account);
+            $service->execute($pipeline, $account);
             return 0;
         } catch (Exception $e) {
             return 1;

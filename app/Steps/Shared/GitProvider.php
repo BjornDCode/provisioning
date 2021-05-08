@@ -27,7 +27,7 @@ class GitProvider implements Step
     
     public function completed(): bool
     {
-        return $this->flow->project->hasConfig(
+        return $this->flow->pipeline->hasConfig(
             StepType::fromString(
                 StepType::GIT_PROVIDER,
             )

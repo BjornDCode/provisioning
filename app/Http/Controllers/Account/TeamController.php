@@ -6,12 +6,12 @@ use Inertia\Inertia;
 use App\Models\Account\Team;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\TeamResource;
-use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Requests\CreateTeamRequest;
 use Illuminate\Support\Facades\Redirect;
-use App\Http\Resources\InvitationResource;
+use App\Http\Resources\Auth\UserResource;
+use App\Http\Resources\Account\TeamResource;
+use App\Http\Requests\Account\CreateTeamRequest;
+use App\Http\Resources\Account\InvitationResource;
 
 class TeamController extends Controller
 {

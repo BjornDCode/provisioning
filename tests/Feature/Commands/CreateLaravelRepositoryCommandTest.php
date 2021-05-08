@@ -1,12 +1,12 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\Commands;
 
 use Mockery;
 use Tests\TestCase;
-use App\Models\Account;
-use App\Models\Project;
 use Mockery\MockInterface;
+use App\Models\Pipeline\Account;
+use App\Models\Pipeline\Pipeline;
 use App\Clients\Github\ApiClient;
 use App\Clients\Github\TestApiClient;
 use Illuminate\Support\Facades\Storage;
@@ -18,7 +18,7 @@ class CreateLaravelRepositoryCommandTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    public function project_is_required()
+    public function pipeline_is_required()
     {
         // Given
         // When
@@ -26,7 +26,7 @@ class CreateLaravelRepositoryCommandTest extends TestCase
 
         // Then 
         $command
-            ->expectsOutput('Project is required.')
+            ->expectsOutput('Pipeline is required.')
             ->assertExitCode(1);
     }
 
@@ -34,13 +34,13 @@ class CreateLaravelRepositoryCommandTest extends TestCase
     public function account_is_required()
     {
         // Given
-        $project = Project::factory()->create([
+        $pipeline = Pipeline::factory()->create([
             'name' => 'Test',
         ]);
 
         // When
         $command = $this->artisan("laravel:create", [
-            '--project' => $project->id,
+            '--pipeline' => $pipeline->id,
         ]);
 
         // Then 
@@ -52,16 +52,16 @@ class CreateLaravelRepositoryCommandTest extends TestCase
     /** @test */
     public function it_executes_the_service()
     {
-        $project = Project::factory()->create([
+        $pipeline = Pipeline::factory()->create([
             'name' => 'Test',
         ]);
         $account = Account::factory()->create();
         $this->mock(
             LaravelRepositoryCreator::class,
-            function (MockInterface $mock) use ($project, $account) {
+            function (MockInterface $mock) use ($pipeline, $account) {
                 $mock->shouldReceive('execute')
-                    ->withArgs(function ($givenProject, $givenAccount) use ($project, $account) {
-                        return ($givenProject->id === $project->id) &&
+                    ->withArgs(function ($givenPipeline, $givenAccount) use ($pipeline, $account) {
+                        return ($givenPipeline->id === $pipeline->id) &&
                             ($givenAccount->id === $account->id);
                     })
                     ->once();
@@ -70,7 +70,7 @@ class CreateLaravelRepositoryCommandTest extends TestCase
 
         // When
         $command = $this->artisan("laravel:create", [
-            '--project' => $project->id,
+            '--pipeline' => $pipeline->id,
             '--account' => $account->id,
         ]);
 

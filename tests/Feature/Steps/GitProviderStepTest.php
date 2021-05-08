@@ -3,8 +3,8 @@
 namespace Tests\Feature\Steps;
 
 use Tests\TestCase;
-use App\Models\Project;
 use Inertia\Testing\Assert;
+use App\Models\Pipeline\Pipeline;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class GitProviderStepTest extends TestCase
@@ -16,14 +16,14 @@ class GitProviderStepTest extends TestCase
     {
         // Given
         $user = $this->registerNewUser();
-        $project = Project::factory()->create([
+        $pipeline = Pipeline::factory()->create([
             'team_id' => $user->currentTeam->id,
         ]);
 
         // When
         $response = $this->get(
             route('steps.configuration.render', [ 
-                'project' => $project->id,
+                'pipeline' => $pipeline->id,
                 'step' => 'git-provider',
             ])
         );
@@ -39,7 +39,7 @@ class GitProviderStepTest extends TestCase
     {
         // Given
         $user = $this->registerNewUser();
-        $project = Project::factory()->create([
+        $pipeline = Pipeline::factory()->create([
             'team_id' => $user->currentTeam->id,
         ]);
 
@@ -47,7 +47,7 @@ class GitProviderStepTest extends TestCase
         $response = $this
             ->post(
                 route('steps.configuration.configure', [ 
-                    'project' => $project->id,
+                    'pipeline' => $pipeline->id,
                     'step' => 'git-provider',
                 ]),
                 [
@@ -57,7 +57,7 @@ class GitProviderStepTest extends TestCase
 
         // Then
         $this->assertDatabaseHas('step_configurations', [
-            'project_id' => $project->id,
+            'pipeline_id' => $pipeline->id,
             'type' => 'git-provider',
             'details->value' => 'github',
         ]);
@@ -70,7 +70,7 @@ class GitProviderStepTest extends TestCase
 
         // Given
         $user = $this->registerNewUser();
-        $project = Project::factory()->create([
+        $pipeline = Pipeline::factory()->create([
             'team_id' => $user->currentTeam->id,
         ]);
 
@@ -78,13 +78,13 @@ class GitProviderStepTest extends TestCase
         $response = $this
             ->from(
                 route('steps.configuration.render', [ 
-                    'project' => $project->id,
+                    'pipeline' => $pipeline->id,
                     'step' => 'git-provider',
                 ]),
             )
             ->post(
                 route('steps.configuration.configure', [ 
-                    'project' => $project->id,
+                    'pipeline' => $pipeline->id,
                     'step' => 'git-provider',
                 ]),
                 [
@@ -94,14 +94,14 @@ class GitProviderStepTest extends TestCase
 
         // Then
         $this->assertDatabaseMissing('step_configurations', [
-            'project_id' => $project->id,
+            'pipeline_id' => $pipeline->id,
             'type' => 'git-provider',
             'details->value' => 'invalid',
         ]);
 
         $response->assertRedirect(
             route('steps.configuration.render', [ 
-                'project' => $project->id,
+                'pipeline' => $pipeline->id,
                 'step' => 'git-provider',
             ]),
         );

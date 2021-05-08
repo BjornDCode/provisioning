@@ -16,14 +16,14 @@ class CreateStepConfigurationsTable extends Migration
         Schema::create('step_configurations', function (Blueprint $table) {
             $table->id();
             $table->string('type');
-            $table->bigInteger('project_id')->unsigned();
+            $table->bigInteger('pipeline_id')->unsigned();
             $table->json('details');
             $table->timestamps();
 
             $table
-                ->foreign('project_id')
+                ->foreign('pipeline_id')
                 ->references('id')
-                ->on('projects');
+                ->on('pipelines');
         });
     }
 

@@ -27,7 +27,7 @@ class NewOrExistingRepository implements Step
     
     public function completed(): bool
     {
-        return $this->flow->project->hasConfig(
+        return $this->flow->pipeline->hasConfig(
             StepType::fromString(
                 StepType::NEW_OR_EXISTING_REPOSITORY,
             )

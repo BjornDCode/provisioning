@@ -3,10 +3,10 @@
 namespace Tests\Feature;
 
 use Tests\TestCase;
-use App\Models\Project;
 use App\Enums\GitProvider;
 use Inertia\Testing\Assert;
-use App\Models\StepConfiguration;
+use App\Models\Pipeline\Pipeline;
+use App\Models\Pipeline\StepConfiguration;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -20,12 +20,12 @@ class RenderStepConfigurationTest extends TestCase
         $this->withExceptionHandling();
 
         // Given
-        $project = Project::factory()->create();
+        $pipeline = Pipeline::factory()->create();
 
         // When
         $response = $this->get(
             route('steps.configuration.render', [ 
-                'project' => $project->id,
+                'pipeline' => $pipeline->id,
                 'step' => 'git-provider',
             ])
         );
@@ -35,18 +35,18 @@ class RenderStepConfigurationTest extends TestCase
     }
 
     /** @test */
-    public function an_authenticated_user_cannot_render_the_page_to_configure_a_step_for_anoter_teams_project()
+    public function an_authenticated_user_cannot_render_the_page_to_configure_a_step_for_anoter_teams_pipeline()
     {
         $this->withExceptionHandling();
 
         // Given
         $user = $this->registerNewUser();
-        $project = Project::factory()->create();
+        $pipeline = Pipeline::factory()->create();
 
         // When
         $response = $this->get(
             route('steps.configuration.render', [ 
-                'project' => $project->id,
+                'pipeline' => $pipeline->id,
                 'step' => 'git-provider',
             ])
         );
@@ -60,14 +60,14 @@ class RenderStepConfigurationTest extends TestCase
     {
         // Given
         $user = $this->registerNewUser();
-        $project = Project::factory()->create([
+        $pipeline = Pipeline::factory()->create([
             'team_id' => $user->currentTeam->id,
         ]);
 
         // When
         $response = $this->get(
             route('steps.configuration.render', [ 
-                'project' => $project->id,
+                'pipeline' => $pipeline->id,
                 'step' => 'git-provider',
             ])
         );
@@ -83,11 +83,11 @@ class RenderStepConfigurationTest extends TestCase
     {
         // Given
         $user = $this->registerNewUser();
-        $project = Project::factory()->create([
+        $pipeline = Pipeline::factory()->create([
             'team_id' => $user->currentTeam->id,
         ]);
         $configuration = StepConfiguration::factory()->create([
-            'project_id' => $project->id,
+            'pipeline_id' => $pipeline->id,
             'type' => 'git-provider',
             'details' => [
                 'value' => GitProvider::GITHUB,
@@ -97,7 +97,7 @@ class RenderStepConfigurationTest extends TestCase
         // When
         $response = $this->get(
             route('steps.configuration.render', [ 
-                'project' => $project->id,
+                'pipeline' => $pipeline->id,
                 'step' => 'git-provider',
             ])
         );

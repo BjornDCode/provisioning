@@ -9,7 +9,7 @@ use App\Models\Account\Invitation;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Redirect;
-use App\Http\Requests\CreateInvitationRequest;
+use App\Http\Requests\Account\CreateInvitationRequest;
 
 class InvitationsController extends Controller
 {

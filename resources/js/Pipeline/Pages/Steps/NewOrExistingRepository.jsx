@@ -23,7 +23,7 @@ const options = [
 ]
 
 const NewOrExistingRepository = () => {
-    const { configuration, project } = useProps()
+    const { configuration, pipeline } = useProps()
 
     const { values, onChange, errors, status, disabled, post } = useForm({
         value: configuration ? configuration.details.value : '',
@@ -32,7 +32,7 @@ const NewOrExistingRepository = () => {
     const onSubmit = () => {
         post(
             route('steps.configuration.configure', {
-                project: project.id,
+                pipeline: pipeline.id,
                 step: 'new-or-existing-repository',
             }),
             values

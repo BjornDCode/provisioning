@@ -6,7 +6,7 @@ use Inertia\Inertia;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
-use App\Http\Requests\UpdateAccountRequest;
+use App\Http\Requests\Auth\UpdateAccountRequest;
 
 class AccountController extends Controller
 {

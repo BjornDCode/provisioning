@@ -5,9 +5,9 @@ namespace App\Steps\Shared;
 use App\Flows\Flow;
 use App\Steps\Step;
 use App\Enums\StepType;
-use App\Models\Account;
+use App\Models\Pipeline\Account;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Resources\AccountResource;
+use App\Http\Resources\Pipeline\AccountResource;
 
 class GithubAuthentication implements Step
 {
@@ -28,7 +28,7 @@ class GithubAuthentication implements Step
     
     public function completed(): bool
     {
-        return $this->flow->project->hasConfig(
+        return $this->flow->pipeline->hasConfig(
             StepType::fromString(
                 StepType::GITHUB_AUTHENTICATION,
             )
@@ -44,8 +44,12 @@ class GithubAuthentication implements Step
                 function ($attribute, $value, $fail) {
                     $account = Account::find($value);
                     
+                    if (is_null($account)){
+                        return $fail('Account does not exist.');
+                    }
+
                     if (!Auth::user()->currentTeam->hasMember($account->user)) {
-                        $fail('Invalid account.');
+                        return $fail('Invalid account.');
                     }
                 }
             ]

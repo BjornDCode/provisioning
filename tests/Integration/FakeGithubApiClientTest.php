@@ -3,14 +3,16 @@
 namespace Tests\Integration;
 
 use Tests\TestCase;
-use App\Models\Account;
 use App\Models\Auth\User;
+use App\Models\Pipeline\Account;
 use App\Clients\Github\ApiClient;
 use App\Clients\Github\TestApiClient;
 use App\Exceptions\InvalidCredentialsException;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class FakeGithubApiClientTest extends TestCase
 {
+    use RefreshDatabase;
 
     /** @test */
     public function it_requires_authentication()
