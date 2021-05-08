@@ -1,66 +1,21 @@
 <?php
 
-namespace App\Console\Commands;
+namespace App\Support;
 
 use App\Models\Account;
 use App\Models\Project;
 use Illuminate\Support\Str;
-use Illuminate\Console\Command;
 use App\Clients\Github\ApiClient;
-use Illuminate\Support\Facades\Http;
 use Symfony\Component\Process\Process;
 use Illuminate\Support\Facades\Storage;
-use GrahamCampbell\GitHub\Facades\GitHub;
 
-class CreateLaravelRepository extends Command
+class LaravelRepositoryCreator
 {
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
-    protected $signature = 'repository:create {--project=} {--account=}';
 
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
-    protected $description = 'Generates a new Laravel repository.';
-
-    /**
-     * Create a new command instance.
-     *
-     * @return void
-     */
-    public function __construct()
+    public function execute(Project $project, Account $account)
     {
-        parent::__construct();
-    }
-
-    /**
-     * Execute the console command.
-     *
-     * @return int
-     */
-    public function handle(ApiClient $githubClient)
-    {
-        $projectId = $this->option('project');
-        $accountId = $this->option('account');
-
-        if (is_null($projectId)) {
-            $this->error('Project is required');
-            return 1;
-        }
-
-        if (is_null($accountId)) {
-            $this->error('Account is required');
-            return 1;
-        }
-
-        $project = Project::find($projectId);
-        $account = Account::find($accountId);
-
+        $githubClient = app()->make(ApiClient::class);
+        
         // Ensure directory exists
         if (!Storage::exists("repositories/{$project->team->id}")) {
             Storage::makeDirectory("repositories/{$project->team->id}");
@@ -167,7 +122,6 @@ class CreateLaravelRepository extends Command
             'main',
         ]);
         $process->run();
-
-        return 0;
     }
+
 }
