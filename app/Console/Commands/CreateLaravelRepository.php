@@ -6,6 +6,7 @@ use App\Models\Account;
 use App\Models\Project;
 use Illuminate\Support\Str;
 use Illuminate\Console\Command;
+use App\Clients\Github\ApiClient;
 use Illuminate\Support\Facades\Http;
 use Symfony\Component\Process\Process;
 use Illuminate\Support\Facades\Storage;
@@ -42,10 +43,10 @@ class CreateLaravelRepository extends Command
      *
      * @return int
      */
-    public function handle()
+    public function handle(ApiClient $githubClient)
     {
-        $project = Project::find(3);
-        $account = Account::find(3);
+        $project = Project::find(1);
+        $account = Account::find(1);
 
         // Ensure directory exists
         if (!Storage::exists("repositories/{$project->team->id}")) {
@@ -129,12 +130,7 @@ class CreateLaravelRepository extends Command
 
 
         // Create repository on GitHub
-        $response = Http::withHeaders([
-            'Authorization' => 'token ' . $account->token,
-        ])->post('https://api.github.com/user/repos', [
-            'name' => $project->name,
-            'private' => true,
-        ]);
+        $response = $githubClient->authenticate($account)->createRepository($project->name);
         $gitUrl = $response->collect()->get('clone_url');
 
         // Set remote

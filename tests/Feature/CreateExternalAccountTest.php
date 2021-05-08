@@ -63,6 +63,7 @@ class CreateExternalAccountTest extends TestCase
             [
                 'read:user',
                 'repo',
+                'delete_repo',
             ]
         );
 

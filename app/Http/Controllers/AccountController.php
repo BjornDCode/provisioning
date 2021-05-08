@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\RequestState;
+use App\Enums\GitProvider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
@@ -14,10 +15,7 @@ class AccountController extends Controller
     public function redirect(Request $request, $provider)
     {
         return Socialite::driver($provider)
-            ->scopes([
-                'read:user',
-                'repo',
-            ])
+            ->scopes($this->getScopes($provider))
             ->with([
                 'state' => RequestState::fromArray([
                     'redirect' => url()->previous(),
@@ -42,6 +40,18 @@ class AccountController extends Controller
 
         return Redirect::to($state['redirect'])
             ->with('message', "Account connected!");
+    }
+
+    public function getScopes($provider)
+    {
+        return match($provider) {
+            GitProvider::GITHUB => [
+                'read:user',
+                'repo',
+                'delete_repo',
+            ],
+            default => [],
+        };        
     }
 
 }
