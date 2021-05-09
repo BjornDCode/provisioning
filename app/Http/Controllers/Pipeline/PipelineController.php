@@ -17,9 +17,11 @@ class PipelineController extends Controller
 
     public function index()
     {
+        $pipelines = Auth::user()->currentTeam->pipelines;
+        
         return Inertia::render('Pipeline/Index', [
-            'pipelines' => PipelineResource::collection(
-                Auth::user()->currentTeam->pipelines
+            'pending' => PipelineResource::collection(
+                $pipelines->filter(fn ($pipeline) => $pipeline->status === 'pending'),     
             ),
         ]);
     }

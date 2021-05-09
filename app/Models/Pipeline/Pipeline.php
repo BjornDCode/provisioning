@@ -55,4 +55,9 @@ class Pipeline extends Model
         return $config?->details['value'];
     }
 
+    public function getStatusAttribute()
+    {
+        return 'pending';
+    }
+
 }
