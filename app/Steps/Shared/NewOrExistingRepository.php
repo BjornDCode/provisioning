@@ -6,6 +6,7 @@ use App\Flows\Flow;
 use App\Steps\Step;
 use App\Enums\StepType;
 use Illuminate\Validation\Rule;
+use App\Models\Pipeline\StepConfiguration;
 use App\Enums\GitProvider as GitProviderType;
 
 class NewOrExistingRepository implements Step
@@ -47,6 +48,19 @@ class NewOrExistingRepository implements Step
     public function context(): array
     {
         return [];
+    }
+
+    public function createSteps(StepConfiguration $config): void
+    {
+        
+    }
+
+    public function cleanup(StepConfiguration $config): void
+    {
+        if ($config->details['value'] === 'existing') {
+            $step = $this->flow->pipeline->steps()->where('title', 'Create repository')->first();
+            $step?->delete(); 
+        }
     }
 
 }

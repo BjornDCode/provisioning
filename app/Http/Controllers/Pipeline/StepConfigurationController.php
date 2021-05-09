@@ -57,12 +57,15 @@ class StepConfigurationController extends Controller
             $step->validationRules()
         );
 
-        StepConfiguration::updateOrCreate([
+        $config = StepConfiguration::updateOrCreate([
             'pipeline_id' => $pipeline->id,
             'type' => $type,
         ], [
             'details' => $request->input(),
         ]);
+
+        $step->createSteps($config);
+        $step->cleanup($config);
 
         $next = $flow->next();
 

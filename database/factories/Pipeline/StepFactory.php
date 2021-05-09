@@ -2,6 +2,7 @@
 
 namespace Database\Factories\Pipeline;
 
+use App\Enums\PipelineStatus;
 use App\Models\Pipeline\Step;
 use App\Models\Pipeline\StepConfiguration;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -23,8 +24,9 @@ class StepFactory extends Factory
     public function definition()
     {
         return [
+            'title' => $this->faker->word,
+            'status' => $this->faker->randomElement(PipelineStatus::all()),
             'config_id' => StepConfiguration::factory()->create()->id,
-            'status' => 'pending',
         ];
     }
 }

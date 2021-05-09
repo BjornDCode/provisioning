@@ -10,6 +10,10 @@ class Step extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'title',
+    ];
+
     public function config()
     {
         return $this->belongsTo(StepConfiguration::class, 'config_id');

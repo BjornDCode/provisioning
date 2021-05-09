@@ -2,6 +2,8 @@
 
 namespace App\Steps;
 
+use App\Models\Pipeline\StepConfiguration;
+
 interface Step
 {
 
@@ -14,5 +16,9 @@ interface Step
     public function validationRules(): array;
 
     public function context(): array;
+
+    public function createSteps(StepConfiguration $config): void;
+
+    public function cleanup(StepConfiguration $config): void;
 
 }

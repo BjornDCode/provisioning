@@ -15,13 +15,14 @@ class CreateStepsTable extends Migration
     {
         Schema::create('steps', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('config_id')->unsigned();
+            $table->string('title');
             $table->enum('status', [
                 'pending',
                 'failed',
                 'successful',
                 'cancelled',
             ])->default('pending');
+            $table->bigInteger('config_id')->unsigned();
             $table->timestamps();
         });
     }
