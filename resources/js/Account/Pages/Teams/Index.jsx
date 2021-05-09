@@ -4,7 +4,7 @@ import useProps from '@/Shared/Hooks/useProps'
 
 import Settings from '@/Account/Components/Layouts/Settings'
 
-import Group from '@/Account/Components/Leafs/Group'
+import Group from '@/Shared/Components/Leafs/Group'
 import Paragraph from '@/Shared/Components/Leafs/Paragraph'
 
 import InlineForm from '@/Shared/Components/FormElements/InlineForm'
