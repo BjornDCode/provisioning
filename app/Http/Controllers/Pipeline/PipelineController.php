@@ -37,8 +37,8 @@ class PipelineController extends Controller
             ]);
         }
 
-
         return Inertia::render('Pipeline/Show', [
+            'pipeline' => new PipelineResource($pipeline),
             'steps' => StepResource::collection($pipeline->steps)
         ]);
     }

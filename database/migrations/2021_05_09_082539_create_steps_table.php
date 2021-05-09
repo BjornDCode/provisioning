@@ -18,6 +18,7 @@ class CreateStepsTable extends Migration
             $table->string('title');
             $table->enum('status', [
                 'pending',
+                'running',
                 'failed',
                 'successful',
                 'cancelled',

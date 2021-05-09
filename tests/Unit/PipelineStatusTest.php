@@ -16,6 +16,12 @@ class PipelineStatusTest extends TestCase
     }
 
     /** @test */
+    public function it_can_be_running()
+    {
+        $this->assertEquals('running', PipelineStatus::RUNNING);
+    }
+
+    /** @test */
     public function it_can_be_failed()
     {
         $this->assertEquals('failed', PipelineStatus::FAILED);
@@ -38,6 +44,7 @@ class PipelineStatusTest extends TestCase
     {
         $this->assertEquals([
             'pending',
+            'running',
             'failed',
             'successful',
             'cancelled',
