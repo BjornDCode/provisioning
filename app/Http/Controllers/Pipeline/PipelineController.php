@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Pipeline;
 
 use Inertia\Inertia;
+use App\Enums\PipelineStatus;
 use App\Models\Pipeline\Pipeline;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -18,10 +19,19 @@ class PipelineController extends Controller
     public function index()
     {
         $pipelines = Auth::user()->currentTeam->pipelines;
-        
+
         return Inertia::render('Pipeline/Index', [
             'pending' => PipelineResource::collection(
-                $pipelines->filter(fn ($pipeline) => $pipeline->status === 'pending'),     
+                $pipelines->filter(fn ($pipeline) => $pipeline->status === PipelineStatus::PENDING),     
+            ),
+            'running' => PipelineResource::collection(
+                $pipelines->filter(fn ($pipeline) => $pipeline->status === PipelineStatus::RUNNING),     
+            ),
+            'failed' => PipelineResource::collection(
+                $pipelines->filter(fn ($pipeline) => $pipeline->status === PipelineStatus::FAILED),     
+            ),
+            'successful' => PipelineResource::collection(
+                $pipelines->filter(fn ($pipeline) => $pipeline->status === PipelineStatus::SUCCESSFUL),     
             ),
         ]);
     }
@@ -31,6 +41,7 @@ class PipelineController extends Controller
         $this->authorize('view', $pipeline);
 
         $flow = FlowFactory::create($pipeline);
+
 
         if (!$flow->finished()) {
             return Redirect::route('steps.configuration.render', [

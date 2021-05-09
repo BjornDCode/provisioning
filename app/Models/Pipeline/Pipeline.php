@@ -4,6 +4,7 @@ namespace App\Models\Pipeline;
 
 use App\Enums\StepType;
 use App\Models\Account\Team;
+use App\Enums\PipelineStatus;
 use App\Models\Pipeline\Step;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Pipeline\StepConfiguration;
@@ -57,7 +58,19 @@ class Pipeline extends Model
 
     public function getStatusAttribute()
     {
-        return 'pending';
+        if ($this->steps->contains(fn ($step) => $step->status === PipelineStatus::FAILED)) {
+            return PipelineStatus::FAILED;
+        }
+
+        if ($this->steps->contains(fn ($step) => $step->status === PipelineStatus::RUNNING)) {
+            return PipelineStatus::RUNNING;
+        }
+
+        if ($this->steps->count() && $this->steps->every(fn ($step) => $step->status === PipelineStatus::SUCCESSFUL)) {
+            return PipelineStatus::SUCCESSFUL;
+        }
+
+        return PipelineStatus::PENDING;
     }
 
 }

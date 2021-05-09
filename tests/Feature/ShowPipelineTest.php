@@ -63,6 +63,7 @@ class ShowPipelineTest extends TestCase
         $stepOne = Step::factory()->create([
             'status' => PipelineStatus::SUCCESSFUL,
             'config_id' => StepConfiguration::factory()->create([
+                'type' => StepType::GIT_PROVIDER,
                 'pipeline_id' => $pipeline->id,
             ])->id,
         ]);
@@ -70,8 +71,14 @@ class ShowPipelineTest extends TestCase
         $stepTwo = Step::factory()->create([
             'status' => PipelineStatus::PENDING,
             'config_id' => StepConfiguration::factory()->create([
+                'type' => StepType::GITHUB_AUTHENTICATION,
                 'pipeline_id' => $pipeline->id,
             ])->id,
+        ]);
+
+        StepConfiguration::factory()->create([
+            'type' => StepType::NEW_OR_EXISTING_REPOSITORY,
+            'pipeline_id' => $pipeline->id,
         ]);
 
         // When
