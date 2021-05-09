@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Flows\Factory as FlowFactory;
 use Illuminate\Support\Facades\Redirect;
+use App\Http\Resources\Pipeline\StepResource;
 use App\Http\Resources\Pipeline\PipelineResource;
 use App\Http\Requests\Pipeline\CreatePipelineRequest;
 
@@ -20,6 +21,15 @@ class PipelineController extends Controller
             'pipelines' => PipelineResource::collection(
                 Auth::user()->currentTeam->pipelines
             ),
+        ]);
+    }
+
+    public function show(Pipeline $pipeline)
+    {
+        $this->authorize('view', $pipeline);
+
+        return Inertia::render('Pipeline/Show', [
+            'steps' => StepResource::collection($pipeline->steps)
         ]);
     }
 

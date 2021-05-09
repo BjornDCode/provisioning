@@ -4,6 +4,7 @@ namespace App\Models\Pipeline;
 
 use App\Enums\StepType;
 use App\Models\Account\Team;
+use App\Models\Pipeline\Step;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Pipeline\StepConfiguration;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -26,6 +27,11 @@ class Pipeline extends Model
     public function configs()
     {
         return $this->hasMany(StepConfiguration::class);
+    }
+
+    public function steps()
+    {
+        return $this->hasManyThrough(Step::class, StepConfiguration::class, 'pipeline_id', 'config_id');
     }
 
     public function getConfig(StepType $type): StepConfiguration|null

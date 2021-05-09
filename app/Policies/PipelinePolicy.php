@@ -24,4 +24,9 @@ class PipelinePolicy
     {
         return $pipeline->team->hasMember($user);
     }
+
+    public function view(User $user, Pipeline $pipeline)
+    {
+        return $pipeline->team->hasMember($user);
+    }
 }
