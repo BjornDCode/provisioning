@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use Tests\TestCase;
+use App\Enums\StepType;
 use Inertia\Testing\Assert;
 use App\Enums\PipelineStatus;
 use App\Models\Pipeline\Step;
@@ -87,6 +88,38 @@ class ShowPipelineTest extends TestCase
             $page->where('steps.1.id', $stepTwo->id);
             $page->where('steps.1.status', 'pending');
         });
+    }
+
+    /** @test */
+    public function it_redirects_to_the_configuration_flow_if_it_has_not_been_completed()
+    {
+        // Given
+        $user = $this->registerNewUser();
+        $pipeline = Pipeline::factory()->create([
+            'team_id' => $user->currentTeam->id,
+        ]);
+        StepConfiguration::factory()->create([
+            'pipeline_id' => $pipeline->id,
+            'type' => StepType::NEW_OR_EXISTING_REPOSITORY,
+            'details' => [
+                'value' => 'new',
+            ],
+        ]);
+
+        // When 
+        $response = $this->get(
+            route('pipelines.show', [
+                'pipeline' => $pipeline->id,
+            ])
+        );
+
+        // It redirects to the 2nd step in the flow
+        $response->assertRedirect(
+            route('steps.configuration.render', [
+                'pipeline' => $pipeline->id,
+                'step' => StepType::GIT_PROVIDER,
+            ])
+        );
     }
 
 }

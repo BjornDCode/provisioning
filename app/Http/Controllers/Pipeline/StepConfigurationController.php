@@ -67,17 +67,17 @@ class StepConfigurationController extends Controller
         $step->createSteps($config);
         $step->cleanup($config);
 
-        $next = $flow->next();
-
-        if (is_null($next)) {
-            return Redirect::route('pipelines.show', [
-                'pipeline' => $pipeline->id,
-            ]);
+        if ($flow->finished()) {
+            if (is_null($next)) {
+                return Redirect::route('pipelines.show', [
+                    'pipeline' => $pipeline->id,
+                ]);
+            }
         }
 
         return Redirect::route('steps.configuration.render', [
             'pipeline' => $pipeline->id,
-            'step' => $next->type(),
+            'step' => $flow->next()->type(),
         ]);
     }
 

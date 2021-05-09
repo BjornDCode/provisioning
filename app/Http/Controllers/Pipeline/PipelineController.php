@@ -28,6 +28,16 @@ class PipelineController extends Controller
     {
         $this->authorize('view', $pipeline);
 
+        $flow = FlowFactory::create($pipeline);
+
+        if (!$flow->finished()) {
+            return Redirect::route('steps.configuration.render', [
+                'pipeline' => $pipeline->id,
+                'step' => $flow->next()->type(),
+            ]);
+        }
+
+
         return Inertia::render('Pipeline/Show', [
             'steps' => StepResource::collection($pipeline->steps)
         ]);
