@@ -5,7 +5,7 @@ use App\Mail\Invited;
 use App\Models\Account\Team;
 use App\Models\Account\Invitation;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Pipeline\AccountController as ExternalAccountController;
+use Illuminate\Support\Facades\Redirect;
 use App\Http\Controllers\Account\TeamController;
 use App\Http\Controllers\Account\AccountController;
 use App\Http\Controllers\Account\BillingController;
@@ -13,6 +13,7 @@ use App\Http\Controllers\Pipeline\PipelineController;
 use App\Http\Controllers\Account\InvitationsController;
 use App\Http\Controllers\Account\MembershipsController;
 use App\Http\Controllers\Pipeline\StepConfigurationController;
+use App\Http\Controllers\Pipeline\AccountController as ExternalAccountController;
 
 /*
 |--------------------------------------------------------------------------
@@ -59,7 +60,7 @@ Route::middleware(['auth'])->group(function () {
 
 
 Route::get('/dashboard', function () {
-    return Inertia::render('Shared/Dashboard');
+    return Redirect::route('pipelines.index');
 })->middleware(['auth'])->name('dashboard');
 
 Route::get('/needs-verification', function () {
