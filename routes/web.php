@@ -12,6 +12,7 @@ use App\Http\Controllers\Account\BillingController;
 use App\Http\Controllers\Pipeline\PipelineController;
 use App\Http\Controllers\Account\InvitationsController;
 use App\Http\Controllers\Account\MembershipsController;
+use App\Http\Controllers\Pipeline\ExecutePipelineController;
 use App\Http\Controllers\Pipeline\StepConfigurationController;
 use App\Http\Controllers\Pipeline\AccountController as ExternalAccountController;
 
@@ -30,10 +31,12 @@ Route::get('/', function () {
     return Inertia::render('Shared/Home');
 });
 
+
 Route::middleware(['auth'])->group(function () {
     Route::get('/accounts/{provider}/redirect', [ExternalAccountController::class, 'redirect'])->name('accounts.redirect');
     Route::get('/accounts/{provider}/callback', [ExternalAccountController::class, 'callback'])->name('accounts.callback');
 
+    Route::post('/pipelines/{pipeline}/execute', ExecutePipelineController::class)->name('pipelines.execute');
     Route::get('/pipelines/{pipeline}/{step}', [StepConfigurationController::class, 'render'])->name('steps.configuration.render');
     Route::post('/pipelines/{pipeline}/{step}', [StepConfigurationController::class, 'configure'])->name('steps.configuration.configure');
 

@@ -12,11 +12,17 @@ class Step extends Model
 
     protected $fillable = [
         'title',
+        'status',
     ];
 
     public function config()
     {
         return $this->belongsTo(StepConfiguration::class, 'config_id');
+    }
+
+    public function getTypeAttribute()
+    {
+        return $this->config->type;
     }
 
 }

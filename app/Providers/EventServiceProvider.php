@@ -2,9 +2,14 @@
 
 namespace App\Providers;
 
+use App\Events\PipelineStepFailed;
+use App\Listeners\FailPipelineStep;
 use Illuminate\Support\Facades\Event;
+use App\Listeners\CancelPipelineSteps;
 use Illuminate\Auth\Events\Registered;
+use Illuminate\Queue\Events\JobFailed;
 use App\Listeners\CreateTeamForNewUser;
+use App\Listeners\HandlePipelineExecutionError;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
@@ -19,6 +24,13 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             CreateTeamForNewUser::class,
             SendEmailVerificationNotification::class,
+        ],
+        JobFailed::class => [
+            HandlePipelineExecutionError::class,
+        ],
+        PipelineStepFailed::class => [
+            FailPipelineStep::class,
+            CancelPipelineSteps::class,
         ],
     ];
 
