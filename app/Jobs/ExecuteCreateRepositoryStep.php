@@ -8,6 +8,8 @@ use App\Models\Pipeline\Step;
 use Illuminate\Bus\Queueable;
 use App\Models\Pipeline\Account;
 use App\Models\Pipeline\Pipeline;
+use App\Events\PipelineStepRunning;
+use App\Events\PipelineStepSuccessful;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Queue\InteractsWithQueue;
@@ -51,6 +53,10 @@ class ExecuteCreateRepositoryStep implements ShouldQueue
      */
     public function handle(LaravelRepositoryCreator $service)
     {
+        PipelineStepRunning::dispatch($this->pipeline, $this->step);
+
         $service->execute($this->pipeline, $this->account);
+
+        PipelineStepSuccessful::dispatch($this->pipeline, $this->step);
     }
 }

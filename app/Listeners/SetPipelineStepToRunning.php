@@ -6,7 +6,7 @@ use App\Enums\PipelineStatus;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class FailPipelineStep
+class SetPipelineStepToRunning
 {
     /**
      * Create the event listener.
@@ -27,7 +27,7 @@ class FailPipelineStep
     public function handle($event)
     {
         $event->step->update([
-            'status' => PipelineStatus::FAILED,
+            'status' => PipelineStatus::RUNNING,
         ]);
     }
 }

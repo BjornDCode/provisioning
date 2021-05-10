@@ -8,10 +8,12 @@ use App\Enums\StepType;
 use App\Enums\GitProvider;
 use App\Enums\PipelineStatus;
 use App\Models\Pipeline\Step;
-use App\Events\PipelineStepFailed;
 use App\Models\Pipeline\Account;
 use App\Models\Pipeline\Pipeline;
+use App\Events\PipelineStepFailed;
+use App\Events\PipelineStepRunning;
 use Illuminate\Support\Facades\Event;
+use App\Events\PipelineStepSuccessful;
 use Illuminate\Queue\Events\JobFailed;
 use App\Jobs\ExecuteCreateRepositoryStep;
 use App\Models\Pipeline\StepConfiguration;
@@ -58,8 +60,7 @@ class PipelineEventsTest extends TestCase
         ]);
 
         // When
-        $job = new ExecuteCreateRepositoryStep($pipeline);
-        event(new JobFailed('sync', $job, new Exception));
+        PipelineStepFailed::dispatch($pipeline, $stepOne);
 
         // Then
         $this->assertDatabaseHas('steps', [
@@ -76,30 +77,64 @@ class PipelineEventsTest extends TestCase
         $pipeline = Pipeline::factory()->create([
             'team_id' => $user->currentTeam->id,
         ]);
-        $account = Account::factory()->create([
-            'type' => GitProvider::GITHUB,
-            'user_id' => $user->id,
-        ]);
         $step = Step::factory()->create([
             'title' => 'Create repository',
             'status' => PipelineStatus::PENDING,
-            'config_id' => StepConfiguration::factory()->create([
-                'type' => StepType::GITHUB_AUTHENTICATION,
-                'pipeline_id' => $pipeline->id,
-                'details' => [
-                    'account_id' => $account->id,
-                ],
-            ]),
         ]);
 
         // When
-        $job = new ExecuteCreateRepositoryStep($pipeline);
-        event(new JobFailed('sync', $job, new Exception));
+        PipelineStepFailed::dispatch($pipeline, $step);
 
         // Then
         $this->assertDatabaseHas('steps', [
             'id' => $step->id,
             'status' => 'failed',
+        ]);
+    }
+
+    /** @test */
+    public function it_marks_the_step_as_running()
+    {
+        // Given
+        $user = $this->registerNewUser();
+        $pipeline = Pipeline::factory()->create([
+            'team_id' => $user->currentTeam->id,
+        ]);
+        $step = Step::factory()->create([
+            'title' => 'Create repository',
+            'status' => PipelineStatus::PENDING,
+        ]);
+
+        // When
+        PipelineStepRunning::dispatch($pipeline, $step);
+
+        // Then
+        $this->assertDatabaseHas('steps', [
+            'id' => $step->id,
+            'status' => 'running',
+        ]);
+    }
+
+    /** @test */
+    public function it_marks_the_step_as_successful()
+    {
+        // Given
+        $user = $this->registerNewUser();
+        $pipeline = Pipeline::factory()->create([
+            'team_id' => $user->currentTeam->id,
+        ]);
+        $step = Step::factory()->create([
+            'title' => 'Create repository',
+            'status' => PipelineStatus::PENDING,
+        ]);
+
+        // When
+        PipelineStepSuccessful::dispatch($pipeline, $step);
+
+        // Then
+        $this->assertDatabaseHas('steps', [
+            'id' => $step->id,
+            'status' => 'successful',
         ]);
     }
 
