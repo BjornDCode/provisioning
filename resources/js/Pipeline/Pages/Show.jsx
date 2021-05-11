@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react'
+import React, { Fragment, useEffect } from 'react'
 import { Inertia } from '@inertiajs/inertia'
 
 import useProps from '@/Shared/Hooks/useProps'
@@ -13,6 +13,17 @@ import StandaloneList from '@/Pipeline/Components/Leafs/StandaloneList'
 
 const Show = () => {
     const { pipeline, steps } = useProps()
+
+    const reload = () => {
+        Inertia.reload({ only: ['pipeline', 'steps'] })
+    }
+
+    useEffect(() => {
+        window.Echo.private(`pipeline.${pipeline.id}`)
+            .listen('PipelineStepRunning', reload)
+            .listen('PipelineStepFailed', reload)
+            .listen('PipelineStepSuccessful', reload)
+    }, [])
 
     const onSubmit = event => {
         event.preventDefault()

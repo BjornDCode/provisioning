@@ -1,4 +1,6 @@
 import React from 'react'
+import Pusher from 'pusher-js'
+import Echo from 'laravel-echo'
 import { App } from '@inertiajs/inertia-react'
 import { render } from 'react-dom'
 import { InertiaProgress } from '@inertiajs/progress'
@@ -7,6 +9,17 @@ const el = document.getElementById('app')
 
 InertiaProgress.init({
     color: '#67E8F9',
+})
+
+window.Pusher = Pusher
+
+window.Echo = new Echo({
+    broadcaster: 'pusher',
+    key: '3263492761',
+    wsHost: window.location.hostname,
+    wsPort: 6001,
+    forceTLS: false,
+    disableStats: true,
 })
 
 render(
