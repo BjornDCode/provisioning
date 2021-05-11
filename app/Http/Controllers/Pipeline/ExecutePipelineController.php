@@ -51,7 +51,7 @@ class ExecutePipelineController extends Controller
 
         return Redirect::route('pipelines.show', [
             'pipeline' => $pipeline->id,
-        ]);
+        ])->with('message', 'Pipeline has been started.');
     }
 
 }

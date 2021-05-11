@@ -18,6 +18,7 @@ class PipelineResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'type' => $this->type,
+            'status' => $this->status,
         ];
     }
 }
