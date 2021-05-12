@@ -2,8 +2,9 @@
 
 namespace Database\Seeders;
 
-use App\Models\Account\Team;
 use App\Models\Auth\User;
+use App\Models\Account\Team;
+use App\Models\Billing\Plan;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
@@ -36,6 +37,11 @@ class UsersSeeder extends Seeder
 
         $member = User::factory()->create();
         $team->join($member);
+
+        $plan = Plan::factory()->create([
+            'team_id' => $team->id,
+            'expires_at' => null,
+        ]);
 
     }
 }
