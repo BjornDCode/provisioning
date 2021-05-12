@@ -10,4 +10,6 @@ interface PaymentGateway
 
     public function createCustomerForTeam(Team $team): CustomerId;
 
+    public function createBillingSessionForCustomer(CustomerId $id): string;
+
 }

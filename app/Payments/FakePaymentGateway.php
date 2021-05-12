@@ -13,5 +13,10 @@ class FakePaymentGateway implements PaymentGateway
     {
         return CustomerId::fromString('fake_customer_id_123');
     }
+
+    public function createBillingSessionForCustomer(CustomerId $id): string
+    {
+        return 'https://billing.stripe.com/session/123';
+    }
     
 }
