@@ -2,8 +2,10 @@
 
 namespace Tests\Integration;
 
+use Carbon\Carbon;
 use App\CustomerId;
 use Tests\TestCase;
+use App\SubscriptionId;
 use App\Models\Account\Team;
 use App\Models\Billing\Plan;
 use App\Payments\PaymentGateway;
@@ -64,7 +66,7 @@ class FakePaymentGatewayTest extends TestCase
         $gateway = $this->app->make(PaymentGateway::class);
 
         // When
-        $subscriptionId = $gateway->subscribeCustomerToPlan(
+        $gateway->subscribeCustomerToPlan(
             CustomerId::fromString($plan->customer_id),
         );
 
@@ -79,7 +81,26 @@ class FakePaymentGatewayTest extends TestCase
     /** @test */
     public function it_can_cancel_a_subscription()
     {
-        $this->markTestIncomplete();
+        $this->app->bind(PaymentGateway::class, FakePaymentGateway::class);
+
+        // Given
+        $team = Team::factory()->create();
+        $plan = Plan::factory()->create([
+            'team_id' => $team->id,
+            'expires_at' => null,
+        ]);
+        $gateway = $this->app->make(PaymentGateway::class);
+
+        // When
+        $gateway->cancelSubscription(
+            SubscriptionId::fromString($plan->subscription_id),
+        );
+
+        // Then
+        $this->assertDatabaseHas('plans', [
+            'id' => $plan->id,
+            'expires_at' => Carbon::now()->addWeeks(2),
+        ]);
     }
 
 }

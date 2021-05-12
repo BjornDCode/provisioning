@@ -15,4 +15,6 @@ interface PaymentGateway
 
     public function subscribeCustomerToPlan(CustomerId $id): SubscriptionId;
 
+    public function cancelSubscription(SubscriptionId $id): void;
+
 }

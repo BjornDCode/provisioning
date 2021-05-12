@@ -2,6 +2,7 @@
 
 namespace App\Payments;
 
+use Carbon\Carbon;
 use App\CustomerId;
 use App\SubscriptionId;
 use App\Models\Account\Team;
@@ -31,6 +32,15 @@ class FakePaymentGateway implements PaymentGateway
         ]);
 
         return SubscriptionId::fromString('fake_subscription_id_123');
+    }
+
+    public function cancelSubscription(SubscriptionId $id): void
+    {
+        $plan = Plan::where('subscription_id', $id->toString())->first();        
+
+        $plan->update([
+            'expires_at' => Carbon::now()->addWeeks(2),
+        ]);
     }
     
 }
