@@ -11,6 +11,7 @@ class Plan extends Model
 
     protected $fillable = [
         'customer_id',
+        'subscription_id',
         'expires_at',
     ];
 

@@ -17,6 +17,7 @@ class CreatePlansTable extends Migration
             $table->id();
             $table->bigInteger('team_id');
             $table->string('customer_id')->nullable();
+            $table->string('subscription_id')->nullable();
             $table->datetime('expires_at')->nullable();
             $table->timestamps();
         });

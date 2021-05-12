@@ -51,4 +51,35 @@ class FakePaymentGatewayTest extends TestCase
         $this->assertEquals('https://billing.stripe.com/session/123', $url);
     }
 
+    /** @test */
+    public function it_can_subscribe_a_team()
+    {
+        $this->app->bind(PaymentGateway::class, FakePaymentGateway::class);
+
+        // Given
+        $team = Team::factory()->create();
+        $plan = Plan::factory()->create([
+            'team_id' => $team->id,
+        ]);
+        $gateway = $this->app->make(PaymentGateway::class);
+
+        // When
+        $subscriptionId = $gateway->subscribeCustomerToPlan(
+            CustomerId::fromString($plan->customer_id),
+        );
+
+        // Then
+        $this->assertDatabaseHas('plans', [
+            'id' => $plan->id,
+            'subscription_id' => 'fake_subscription_id_123',
+            'expires_at' => null,
+        ]);
+    }
+
+    /** @test */
+    public function it_can_cancel_a_subscription()
+    {
+        $this->markTestIncomplete();
+    }
+
 }

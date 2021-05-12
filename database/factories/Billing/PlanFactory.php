@@ -27,6 +27,7 @@ class PlanFactory extends Factory
         return [
             'team_id' => Team::factory()->create()->id,
             'customer_id' => Str::random(10),
+            'subscription_id' => Str::random(10),
             'expires_at' => Carbon::now(),
         ];
     }
