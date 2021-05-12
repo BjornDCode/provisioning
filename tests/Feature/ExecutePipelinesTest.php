@@ -132,6 +132,10 @@ class ExecutePipelinesTest extends TestCase
 
         // Given
         $user = $this->registerNewUser();
+        $plan = Plan::factory()->create([
+            'team_id' => $user->currentTeam->id,
+            'expires_at' => null,
+        ]);
         $pipeline = Pipeline::factory()->create([
             'team_id' => $user->currentTeam->id,
         ]);
@@ -191,6 +195,10 @@ class ExecutePipelinesTest extends TestCase
         $user = $this->registerNewUser();
         $pipeline = Pipeline::factory()->create([
             'team_id' => $user->currentTeam->id,
+        ]);
+        $plan = Plan::factory()->create([
+            'team_id' => $user->currentTeam->id,
+            'expires_at' => null,
         ]);
 
         // When
