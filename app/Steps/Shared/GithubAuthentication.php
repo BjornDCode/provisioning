@@ -69,6 +69,7 @@ class GithubAuthentication implements Step
     public function createSteps(StepConfiguration $config): void
     {
         $type = StepType::fromString(StepType::NEW_OR_EXISTING_REPOSITORY);
+
         if (!$this->flow->pipeline->hasConfig($type)) {
             return;
         }
@@ -76,6 +77,10 @@ class GithubAuthentication implements Step
         $newOrExistingConfig = $this->flow->pipeline->getConfig($type);
 
         if ($newOrExistingConfig->details['value'] !== 'new') {
+            return;
+        }
+
+        if ($config->steps->count()) {
             return;
         }
 
