@@ -2,8 +2,9 @@
 
 namespace App\Models\Billing;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Plan extends Model
 {
@@ -14,5 +15,14 @@ class Plan extends Model
         'subscription_id',
         'expires_at',
     ];
+
+    public function getActiveAttribute()
+    {
+        if (is_null($this->expires_at)) {
+            return true;
+        } 
+
+        return $this->expires_at->greaterThan(Carbon::now());
+    }
 
 }
