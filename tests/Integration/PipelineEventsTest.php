@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Event;
 use App\Events\PipelineStepSuccessful;
 use Illuminate\Queue\Events\JobFailed;
 use App\Jobs\ExecuteCreateRepositoryStep;
+use Illuminate\Support\Facades\Broadcast;
 use App\Models\Pipeline\StepConfiguration;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -27,6 +28,8 @@ class PipelineEventsTest extends TestCase
     /** @test */
     public function it_cancels_the_remaining_pending_steps_when_a_pipeline_fails()
     {
+        Broadcast::spy();
+
         // Given
         $user = $this->registerNewUser();
         $pipeline = Pipeline::factory()->create([
@@ -72,6 +75,8 @@ class PipelineEventsTest extends TestCase
     /** @test */
     public function it_sets_the_failed_steps_status_to_failed()
     {
+        Broadcast::spy();
+
         // Given
         $user = $this->registerNewUser();
         $pipeline = Pipeline::factory()->create([
@@ -95,6 +100,8 @@ class PipelineEventsTest extends TestCase
     /** @test */
     public function it_marks_the_step_as_running()
     {
+        Broadcast::spy();
+
         // Given
         $user = $this->registerNewUser();
         $pipeline = Pipeline::factory()->create([
@@ -118,6 +125,8 @@ class PipelineEventsTest extends TestCase
     /** @test */
     public function it_marks_the_step_as_successful()
     {
+        Broadcast::spy();
+
         // Given
         $user = $this->registerNewUser();
         $pipeline = Pipeline::factory()->create([

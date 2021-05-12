@@ -85,6 +85,11 @@ class ExecuteCreateRepositoryStepTest extends TestCase
     /** @test */
     public function it_runs_the_create_repository_service()
     {
+        Event::fake([
+            PipelineStepRunning::class,
+            PipelineStepSuccessful::class,
+        ]);
+
         // Given
         $user = $this->registerNewUser();
         $pipeline = Pipeline::factory()->create([
