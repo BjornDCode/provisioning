@@ -24,6 +24,12 @@ class ExecutePipelineController extends Controller
     {
         $this->authorize('update', $pipeline);
 
+        if (!$pipeline->team->plan->active) {
+            return Redirect::route('pipelines.show', [
+                'pipeline' => $pipeline->id,
+            ])->with('message', 'Please subscribe to a paid plan.');
+        }
+
         $flow = FlowFactory::create($pipeline);
 
         if (!$flow->finished()) {

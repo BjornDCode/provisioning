@@ -22,7 +22,9 @@ class Plan extends Model
             return true;
         } 
 
-        return $this->expires_at->greaterThan(Carbon::now());
+        $expires_at = $this->expires_at instanceof Carbon ? $this->expires_at : Carbon::parse($this->expires_at);
+
+        return $expires_at->greaterThan(Carbon::now());
     }
 
 }

@@ -3,9 +3,11 @@
 namespace Tests\Feature;
 
 use Exception;
+use Carbon\Carbon;
 use Tests\TestCase;
 use App\Enums\StepType;
 use App\Enums\GitProvider;
+use App\Models\Billing\Plan;
 use App\Enums\PipelineStatus;
 use App\Jobs\ExecutePipeline;
 use App\Models\Pipeline\Step;
@@ -209,6 +211,69 @@ class ExecutePipelinesTest extends TestCase
     public function it_can_rerun_a_failed_step()
     {
         $this->markTestIncomplete();
+    }
+
+    /** @test */
+    public function it_can_only_run_pipelines_if_the_team_is_paying()
+    {
+        Queue::fake();
+
+        // Given
+        $user = $this->registerNewUser();
+        $plan = Plan::factory()->create([
+            'team_id' => $user->currentTeam->id,
+            'expires_at' => Carbon::now()->subWeeks(2),
+        ]);
+        $pipeline = Pipeline::factory()->create([
+            'team_id' => $user->currentTeam->id,
+        ]);
+        $account = Account::factory()->create([
+            'type' => GitProvider::GITHUB,
+            'user_id' => $user->id,
+        ]);
+        $step = Step::factory()->create([
+            'title' => 'Create repository',
+            'status' => PipelineStatus::PENDING,
+            'config_id' => StepConfiguration::factory()->create([
+                'type' => StepType::GITHUB_AUTHENTICATION,
+                'pipeline_id' => $pipeline->id,
+                'details' => [
+                    'account_id' => $account->id,
+                ],
+            ]),
+        ]);
+
+        StepConfiguration::factory()->create([
+            'type' => StepType::NEW_OR_EXISTING_REPOSITORY,
+            'pipeline_id' => $pipeline->id,
+            'details' => [
+                'value' => 'new',
+            ],
+        ]);
+
+        StepConfiguration::factory()->create([
+            'type' => StepType::GIT_PROVIDER,
+            'pipeline_id' => $pipeline->id,
+            'details' => [
+                'value' => GitProvider::GITHUB,
+            ],
+        ]);
+
+        // When
+        $response = $this->post(
+            route('pipelines.execute', [ 'pipeline' => $pipeline->id, ]),
+        );
+
+        // Then
+        Queue::assertNotPushed(ExecutePipeline::class);
+
+        $response->assertRedirect(
+            route('pipelines.show', [
+                'pipeline' => $pipeline->id,
+            ]),
+        );
+
+        $response->assertSessionHas('message', 'Please subscribe to a paid plan.');
     }
 
 }
