@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Account;
 
 use Inertia\Inertia;
+use App\Events\TeamCreated;
 use App\Models\Account\Team;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -44,6 +45,8 @@ class TeamController extends Controller
         );
 
         Auth::user()->setCurrentTeam($team);
+
+        TeamCreated::dispatch($team);
 
         return Redirect::route('settings.teams.show', [
             'team' => $team->id,

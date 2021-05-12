@@ -4,6 +4,7 @@ namespace App\Models\Account;
 
 use App\Models\Auth\User;
 use Illuminate\Support\Str;
+use App\Models\Billing\Plan;
 use App\Models\Pipeline\Pipeline;
 use App\Models\Account\Invitation;
 use App\Models\Account\Membership;
@@ -38,6 +39,11 @@ class Team extends Model
     public function pipelines()
     {
         return $this->hasMany(Pipeline::class);
+    }
+
+    public function plan()
+    {
+        return $this->hasOne(Plan::class);
     }
 
     public function hasMember(User $user): bool
