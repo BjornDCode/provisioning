@@ -6,6 +6,7 @@ import Authenticated from '@/Shared/Components/Layouts/Authenticated'
 
 import List from '@/Shared/Components/Leafs/List'
 import Group from '@/Shared/Components/Leafs/Group'
+import LinkButton from '@/Shared/Components/Leafs/LinkButton'
 import ListItemLink from '@/Shared/Components/Leafs/ListItemLink'
 
 const Index = () => {
@@ -85,6 +86,11 @@ const Index = () => {
                     </List>
                 </Group>
             )}
+            <div class="flex justify-end">
+                <LinkButton to={route('pipelines.create')}>
+                    Create pipeline
+                </LinkButton>
+            </div>
         </Authenticated>
     )
 }
