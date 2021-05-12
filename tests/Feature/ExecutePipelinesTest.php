@@ -205,4 +205,10 @@ class ExecutePipelinesTest extends TestCase
         );
     }
 
+    /** @test */
+    public function it_can_rerun_a_failed_step()
+    {
+        $this->markTestIncomplete();
+    }
+
 }

@@ -4,12 +4,13 @@ import useClasses from '@/Shared/Hooks/useClasses'
 import { match } from '@/Shared/Helpers/methods'
 
 import Icon from '@/Shared/Components/Leafs/Icon'
+import Button from '@/Shared/Components/Leafs/Button'
 
 import StandaloneListItem from '@/Pipeline/Components/Leafs/StandaloneListItem'
 
 const StepListItem = ({ id, status, children }) => (
     <StandaloneListItem
-        className={useClasses('border-2', {
+        className={useClasses('border-2 relative', {
             'border-gray-300': status === 'pending',
             'border-green-400': status === 'successful',
             'border-red-400': status === 'failed',
@@ -53,6 +54,15 @@ const StepListItem = ({ id, status, children }) => (
         )}
     >
         {children}
+
+        {status === 'failed' && (
+            <form
+                className="absolute top-1/2 left-full ml-4 transform -translate-y-1/2"
+                onSubmit={event => event.preventDefault()}
+            >
+                <Button variant="secondary">Retry</Button>
+            </form>
+        )}
     </StandaloneListItem>
 )
 
