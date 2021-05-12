@@ -4,6 +4,8 @@ namespace Tests\Integration;
 
 use Tests\TestCase;
 use App\Enums\StepType;
+use App\Enums\PipelineStatus;
+use App\Models\Pipeline\Step;
 use App\Models\Pipeline\Pipeline;
 use App\Models\Pipeline\StepConfiguration;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -81,6 +83,121 @@ class PipelineTest extends TestCase
         $this->assertNull(
             $pipeline->getConfig(StepType::fromString('new-or-existing-repository'))
         );
+    }
+
+    /** @test */
+    public function its_status_is_pending_if_all_its_steps_are_pending()
+    {
+        // Given
+        $pipeline = Pipeline::factory()->create();
+
+        Step::factory()->count(3)->create([
+            'status' => PipelineStatus::PENDING,
+            'config_id' => StepConfiguration::factory()->create([
+                'pipeline_id' => $pipeline->id,
+            ]),
+        ]);
+
+        // When
+        $status = $pipeline->status;
+
+        // Then
+        $this->assertEquals('pending', $status);
+    }
+
+    /** @test */
+    public function its_status_is_running_if_one_step_is_running()
+    {
+        // Given
+        $pipeline = Pipeline::factory()->create();
+
+        Step::factory()->create([
+            'status' => PipelineStatus::PENDING,
+            'config_id' => StepConfiguration::factory()->create([
+                'pipeline_id' => $pipeline->id,
+            ]),
+        ]);
+
+        Step::factory()->create([
+            'status' => PipelineStatus::RUNNING,
+            'config_id' => StepConfiguration::factory()->create([
+                'pipeline_id' => $pipeline->id,
+            ]),
+        ]);
+
+        Step::factory()->create([
+            'status' => PipelineStatus::SUCCESSFUL,
+            'config_id' => StepConfiguration::factory()->create([
+                'pipeline_id' => $pipeline->id,
+            ]),
+        ]);
+
+        // When
+        $status = $pipeline->status;
+
+        // Then
+        $this->assertEquals('running', $status);
+    }
+
+    /** @test */
+    public function its_status_is_failed_if_one_step_is_failed()
+    {
+        // Given
+        $pipeline = Pipeline::factory()->create();
+
+        Step::factory()->create([
+            'status' => PipelineStatus::PENDING,
+            'config_id' => StepConfiguration::factory()->create([
+                'pipeline_id' => $pipeline->id,
+            ]),
+        ]);
+
+        Step::factory()->create([
+            'status' => PipelineStatus::RUNNING,
+            'config_id' => StepConfiguration::factory()->create([
+                'pipeline_id' => $pipeline->id,
+            ]),
+        ]);
+
+        Step::factory()->create([
+            'status' => PipelineStatus::SUCCESSFUL,
+            'config_id' => StepConfiguration::factory()->create([
+                'pipeline_id' => $pipeline->id,
+            ]),
+        ]);
+
+        Step::factory()->create([
+            'status' => PipelineStatus::FAILED,
+            'config_id' => StepConfiguration::factory()->create([
+                'pipeline_id' => $pipeline->id,
+            ]),
+        ]);
+
+        // When
+        $status = $pipeline->status;
+
+        // Then
+        $this->assertEquals('failed', $status);
+    }
+
+    /** @test */
+    public function its_status_is_successful_if_all_its_steps_are_successful()
+    {
+        // Given
+        $pipeline = Pipeline::factory()->create();
+
+        Step::factory()->count(3)->create([
+            'status' => PipelineStatus::SUCCESSFUL,
+            'config_id' => StepConfiguration::factory()->create([
+                'pipeline_id' => $pipeline->id,
+            ]),
+        ]);
+
+        // When
+        $status = $pipeline->status;
+
+        // Then
+        $this->assertEquals('successful', $status);
     }
 
 }

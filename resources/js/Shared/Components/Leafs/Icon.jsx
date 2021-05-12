@@ -5,6 +5,9 @@ import {
     HiChevronDown,
     HiChevronRight,
     HiCheck,
+    HiMinusSm,
+    HiOutlineRefresh,
+    HiOutlineDotsHorizontal,
 } from 'react-icons/hi'
 import {
     DiLaravel,
@@ -29,6 +32,9 @@ const icons = {
     ChevronDown: HiChevronDown,
     ChevronRight: HiChevronRight,
     Checkmark: HiCheck,
+    Minus: HiMinusSm,
+    Loading: HiOutlineRefresh,
+    Dots: HiOutlineDotsHorizontal,
 
     Laravel: DiLaravel,
     Symfony: DiSymfonyBadge,

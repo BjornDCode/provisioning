@@ -6,6 +6,7 @@ use App\Flows\Flow;
 use App\Steps\Step;
 use App\Enums\StepType;
 use Illuminate\Validation\Rule;
+use App\Models\Pipeline\StepConfiguration;
 use App\Enums\GitProvider as GitProviderType;
 
 class GitProvider implements Step
@@ -47,6 +48,28 @@ class GitProvider implements Step
     public function context(): array
     {
         return [];
+    }
+
+    public function createSteps(StepConfiguration $config): void
+    {
+        
+    }
+
+    public function cleanup(StepConfiguration $config): void
+    {
+        if ($config->details['value'] === GitProviderType::GITHUB) {
+            return;
+        }
+
+        $type = StepType::fromString(StepType::GITHUB_AUTHENTICATION);
+
+        if (!$this->flow->pipeline->hasConfig($type)) {
+            return;
+        }
+
+        $githubAuthenticationConfig = $this->flow->pipeline->getConfig($type);
+
+        $githubAuthenticationConfig?->delete();
     }
 
 }

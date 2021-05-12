@@ -22,7 +22,7 @@ class SwitchTeamsTest extends TestCase
         $membershipTeam->join($user);
 
         // When
-        $response = $this->get(route('dashboard'));
+        $response = $this->get(route('pipelines.index'));
 
         // Then
         $response->assertInertia(function (Assert $page) use ($user, $membershipTeam) {
@@ -46,7 +46,7 @@ class SwitchTeamsTest extends TestCase
         $user = $this->registerNewUser();
 
         // When
-        $response = $this->get(route('dashboard'));
+        $response = $this->get(route('pipelines.index'));
 
         // Then
         $response->assertInertia(function (Assert $page) use ($user) {

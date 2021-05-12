@@ -57,16 +57,17 @@ class StepConfigurationController extends Controller
             $step->validationRules()
         );
 
-        StepConfiguration::updateOrCreate([
+        $config = StepConfiguration::updateOrCreate([
             'pipeline_id' => $pipeline->id,
             'type' => $type,
         ], [
             'details' => $request->input(),
         ]);
 
-        $next = $flow->next();
+        $step->createSteps($config);
+        $step->cleanup($config);
 
-        if (is_null($next)) {
+        if ($flow->finished()) {
             return Redirect::route('pipelines.show', [
                 'pipeline' => $pipeline->id,
             ]);
@@ -74,7 +75,7 @@ class StepConfigurationController extends Controller
 
         return Redirect::route('steps.configuration.render', [
             'pipeline' => $pipeline->id,
-            'step' => $next->type(),
+            'step' => $flow->next()->type(),
         ]);
     }
 

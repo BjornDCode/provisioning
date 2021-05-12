@@ -5,7 +5,11 @@ namespace Tests\Feature\Steps;
 use Tests\TestCase;
 use App\Enums\StepType;
 use Inertia\Testing\Assert;
+use App\Enums\PipelineStatus;
+use App\Models\Pipeline\Step;
+use App\Models\Pipeline\Account;
 use App\Models\Pipeline\Pipeline;
+use App\Models\Pipeline\StepConfiguration;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class NewOrExistingRepositoryTest extends TestCase
@@ -107,6 +111,91 @@ class NewOrExistingRepositoryTest extends TestCase
             ]),
         );
         $response->assertSessionHasErrors('value');
+    }
+
+    /** @test */
+    public function it_does_not_create_a_runnable_step()
+    {
+        // Given
+        $user = $this->registerNewUser();
+        $pipeline = Pipeline::factory()->create([
+            'team_id' => $user->currentTeam->id,
+        ]);
+
+        // When
+        $response = $this
+            ->post(
+                route('steps.configuration.configure', [ 
+                    'pipeline' => $pipeline->id,
+                    'step' => StepType::NEW_OR_EXISTING_REPOSITORY,
+                ]),
+                [
+                    'value' => 'new', 
+                ]
+            );
+
+        // Then
+        $config = StepConfiguration::where('type', StepType::NEW_OR_EXISTING_REPOSITORY)->first();
+        $this->assertDatabaseMissing('steps', [
+            'config_id' => $config->id,
+        ]);
+    }
+
+    /** @test */
+    public function it_removes_a_create_repository_step_if_the_configuration_changes_to_use_existing_repo()
+    {
+        // Given
+        $user = $this->registerNewUser();
+        $pipeline = Pipeline::factory()->create([
+            'team_id' => $user->currentTeam->id,
+        ]);
+        $account = Account::factory()->create([
+            'user_id' => $user->id,
+        ]);
+        StepConfiguration::factory()->create([
+            'pipeline_id' => $pipeline->id,
+            'type' => StepType::NEW_OR_EXISTING_REPOSITORY,
+            'details' => [
+                'value' => 'new',
+            ],
+        ]);
+        StepConfiguration::factory()->create([
+            'pipeline_id' => $pipeline->id,
+            'type' => StepType::GIT_PROVIDER,
+            'details' => [
+                'value' => 'github',
+            ],
+        ]);
+        $githubAuthenticationConfig = StepConfiguration::factory()->create([
+            'pipeline_id' => $pipeline->id,
+            'type' => StepType::GITHUB_AUTHENTICATION,
+            'details' => [
+                'account_id' => $account->id,
+            ],
+        ]);
+        $step = Step::factory()->create([
+            'title' => 'Create repository',
+            'status' => PipelineStatus::PENDING,
+            'config_id' => $githubAuthenticationConfig,
+        ]);
+
+        // When
+        $response = $this
+            ->post(
+                route('steps.configuration.configure', [ 
+                    'pipeline' => $pipeline->id,
+                    'step' => StepType::NEW_OR_EXISTING_REPOSITORY,
+                ]),
+                [
+                    'value' => 'existing',
+                ]
+            );
+
+
+        // Then
+        $this->assertDatabaseMissing('steps', [
+            'id' => $step->id,
+        ]);
     }
 
 }

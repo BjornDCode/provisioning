@@ -22,4 +22,9 @@ abstract class Flow
         return new $step($this);
     }
 
+    public function finished(): bool
+    {
+        return is_null($this->next());
+    }
+
 }
