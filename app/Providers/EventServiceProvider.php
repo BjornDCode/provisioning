@@ -29,9 +29,6 @@ class EventServiceProvider extends ServiceProvider
             CreateTeamForNewUser::class,
             SendEmailVerificationNotification::class,
         ],
-        JobFailed::class => [
-            HandlePipelineExecutionError::class,
-        ],
         PipelineStepFailed::class => [
             SetPipelineStepToFailed::class,
             CancelPipelineSteps::class,

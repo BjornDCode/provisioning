@@ -3,11 +3,13 @@
 namespace App\Jobs;
 
 use Exception;
+use Throwable;
 use App\Enums\StepType;
 use App\Models\Pipeline\Step;
 use Illuminate\Bus\Queueable;
 use App\Models\Pipeline\Account;
 use App\Models\Pipeline\Pipeline;
+use App\Events\PipelineStepFailed;
 use App\Events\PipelineStepRunning;
 use App\Events\PipelineStepSuccessful;
 use Illuminate\Queue\SerializesModels;
@@ -59,4 +61,10 @@ class ExecuteCreateRepositoryStep implements ShouldQueue
 
         PipelineStepSuccessful::dispatch($this->pipeline, $this->step);
     }
+
+    public function failed(Throwable $exception)
+    {
+        PipelineStepFailed::dispatch($this->pipeline, $this->step);
+    }
+
 }

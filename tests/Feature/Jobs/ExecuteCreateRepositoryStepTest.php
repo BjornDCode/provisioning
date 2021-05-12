@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Jobs;
 
-use \Exception;
+use Exception;
 use Tests\TestCase;
 use App\Enums\StepType;
 use App\Enums\GitProvider;
@@ -231,7 +231,7 @@ class ExecuteCreateRepositoryStepTest extends TestCase
 
         // When
         $job = new ExecuteCreateRepositoryStep($pipeline);
-        event(new JobFailed('sync', $job, new Exception));
+        $job->failed(new Exception);
 
         // Then
         Event::assertDispatched(PipelineStepFailed::class, function ($event) use ($pipeline) {
