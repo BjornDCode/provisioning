@@ -57,10 +57,17 @@ const Show = () => {
                 </Paragraph>
             )}
             {pipeline.status === 'failed' && (
-                <Paragraph>
-                    A problem occured in your pipeline. Please update the
-                    configuration or try and run the pipeline again.
-                </Paragraph>
+                <Fragment>
+                    <Paragraph>
+                        A problem occured in your pipeline. Please update the
+                        configuration or try and run the pipeline again.
+                    </Paragraph>
+                    <form onSubmit={onSubmit}>
+                        <Button size="large" type="submit">
+                            Re-run pipeline
+                        </Button>
+                    </form>
+                </Fragment>
             )}
             {pipeline.status === 'successful' && (
                 <Paragraph>Your project has been provisioned.</Paragraph>
