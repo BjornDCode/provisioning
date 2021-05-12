@@ -5,10 +5,11 @@ import { match } from '@/Shared/Helpers/methods'
 
 import Icon from '@/Shared/Components/Leafs/Icon'
 import Button from '@/Shared/Components/Leafs/Button'
+import LinkButton from '@/Shared/Components/Leafs/LinkButton'
 
 import StandaloneListItem from '@/Pipeline/Components/Leafs/StandaloneListItem'
 
-const StepListItem = ({ id, status, children }) => (
+const StepListItem = ({ id, status, type, pipelineId, children }) => (
     <StandaloneListItem
         className={useClasses('border-2 relative', {
             'border-gray-300': status === 'pending',
@@ -54,14 +55,21 @@ const StepListItem = ({ id, status, children }) => (
         )}
     >
         {children}
-
         {status === 'failed' && (
-            <form
-                className="absolute top-1/2 left-full ml-4 transform -translate-y-1/2"
-                onSubmit={event => event.preventDefault()}
-            >
-                <Button variant="secondary">Retry</Button>
-            </form>
+            <nav className="absolute top-1/2 left-full ml-4 transform -translate-y-1/2 space-y-1">
+                <form onSubmit={event => event.preventDefault()}>
+                    <Button variant="secondary">Retry</Button>
+                </form>
+                <LinkButton
+                    variant="secondary"
+                    to={route('steps.configuration.render', {
+                        pipeline: pipelineId,
+                        step: type,
+                    })}
+                >
+                    Edit
+                </LinkButton>
+            </nav>
         )}
     </StandaloneListItem>
 )

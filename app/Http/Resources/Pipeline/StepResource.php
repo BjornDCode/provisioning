@@ -19,6 +19,7 @@ class StepResource extends JsonResource
             'id' => $this->id,
             'title' => $this->title,
             'status' => $this->status,
+            'type' => $this->type,
             'config' => new StepConfigurationResource($this->config),
         ];
     }

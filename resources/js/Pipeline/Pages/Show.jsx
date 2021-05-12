@@ -79,6 +79,8 @@ const Show = () => {
                         key={step.id}
                         id={step.id}
                         status={step.status}
+                        type={step.type}
+                        pipelineId={pipeline.id}
                     >
                         {step.title}
                     </StepListItem>
