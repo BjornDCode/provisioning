@@ -47,7 +47,10 @@ class ChooseRepository implements Step
 
     public function validationRules(): array
     {
-        return [];        
+        return [
+            'owner' => 'required|string',
+            'name' => 'required|string',
+        ];        
     }
 
     public function context(): array
