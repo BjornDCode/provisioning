@@ -106,6 +106,53 @@ class LaravelFlowTest extends TestCase
     }
 
     /** @test */
+    public function it_redirects_to_the_choose_repository_step()
+    {
+        // Given
+        $user = $this->registerNewUser();
+        $pipeline = Pipeline::factory()->create([
+            'team_id' => $user->currentTeam->id,
+        ]);
+        $account = Account::factory()->create([
+            'user_id' => $user->id,
+        ]);
+        StepConfiguration::factory()->create([
+            'pipeline_id' => $pipeline->id,
+            'type' => StepType::NEW_OR_EXISTING_REPOSITORY,
+            'details' => [
+                'value' => 'existing',
+            ],
+        ]);
+        StepConfiguration::factory()->create([
+            'pipeline_id' => $pipeline->id,
+            'type' => StepType::GIT_PROVIDER,
+            'details' => [
+                'value' => 'github',
+            ],
+        ]);
+
+        // When
+        $response = $this
+            ->post(
+                route('steps.configuration.configure', [ 
+                    'pipeline' => $pipeline->id,
+                    'step' => StepType::GITHUB_AUTHENTICATION,
+                ]),
+                [
+                    'account_id' => $account->id, 
+                ]
+            );
+
+        // Then
+        $response->assertRedirect(
+            route('steps.configuration.render', [ 
+                'pipeline' => $pipeline->id,
+                'step' => StepType::CHOOSE_REPOSITORY,
+            ])
+        );
+    }
+
+    /** @test */
     public function it_redirects_the_the_pipeline_overview_page()
     {
         // Given
