@@ -20,6 +20,7 @@ const RadioGridField = ({
     empty = 'No options',
     onChange,
     options = [],
+    Header = () => {},
     ...props
 }) => {
     const handleChange = value => {
@@ -41,6 +42,9 @@ const RadioGridField = ({
             onChange={handleChange}
         >
             <RadioGroup.Label as={FormLabel}>{label}</RadioGroup.Label>
+
+            {Header({ options })}
+
             {options.length === 0 && (
                 <div className="bg-gray-600 rounded-md p-8">
                     <Paragraph>{empty}</Paragraph>

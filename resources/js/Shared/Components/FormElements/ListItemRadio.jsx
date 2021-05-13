@@ -8,11 +8,14 @@ import RadioCircle from '@/Shared/Components/FormElements/RadioCircle'
 
 const ListItemRadio = ({ value, children }) => {
     return (
-        <RadioGroup.Option value={value} className="focus:outline-none">
+        <RadioGroup.Option
+            value={value}
+            className="group focus:outline-none first:rounded-t-lg last:rounded-b-lg"
+        >
             {({ checked, active }) => (
                 <ListItem
                     className={useClasses(
-                        'cursor-pointer border-2 first:rounded-t-lg last:rounded-b-lg',
+                        'cursor-pointer border-2 group-first:rounded-t-lg group-last:rounded-b-lg',
                         {
                             'border-green-300': checked && !active,
                             'border-gray-600': !checked && !active,

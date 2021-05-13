@@ -32,8 +32,14 @@ module.exports = {
         },
     },
 
+    groupVariants: {
+        'group-first': ['group', 'first', ':first-child'],
+        'group-last': ['group', 'last', ':last-child'],
+    },
+
     plugins: [
         require('@tailwindcss/forms'),
         require('@tailwindcss/aspect-ratio'),
+        require('tailwindcss-group-variants'),
     ],
 }
