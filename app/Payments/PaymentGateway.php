@@ -13,8 +13,6 @@ interface PaymentGateway
 
     public function createBillingSessionForCustomer(CustomerId $id): string;
 
-    public function subscribeCustomerToPlan(CustomerId $id): SubscriptionId;
-
-    public function cancelSubscription(SubscriptionId $id): void;
+    public function subscribeCustomerToFreePlan(CustomerId $id): SubscriptionId;
 
 }

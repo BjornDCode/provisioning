@@ -12,15 +12,13 @@ use App\Payments\PaymentGateway;
 use App\Payments\FakePaymentGateway;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class FakePaymentGatewayTest extends TestCase
+class StripePaymentGatewayTest extends TestCase
 {
     use RefreshDatabase;
 
     /** @test */
     public function it_can_create_a_customer_for_a_team()
     {
-        $this->app->bind(PaymentGateway::class, FakePaymentGateway::class);
-
         // Given
         $team = Team::factory()->create();
         $gateway = $this->app->make(PaymentGateway::class);
@@ -29,20 +27,21 @@ class FakePaymentGatewayTest extends TestCase
         $customerId = $gateway->createCustomerForTeam($team);
 
         // Then
-        $this->assertEquals('fake_customer_id_123', $customerId->toString());
+        $this->assertInstanceOf(CustomerId::class, $customerId);
     }
 
     /** @test */
     public function it_can_create_a_checkout_session_url()
     {
-        $this->app->bind(PaymentGateway::class, FakePaymentGateway::class);
+        $gateway = $this->app->make(PaymentGateway::class);
 
         // Given
         $team = Team::factory()->create();
+        $customerId = $gateway->createCustomerForTeam($team);
         $plan = Plan::factory()->create([
             'team_id' => $team->id,
+            'customer_id' => $customerId->toString(),
         ]);
-        $gateway = $this->app->make(PaymentGateway::class);
 
         // When
         $url = $gateway->createBillingSessionForCustomer(
@@ -50,30 +49,31 @@ class FakePaymentGatewayTest extends TestCase
         );
 
         // Then
-        $this->assertEquals('https://billing.stripe.com/session/123', $url);
+        $this->assertStringContainsString('https://billing.stripe.com/session', $url);
     }
 
     /** @test */
-    public function it_can_subscribe_a_team_to_a_free_plan()
+    public function it_can_subscribe_a_team_to_the_free_plan()
     {
-        $this->app->bind(PaymentGateway::class, FakePaymentGateway::class);
+        $gateway = $this->app->make(PaymentGateway::class);
 
         // Given
         $team = Team::factory()->create();
+        $customerId = $gateway->createCustomerForTeam($team);
         $plan = Plan::factory()->create([
             'team_id' => $team->id,
+            'customer_id' => $customerId->toString(),
         ]);
-        $gateway = $this->app->make(PaymentGateway::class);
 
         // When
-        $gateway->subscribeCustomerToFreePlan(
+        $subscriptionId = $gateway->subscribeCustomerToFreePlan(
             CustomerId::fromString($plan->customer_id),
         );
 
         // Then
         $this->assertDatabaseHas('plans', [
             'id' => $plan->id,
-            'subscription_id' => 'fake_subscription_id_123',
+            'subscription_id' => $subscriptionId->toString(),
         ]);
     }
 

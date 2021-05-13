@@ -2,16 +2,24 @@
 
 namespace App\Http\Controllers\Account;
 
+use App\CustomerId;
 use Inertia\Inertia;
-use Illuminate\Http\Request;
+use App\Payments\PaymentGateway;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class BillingController extends Controller
 {
     
-    public function show()
+    public function show(PaymentGateway $gateway)
     {
-        return Inertia::render('Account/Billing/Show');
+        $url = $gateway->createBillingSessionForCustomer(
+            CustomerId::fromString(
+                Auth::user()->currentTeam->plan->customer_id
+            ),
+        );
+
+        return Inertia::location($url);
     }
 
 }
