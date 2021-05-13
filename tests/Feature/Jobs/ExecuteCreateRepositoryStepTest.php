@@ -7,6 +7,7 @@ use Tests\TestCase;
 use App\Enums\StepType;
 use App\Enums\GitProvider;
 use Mockery\MockInterface;
+use App\Models\Billing\Plan;
 use App\Enums\PipelineStatus;
 use App\Jobs\ExecutePipeline;
 use App\Models\Pipeline\Step;
@@ -18,6 +19,7 @@ use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Queue;
 use App\Events\PipelineStepSuccessful;
 use Illuminate\Queue\Events\JobFailed;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Artisan;
 use App\Jobs\ExecuteCreateRepositoryStep;
 use App\Support\LaravelRepositoryCreator;
@@ -36,6 +38,10 @@ class ExecuteCreateRepositoryStepTest extends TestCase
 
         // Given
         $user = $this->registerNewUser();
+        $plan = Plan::factory()->create([
+            'team_id' => $user->currentTeam->id,
+            'plan_id' => Config::get('services.stripe.paid_plan_id'),
+        ]);
         $pipeline = Pipeline::factory()->create([
             'team_id' => $user->currentTeam->id,
         ]);

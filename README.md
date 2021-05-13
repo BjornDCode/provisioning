@@ -11,3 +11,11 @@ sail artisan websockets:serve
 ```sh
 sail artisan queue:listen
 ```
+
+## Stripe
+
+Run ngrok to receive Stripe webhooks. (Remember to update the webhook url in stripe to the ngrok url).
+
+```sh
+ngrok http 80
+```

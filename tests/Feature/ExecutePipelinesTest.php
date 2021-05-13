@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Queue;
 use App\Events\PipelineStepSuccessful;
 use Illuminate\Queue\Events\JobFailed;
+use Illuminate\Support\Facades\Config;
 use App\Jobs\ExecuteCreateRepositoryStep;
 use App\Models\Pipeline\StepConfiguration;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -134,7 +135,7 @@ class ExecutePipelinesTest extends TestCase
         $user = $this->registerNewUser();
         $plan = Plan::factory()->create([
             'team_id' => $user->currentTeam->id,
-            'expires_at' => null,
+            'plan_id' => Config::get('services.stripe.paid_plan_id'),
         ]);
         $pipeline = Pipeline::factory()->create([
             'team_id' => $user->currentTeam->id,
@@ -198,7 +199,7 @@ class ExecutePipelinesTest extends TestCase
         ]);
         $plan = Plan::factory()->create([
             'team_id' => $user->currentTeam->id,
-            'expires_at' => null,
+            'plan_id' => Config::get('services.stripe.paid_plan_id'),
         ]);
 
         // When
@@ -230,7 +231,7 @@ class ExecutePipelinesTest extends TestCase
         $user = $this->registerNewUser();
         $plan = Plan::factory()->create([
             'team_id' => $user->currentTeam->id,
-            'expires_at' => Carbon::now()->subWeeks(2),
+            'plan_id' => Config::get('services.stripe.free_plan_id'),
         ]);
         $pipeline = Pipeline::factory()->create([
             'team_id' => $user->currentTeam->id,
