@@ -2,9 +2,12 @@
 
 namespace Database\Seeders;
 
-use App\Models\Account\Team;
+use Carbon\Carbon;
 use App\Models\Auth\User;
+use App\Models\Account\Team;
+use App\Models\Billing\Plan;
 use Illuminate\Database\Seeder;
+use App\Payments\PaymentGateway;
 use Illuminate\Support\Facades\Hash;
 
 class UsersSeeder extends Seeder
@@ -36,6 +39,19 @@ class UsersSeeder extends Seeder
 
         $member = User::factory()->create();
         $team->join($member);
+
+        $paymentGateway = app()->make(PaymentGateway::class);
+
+        $customerId = $paymentGateway->createCustomerForTeam($team);
+
+        $plan = Plan::factory()->create([
+            'team_id' => $team->id,
+            'customer_id' => $customerId->toString(),
+            'subscription_id' => null,
+            'plan_id' => null,
+        ]);
+
+        $paymentGateway->subscribeCustomerToFreePlan($customerId);
 
     }
 }

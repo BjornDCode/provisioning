@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Redirect;
 use App\Http\Controllers\Account\TeamController;
 use App\Http\Controllers\Account\AccountController;
-use App\Http\Controllers\Account\BillingController;
+use App\Http\Controllers\Billing\BillingController;
 use App\Http\Controllers\Pipeline\PipelineController;
 use App\Http\Controllers\Account\InvitationsController;
 use App\Http\Controllers\Account\MembershipsController;
@@ -30,7 +30,6 @@ use App\Http\Controllers\Pipeline\AccountController as ExternalAccountController
 Route::get('/', function () {
     return Inertia::render('Shared/Home');
 });
-
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/accounts/{provider}/redirect', [ExternalAccountController::class, 'redirect'])->name('accounts.redirect');

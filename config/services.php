@@ -36,4 +36,10 @@ return [
         'redirect' => '/accounts/github/callback',
     ],
 
+    'stripe' => [
+        'secret' => env('STRIPE_SECRET_KEY'),
+        'free_plan_id' => env('STRIPE_FREE_PLAN_ID'),
+        'paid_plan_id' => env('STRIPE_PAID_PLAN_ID'),
+    ],
+
 ];

@@ -86,7 +86,7 @@ const Index = () => {
                     </List>
                 </Group>
             )}
-            <div class="flex justify-end">
+            <div className="flex justify-end">
                 <LinkButton to={route('pipelines.create')}>
                     Create pipeline
                 </LinkButton>

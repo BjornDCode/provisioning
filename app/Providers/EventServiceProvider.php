@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Events\TeamCreated;
 use App\Events\PipelineStepFailed;
 use App\Events\PipelineStepRunning;
 use Illuminate\Support\Facades\Event;
@@ -10,6 +11,7 @@ use App\Listeners\CancelPipelineSteps;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Queue\Events\JobFailed;
 use App\Listeners\CreateTeamForNewUser;
+use App\Listeners\CreatePlanForNewTeams;
 use App\Listeners\SetPipelineStepToFailed;
 use App\Listeners\SetPipelineStepToRunning;
 use App\Listeners\SetPipelineStepToSuccessful;
@@ -28,6 +30,9 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             CreateTeamForNewUser::class,
             SendEmailVerificationNotification::class,
+        ],
+        TeamCreated::class => [
+            CreatePlanForNewTeams::class,
         ],
         PipelineStepFailed::class => [
             SetPipelineStepToFailed::class,

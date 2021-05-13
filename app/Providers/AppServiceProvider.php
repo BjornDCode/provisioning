@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Payments\PaymentGateway;
+use App\Payments\StripePaymentGateway;
 use Illuminate\Support\ServiceProvider;
 use App\Support\LaravelRepositoryCreator;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -18,6 +20,7 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->bind(GithubApiClient::class, GithubProductionApiClient::class);
+        $this->app->bind(PaymentGateway::class, StripePaymentGateway::class);
         $this->app->bind(LaravelRepositoryCreator::class);
     }
 
