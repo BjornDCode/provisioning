@@ -13,6 +13,8 @@ class BillingController extends Controller
     
     public function show(PaymentGateway $gateway)
     {
+        $this->authorize('update', Auth::user()->currentTeam);
+
         $url = $gateway->createBillingSessionForCustomer(
             CustomerId::fromString(
                 Auth::user()->currentTeam->plan->customer_id
