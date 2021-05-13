@@ -6,6 +6,7 @@ use App\Flows\Flow;
 use App\Steps\Step;
 use App\Enums\StepType;
 use Illuminate\Validation\Rule;
+use App\Clients\Github\ApiClient as GithubApiClient;
 use App\Models\Pipeline\StepConfiguration;
 use App\Enums\GitProvider as GitProviderType;
 
@@ -51,7 +52,16 @@ class ChooseRepository implements Step
 
     public function context(): array
     {
-        return [];
+        $client = app()->make(GithubApiClient::class);
+
+        $repositories = $client
+            ->authenticate($this->flow->pipeline->gitAccount)
+            ->listRepositories()
+            ->toArray();
+
+        return [
+            'repositories' => $repositories,
+        ];
     }
 
     public function createSteps(StepConfiguration $config): void

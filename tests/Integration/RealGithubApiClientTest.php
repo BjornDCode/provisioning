@@ -105,9 +105,7 @@ class RealGithubApiClientTest extends TestCase
         // When
         $repositories = $client
             ->authenticate($account)
-            ->listRepositories(
-                env('GITHUB_ACCOUNT_NAME'),
-            );
+            ->listRepositories();
 
         // Then
         $this->assertEquals(

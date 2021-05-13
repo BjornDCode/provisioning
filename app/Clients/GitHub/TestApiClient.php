@@ -60,7 +60,7 @@ class TestApiClient implements ApiClient
         return $response;
     }
 
-    public function listRepositories(string $owner): Collection
+    public function listRepositories(): Collection
     {
         if (is_null($this->account)) {
             throw new InvalidCredentialsException;
@@ -68,15 +68,15 @@ class TestApiClient implements ApiClient
 
         return collect([
             (object) [
-                'owner' => $owner,
+                'owner' => $this->account->identifier,
                 'name' => 'aaaaaa',
             ],
             (object) [
-                'owner' => $owner,
+                'owner' => $this->account->identifier,
                 'name' => 'bbbbbb',
             ],
             (object) [
-                'owner' => $owner,
+                'owner' => $this->account->identifier,
                 'name' => 'cccccc',
             ],
         ]);

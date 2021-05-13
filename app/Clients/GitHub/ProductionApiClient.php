@@ -49,7 +49,7 @@ class ProductionApiClient implements ApiClient
         return $response;
     }
 
-    public function listRepositories(string $owner): Collection
+    public function listRepositories(): Collection
     {
         if (is_null($this->account)) {
             throw new InvalidCredentialsException;

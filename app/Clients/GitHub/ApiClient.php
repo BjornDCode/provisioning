@@ -15,6 +15,6 @@ interface ApiClient
 
     public function deleteRepository(string $owner, string $name): Response;
 
-    public function listRepositories(string $owner): Collection;
+    public function listRepositories(): Collection;
 
 }

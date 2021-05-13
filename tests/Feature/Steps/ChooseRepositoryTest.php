@@ -4,9 +4,14 @@ namespace Tests\Feature\Steps;
 
 use Tests\TestCase;
 use App\Enums\StepType;
+use App\Enums\GitProvider;
 use Inertia\Testing\Assert;
+use App\Models\Pipeline\Account;
 use App\Models\Pipeline\Pipeline;
+use App\Models\Pipeline\StepConfiguration;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use App\Clients\Github\ApiClient as GithubApiClient;
+use App\Clients\Github\TestApiClient as GithubTestApiClient;
 
 class ChooseRepositoryTest extends TestCase
 {
@@ -38,7 +43,47 @@ class ChooseRepositoryTest extends TestCase
     /** @test */
     public function it_lists_repositories()
     {
-        $this->markTestIncomplete();
+        $this->app->bind(GithubApiClient::class, GithubTestApiClient::class);
+        
+        // Given
+        $user = $this->registerNewUser();
+        $pipeline = Pipeline::factory()->create([
+            'team_id' => $user->currentTeam->id,
+        ]);
+        $account = Account::factory()->create([
+            'type' => GitProvider::GITHUB,
+        ]);
+
+        StepConfiguration::factory()->create([
+            'type' => StepType::GIT_PROVIDER,
+            'pipeline_id' => $pipeline->id,
+            'details' => [
+                'value' => GitProvider::GITHUB,
+            ],
+        ]);
+
+        StepConfiguration::factory()->create([
+            'type' => StepType::GITHUB_AUTHENTICATION,
+            'pipeline_id' => $pipeline->id,
+            'details' => [
+                'account_id' => $account->id,
+            ],
+        ]);
+
+        // When
+        $response = $this->get(
+            route('steps.configuration.render', [ 
+                'pipeline' => $pipeline->id,
+                'step' => StepType::CHOOSE_REPOSITORY,
+            ])
+        );
+
+        // Then
+        $response->assertInertia(function (Assert $page) {
+            $page->has('repositories', 3);
+            $page->where('repositories.0.owner', env('GITHUB_ACCOUNT_NAME'));
+            $page->where('repositories.0.name', 'aaaaaa');
+        });
     }
 
     /** @test */
