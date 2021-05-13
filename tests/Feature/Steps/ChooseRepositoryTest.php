@@ -210,13 +210,30 @@ class ChooseRepositoryTest extends TestCase
     /** @test */
     public function it_does_not_create_a_runnable_step()
     {
-        $this->markTestIncomplete();
-    }
+        // Given
+        $user = $this->registerNewUser();
+        $pipeline = Pipeline::factory()->create([
+            'team_id' => $user->currentTeam->id,
+        ]);
 
-    /** @test */
-    public function it_removes_the_config_if_the_flow_is_changed_to_a_new_reposity()
-    {
-        $this->markTestIncomplete();
+        // When
+        $response = $this
+            ->post(
+                route('steps.configuration.configure', [ 
+                    'pipeline' => $pipeline->id,
+                    'step' => StepType::CHOOSE_REPOSITORY,
+                ]),
+                [
+                    'owner' => 'RepoOwner',
+                    'name' => 'repo-name',
+                ]
+            );
+
+        // Then
+        $config = StepConfiguration::where('type', StepType::CHOOSE_REPOSITORY)->first();
+        $this->assertDatabaseMissing('steps', [
+            'config_id' => $config->id,
+        ]);
     }
 
 }

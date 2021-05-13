@@ -198,4 +198,46 @@ class NewOrExistingRepositoryTest extends TestCase
         ]);
     }
 
+    /** @test */
+    public function it_removes_the_config_if_the_flow_is_changed_to_a_new_reposity()
+    {
+        // Given
+        $user = $this->registerNewUser();
+        $pipeline = Pipeline::factory()->create([
+            'team_id' => $user->currentTeam->id,
+        ]);
+        StepConfiguration::factory()->create([
+            'type' => StepType::NEW_OR_EXISTING_REPOSITORY,
+            'pipeline_id' => $pipeline->id,
+            'details' => [
+                'value' => 'existing',
+            ],
+        ]);
+        $chooseRepositoryConfig = StepConfiguration::factory()->create([
+            'type' => StepType::CHOOSE_REPOSITORY,
+            'pipeline_id' => $pipeline->id,
+            'details' => [
+                'owner' => 'RepoOwner',
+                'name' => 'repo-name',
+            ],
+        ]);
+
+        // When
+        $response = $this
+            ->post(
+                route('steps.configuration.configure', [ 
+                    'pipeline' => $pipeline->id,
+                    'step' => StepType::NEW_OR_EXISTING_REPOSITORY,
+                ]),
+                [
+                    'value' => 'new', 
+                ]
+            );
+
+        // Then
+        $this->assertDatabaseMissing('step_configurations', [
+            'id' => $chooseRepositoryConfig->id,
+        ]);
+    }
+
 }
