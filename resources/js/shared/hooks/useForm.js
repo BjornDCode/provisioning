@@ -30,6 +30,11 @@ const useForm = defaultValues => {
         })
     }
 
+    const onChanges = values => {
+        setValues(values)
+        setErrors({})
+    }
+
     const post = (route, values) => {
         setStatus('processing')
         Inertia.post(route, values).then(() => {
@@ -41,7 +46,16 @@ const useForm = defaultValues => {
 
     const disabled = status !== 'idle'
 
-    return { values, onChange, errors, status, disabled, post, reset }
+    return {
+        values,
+        onChange,
+        onChanges,
+        errors,
+        status,
+        disabled,
+        post,
+        reset,
+    }
 }
 
 export default useForm

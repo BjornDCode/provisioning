@@ -87,4 +87,44 @@ class RealGithubApiClientTest extends TestCase
         );
     }
 
+    /** @test */
+    public function it_can_list_repositories()
+    {
+        // Given
+        $client = $this->app->make(ApiClient::class);
+        $account = Account::factory()->create([
+            'identifier' => env('GITHUB_ACCOUNT_NAME'),
+            'email' => env('GITHUB_ACCOUNT_EMAIL'),
+            'user_id' => User::factory()->create()->id,
+            'type' => 'github',
+            'token' => env('GITHUB_ACCOUNT_TOKEN'),
+        ]);
+        // Make sure it shows up first in the list of return repositories
+        $response = $client->authenticate($account)->createRepository('aaaaaa');
+
+        // When
+        $repositories = $client
+            ->authenticate($account)
+            ->listRepositories();
+
+        // Then
+        $this->assertEquals(
+            env('GITHUB_ACCOUNT_NAME'),
+            $repositories->first()->owner,
+        );
+        $this->assertEquals(
+            'aaaaaa',
+            $repositories->first()->name,
+        );
+
+        // Cleanup
+        $client
+            ->authenticate($account)
+            ->deleteRepository(
+                env('GITHUB_ACCOUNT_NAME'),
+                'aaaaaa'
+            );
+    }
+
+
 }

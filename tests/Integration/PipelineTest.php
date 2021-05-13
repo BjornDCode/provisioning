@@ -4,8 +4,10 @@ namespace Tests\Integration;
 
 use Tests\TestCase;
 use App\Enums\StepType;
+use App\Enums\GitProvider;
 use App\Enums\PipelineStatus;
 use App\Models\Pipeline\Step;
+use App\Models\Pipeline\Account;
 use App\Models\Pipeline\Pipeline;
 use App\Models\Pipeline\StepConfiguration;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -25,14 +27,47 @@ class PipelineTest extends TestCase
             'pipeline_id' => $pipelineWithConfig->id,
             'type' => StepType::GIT_PROVIDER,
             'details' => [
-                'value' => 'laravel',
+                'value' => 'github',
             ],
         ]);
 
         // When
         // Then
-        $this->assertEquals('laravel', $pipelineWithConfig->gitProvider);
+        $this->assertEquals('github', $pipelineWithConfig->gitProvider);
         $this->assertNull($pipelineWithoutConfig->gitProvider);
+    }
+
+    /** @test */
+    public function it_can_return_its_git_account_if_it_exists()
+    {
+        // Given
+        $pipelineWithConfig = Pipeline::factory()->create();
+        $pipelineWithoutConfig = Pipeline::factory()->create();
+
+        $account = Account::factory()->create([
+            'type' => GitProvider::GITHUB,
+        ]);
+
+        StepConfiguration::factory()->create([
+            'pipeline_id' => $pipelineWithConfig->id,
+            'type' => StepType::GIT_PROVIDER,
+            'details' => [
+                'value' => GitProvider::GITHUB,
+            ],
+        ]);
+
+        StepConfiguration::factory()->create([
+            'pipeline_id' => $pipelineWithConfig->id,
+            'type' => StepType::GITHUB_AUTHENTICATION,
+            'details' => [
+                'account_id' => $account->id,
+            ],
+        ]);
+
+        // When
+        // Then
+        $this->assertEquals($account->id, $pipelineWithConfig->gitAccount->id);
+        $this->assertNull($pipelineWithoutConfig->gitAccount);
     }
 
     /** @test */

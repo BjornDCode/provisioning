@@ -4,6 +4,7 @@ namespace App\Clients\Github;
 
 use App\Models\Pipeline\Account;
 use App\Clients\Github\ApiClient;
+use Illuminate\Support\Collection;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
 use App\Exceptions\InvalidCredentialsException;
@@ -46,6 +47,26 @@ class ProductionApiClient implements ApiClient
         ])->delete("https://api.github.com/repos/{$owner}/{$name}");
 
         return $response;
+    }
+
+    public function listRepositories(): Collection
+    {
+        if (is_null($this->account)) {
+            throw new InvalidCredentialsException;
+        }
+
+        $response = Http::withHeaders([
+            'Authorization' => 'token ' . $this->account->token,
+        ])->get("https://api.github.com/user/repos");
+
+        $repositories = $response->collect()->map(function ($repository) {
+            return (object) [
+                'owner' => $repository['owner']['login'],
+                'name' => $repository['name'],
+            ];
+        });
+
+        return $repositories;
     }
 
 }

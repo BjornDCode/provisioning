@@ -61,6 +61,16 @@ class NewOrExistingRepository implements Step
             $step = $this->flow->pipeline->steps()->where('title', 'Create repository')->first();
             $step?->delete(); 
         }
+
+        if ($config->details['value'] === 'new') {
+            $config = $this->flow->pipeline->getConfig(
+                StepType::fromString(
+                    StepType::CHOOSE_REPOSITORY,
+                ),
+            );
+
+            $config?->delete();
+        }
     }
 
 }

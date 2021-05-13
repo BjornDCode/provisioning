@@ -3,6 +3,7 @@
 namespace App\Models\Pipeline;
 
 use App\Enums\StepType;
+use App\Enums\GitProvider;
 use App\Models\Account\Team;
 use App\Enums\PipelineStatus;
 use App\Models\Pipeline\Step;
@@ -54,6 +55,36 @@ class Pipeline extends Model
         );
 
         return $config?->details['value'];
+    }
+
+    public function getGitAccountAttribute()
+    {
+        $providerConfig = $this->getConfig(
+            StepType::fromString(
+                StepType::GIT_PROVIDER
+            )
+        );
+
+        if (is_null($providerConfig)) {
+            return null;
+        }
+
+        $providerStep = match($providerConfig->details['value']) {
+            GitProvider::GITHUB => StepType::GITHUB_AUTHENTICATION,
+            default => null,
+        };
+
+        $accountConfig = $this->getConfig(
+            StepType::fromString(
+                $providerStep
+            )
+        );
+
+        if (is_null($accountConfig)) {
+            return null;
+        }
+
+        return Account::find($accountConfig->details['account_id']);
     }
 
     public function getStatusAttribute()
