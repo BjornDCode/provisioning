@@ -48,7 +48,7 @@ class UsersSeeder extends Seeder
             'team_id' => $team->id,
             'customer_id' => $customerId->toString(),
             'subscription_id' => null,
-            'expires_at' => Carbon::now(),
+            'plan_id' => null,
         ]);
 
         $paymentGateway->subscribeCustomerToFreePlan($customerId);

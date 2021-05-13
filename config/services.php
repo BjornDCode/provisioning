@@ -38,7 +38,8 @@ return [
 
     'stripe' => [
         'secret' => env('STRIPE_SECRET_KEY'),
-        'free_price_id' => env('STRIPE_FREE_PRICE_ID'),
+        'free_plan_id' => env('STRIPE_FREE_PLAN_ID'),
+        'paid_plan_id' => env('STRIPE_PAID_PLAN_ID'),
     ],
 
 ];

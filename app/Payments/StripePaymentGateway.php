@@ -49,7 +49,7 @@ class StripePaymentGateway implements PaymentGateway
             'customer' => $id->toString(),
             'items' => [
                 [
-                    'price' => Config::get('services.stripe.free_price_id'),
+                    'price' => Config::get('services.stripe.free_plan_id'),
                 ],
             ],
         ]);
@@ -57,6 +57,7 @@ class StripePaymentGateway implements PaymentGateway
         $plan = Plan::where('customer_id', $id->toString())->first();
         $plan->update([
             'subscription_id' => $subscription->id,
+            'plan_id' => Config::get('services.stripe.free_plan_id'),
         ]);
 
         return SubscriptionId::fromString($subscription->id);

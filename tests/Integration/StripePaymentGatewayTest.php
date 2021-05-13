@@ -10,6 +10,7 @@ use App\Models\Account\Team;
 use App\Models\Billing\Plan;
 use App\Payments\PaymentGateway;
 use App\Payments\FakePaymentGateway;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class StripePaymentGatewayTest extends TestCase
@@ -74,6 +75,7 @@ class StripePaymentGatewayTest extends TestCase
         $this->assertDatabaseHas('plans', [
             'id' => $plan->id,
             'subscription_id' => $subscriptionId->toString(),
+            'plan_id' => Config::get('services.stripe.free_plan_id'),
         ]);
     }
 

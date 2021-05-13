@@ -33,7 +33,7 @@ class ExecutePipelineController extends Controller
             ]);
         }
 
-        if (!$pipeline->team->plan->active) {
+        if (!$pipeline->team->plan->paid) {
             return Redirect::route('pipelines.show', [
                 'pipeline' => $pipeline->id,
             ])->with('message', 'Please subscribe to a paid plan.');

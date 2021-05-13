@@ -54,7 +54,7 @@ class FakePaymentGatewayTest extends TestCase
     }
 
     /** @test */
-    public function it_can_subscribe_a_team_to_a_free_plan()
+    public function it_can_subscribe_a_team_to_the_free_plan()
     {
         $this->app->bind(PaymentGateway::class, FakePaymentGateway::class);
 
@@ -74,6 +74,7 @@ class FakePaymentGatewayTest extends TestCase
         $this->assertDatabaseHas('plans', [
             'id' => $plan->id,
             'subscription_id' => 'fake_subscription_id_123',
+            'plan_id' => 'fake_plan_id_123',
         ]);
     }
 

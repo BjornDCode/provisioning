@@ -3,6 +3,8 @@
 namespace App\Models\Billing;
 
 use Carbon\Carbon;
+use App\Models\Account\Team;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -13,18 +15,21 @@ class Plan extends Model
     protected $fillable = [
         'customer_id',
         'subscription_id',
-        'expires_at',
+        'plan_id',
     ];
 
-    public function getActiveAttribute()
+    public function team()
     {
-        if (is_null($this->expires_at)) {
-            return true;
-        } 
+        return $this->belongsTo(Team::class);
+    }
 
-        $expires_at = $this->expires_at instanceof Carbon ? $this->expires_at : Carbon::parse($this->expires_at);
-
-        return $expires_at->greaterThan(Carbon::now());
+    public function getPaidAttribute()
+    {
+        return match($this->plan_id) {
+            Config::get('services.stripe.free_plan_id') => false,
+            Config::get('services.stripe.paid_plan_id') => true,
+            default => false,
+        };
     }
 
 }

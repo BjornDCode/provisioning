@@ -28,6 +28,7 @@ class FakePaymentGateway implements PaymentGateway
 
         $plan->update([
             'subscription_id' => 'fake_subscription_id_123',
+            'plan_id' => 'fake_plan_id_123',
         ]);
 
         return SubscriptionId::fromString('fake_subscription_id_123');

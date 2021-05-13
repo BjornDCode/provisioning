@@ -5,6 +5,7 @@ namespace Tests\Integration;
 use Carbon\Carbon;
 use Tests\TestCase;
 use App\Models\Billing\Plan;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class PlanTest extends TestCase
@@ -12,24 +13,24 @@ class PlanTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    public function it_knows_whether_its_active()
+    public function it_knows_whether_its_on_a_paid_plan()
     {
         // Given
-        $active = Plan::factory()->create([
-            'expires_at' => null,
+        $free = Plan::factory()->create([
+            'plan_id' => Config::get('services.stripe.free_plan_id'),
         ]);
-        $expiring = Plan::factory()->create([
-            'expires_at' => Carbon::now()->addWeeks(2),
+        $paid = Plan::factory()->create([
+            'plan_id' => Config::get('services.stripe.paid_plan_id'),
         ]);
-        $expired = Plan::factory()->create([
-            'expires_at' => Carbon::now()->subWeeks(2),
+        $noPlan = Plan::factory()->create([
+            'plan_id' => null,
         ]);
 
         // When
         // Then
-        $this->assertTrue($active->active);
-        $this->assertTrue($expiring->active);
-        $this->assertFalse($expired->active);
-    }    
+        $this->assertFalse($free->paid);
+        $this->assertTrue($paid->paid);
+        $this->assertFalse($noPlan->paid);
+    }
 
 }

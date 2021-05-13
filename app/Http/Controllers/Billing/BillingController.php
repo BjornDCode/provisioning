@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Account;
+namespace App\Http\Controllers\Billing;
 
 use App\CustomerId;
 use Inertia\Inertia;
