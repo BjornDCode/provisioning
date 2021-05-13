@@ -4,6 +4,7 @@ namespace App\Clients\Github;
 
 use App\Models\Pipeline\Account;
 use App\Clients\Github\ApiClient;
+use Illuminate\Support\Collection;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
 use App\Clients\Github\ProductionApiClient;
@@ -57,6 +58,28 @@ class TestApiClient implements ApiClient
             ->deleteRepository($owner, $name);
 
         return $response;
+    }
+
+    public function listRepositories(string $owner): Collection
+    {
+        if (is_null($this->account)) {
+            throw new InvalidCredentialsException;
+        }
+
+        return collect([
+            (object) [
+                'owner' => $owner,
+                'name' => 'aaaaaa',
+            ],
+            (object) [
+                'owner' => $owner,
+                'name' => 'bbbbbb',
+            ],
+            (object) [
+                'owner' => $owner,
+                'name' => 'cccccc',
+            ],
+        ]);
     }
 
 }

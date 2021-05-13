@@ -82,4 +82,37 @@ class FakeGithubApiClientTest extends TestCase
             $response->successful()
         );
     }
+
+    /** @test */
+    public function it_can_list_repositories()
+    {
+        // Given
+        $this->app->bind(ApiClient::class, TestApiClient::class);
+        $client = $this->app->make(ApiClient::class);
+        $account = Account::factory()->create([
+            'identifier' => env('GITHUB_ACCOUNT_NAME'),
+            'email' => env('GITHUB_ACCOUNT_EMAIL'),
+            'user_id' => User::factory()->create()->id,
+            'type' => 'github',
+            'token' => env('GITHUB_ACCOUNT_TOKEN'),
+        ]);
+
+        // When
+        $repositories = $client
+            ->authenticate($account)
+            ->listRepositories(
+                env('GITHUB_ACCOUNT_NAME'),
+            );
+
+        // Then
+        $this->assertEquals(
+            env('GITHUB_ACCOUNT_NAME'),
+            $repositories->first()->owner,
+        );
+        $this->assertEquals(
+            'aaaaaa',
+            $repositories->first()->name,
+        );
+    }
+
 }
