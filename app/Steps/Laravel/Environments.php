@@ -41,8 +41,11 @@ class Environments implements Step
             return true;
         }
 
-        // Fix in next test
-        return false;
+        return $this->flow->pipeline->hasConfig(
+            StepType::fromString(
+                StepType::ENVIRONMENTS,
+            )
+        );
     }
 
     public function validationRules(): array

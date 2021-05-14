@@ -45,6 +45,12 @@ class StepTypeTest extends TestCase
     }
 
     /** @test */
+    public function it_can_be_forge_authentication()
+    {
+        $this->assertEquals('forge-authentication', StepType::FORGE_AUTHENTICATION);
+    }
+
+    /** @test */
     public function it_can_return_all_types()
     {
         $this->assertEquals([
@@ -54,6 +60,7 @@ class StepTypeTest extends TestCase
             'choose-repository',
             'hosting',
             'environments',
+            'forge-authentication',
         ], StepType::all());
     }
 

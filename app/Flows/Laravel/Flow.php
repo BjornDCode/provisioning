@@ -8,6 +8,7 @@ use App\Steps\Shared\GitProvider;
 use App\Steps\Laravel\Environments;
 use App\Steps\Laravel\HostingPrompt;
 use App\Steps\Shared\ChooseRepository;
+use App\Steps\Laravel\ForgeAuthentication;
 use App\Steps\Shared\GithubAuthentication;
 use App\Steps\Shared\NewOrExistingRepository;
 
@@ -28,6 +29,7 @@ class Flow extends BaseFlow
             ChooseRepository::class,
             HostingPrompt::class,
             Environments::class,
+            ForgeAuthentication::class,
         ];
     }
 

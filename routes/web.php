@@ -12,6 +12,7 @@ use App\Http\Controllers\Billing\BillingController;
 use App\Http\Controllers\Pipeline\PipelineController;
 use App\Http\Controllers\Account\InvitationsController;
 use App\Http\Controllers\Account\MembershipsController;
+use App\Http\Controllers\Pipeline\ForgeAccountController;
 use App\Http\Controllers\Pipeline\ExecutePipelineController;
 use App\Http\Controllers\Pipeline\StepConfigurationController;
 use App\Http\Controllers\Pipeline\AccountController as ExternalAccountController;
@@ -32,6 +33,8 @@ Route::get('/', function () {
 });
 
 Route::middleware(['auth'])->group(function () {
+    Route::post('/accounts/forge/store', [ForgeAccountController::class, 'store'])->name('accounts.forge.store');
+
     Route::get('/accounts/{provider}/redirect', [ExternalAccountController::class, 'redirect'])->name('accounts.redirect');
     Route::get('/accounts/{provider}/callback', [ExternalAccountController::class, 'callback'])->name('accounts.callback');
 

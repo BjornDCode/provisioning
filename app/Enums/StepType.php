@@ -11,4 +11,5 @@ class StepType extends Enum
     const CHOOSE_REPOSITORY = 'choose-repository'; 
     const HOSTING_PROMPT = 'hosting'; 
     const ENVIRONMENTS = 'environments'; 
+    const FORGE_AUTHENTICATION = 'forge-authentication'; 
 }

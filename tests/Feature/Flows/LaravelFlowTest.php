@@ -306,6 +306,70 @@ class LaravelFlowTest extends TestCase
         );    
     }
 
+    /** @test */
+    public function it_redirects_to_forge_authentication()
+    {
+        // Given
+        $user = $this->registerNewUser();
+        $pipeline = Pipeline::factory()->create([
+            'team_id' => $user->currentTeam->id,
+        ]);
+        $account = Account::factory()->create([
+            'user_id' => $user->id,
+        ]);
+        StepConfiguration::factory()->create([
+            'pipeline_id' => $pipeline->id,
+            'type' => StepType::NEW_OR_EXISTING_REPOSITORY,
+            'details' => [
+                'value' => 'new',
+            ],
+        ]);
+        StepConfiguration::factory()->create([
+            'pipeline_id' => $pipeline->id,
+            'type' => StepType::GIT_PROVIDER,
+            'details' => [
+                'value' => 'github',
+            ],
+        ]);
+        StepConfiguration::factory()->create([
+            'pipeline_id' => $pipeline->id,
+            'type' => StepType::GITHUB_AUTHENTICATION,
+            'details' => [
+                'account_id' => $account->id,
+            ],
+        ]);
+        StepConfiguration::factory()->create([
+            'pipeline_id' => $pipeline->id,
+            'type' => StepType::HOSTING_PROMPT,
+            'details' => [
+                'value' => true,
+            ],
+        ]);
+
+        // When
+        $response = $this
+            ->post(
+                route('steps.configuration.configure', [ 
+                    'pipeline' => $pipeline->id,
+                    'step' => StepType::ENVIRONMENTS,
+                ]),
+                [
+                    'value' => [
+                        'Staging',
+                        'Production',
+                    ], 
+                ]
+            );
+
+        // Then
+        $response->assertRedirect(
+            route('steps.configuration.render', [ 
+                'pipeline' => $pipeline->id,
+                'step' => StepType::FORGE_AUTHENTICATION,
+            ])
+        );    
+    }
+
     // /** @test */
     // public function it_redirects_the_the_pipeline_overview_page()
     // {

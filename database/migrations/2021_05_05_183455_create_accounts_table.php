@@ -20,8 +20,9 @@ class CreateAccountsTable extends Migration
             $table->bigInteger('user_id')->unsigned();
             $table->enum('type', [
                 'github',
+                'forge',
             ]);
-            $table->string('token');
+            $table->text('token');
             $table->string('refresh_token')->nullable();
             $table->dateTime('expires_at')->nullable();
             $table->json('meta')->nullable();
