@@ -10,4 +10,5 @@ class StepType extends Enum
     const GITHUB_AUTHENTICATION = 'github-authentication'; 
     const CHOOSE_REPOSITORY = 'choose-repository'; 
     const HOSTING_PROMPT = 'hosting'; 
+    const ENVIRONMENTS = 'environments'; 
 }

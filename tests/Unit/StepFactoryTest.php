@@ -7,6 +7,7 @@ use App\Enums\StepType;
 use App\Enums\GitProvider;
 use App\Flows\Laravel\Flow;
 use App\Models\Pipeline\Pipeline;
+use App\Steps\Laravel\Environments;
 use App\Steps\Laravel\HostingPrompt;
 use App\Steps\Factory as StepFactory;
 use App\Steps\Shared\ChooseRepository;
@@ -107,6 +108,25 @@ class StepFactoryTest extends TestCase
             HostingPrompt::class, 
             StepFactory::create(
                 StepType::fromString('hosting'),
+                $flow,
+            )
+        );
+    }
+
+    /** @test */
+    public function it_can_instantiate_an_environments_step()
+    {
+        $pipeline = new Pipeline([
+            'name' => 'HEL',
+            'type' => 'laravel',
+        ]);
+
+        $flow = new Flow($pipeline);
+
+        $this->assertInstanceOf(
+            Environments::class, 
+            StepFactory::create(
+                StepType::fromString('environments'),
                 $flow,
             )
         );

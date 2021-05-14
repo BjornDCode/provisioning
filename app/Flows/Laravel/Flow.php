@@ -5,6 +5,7 @@ namespace App\Flows\Laravel;
 use App\Flows\Flow as BaseFlow;
 use App\Models\Pipeline\Pipeline;
 use App\Steps\Shared\GitProvider;
+use App\Steps\Laravel\Environments;
 use App\Steps\Laravel\HostingPrompt;
 use App\Steps\Shared\ChooseRepository;
 use App\Steps\Shared\GithubAuthentication;
@@ -26,6 +27,7 @@ class Flow extends BaseFlow
             GithubAuthentication::class,
             ChooseRepository::class,
             HostingPrompt::class,
+            Environments::class,
         ];
     }
 

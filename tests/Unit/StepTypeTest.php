@@ -27,12 +27,33 @@ class StepTypeTest extends TestCase
     }
 
     /** @test */
+    public function it_can_be_choose_repository()
+    {
+        $this->assertEquals('choose-repository', StepType::CHOOSE_REPOSITORY);
+    }
+
+    /** @test */
+    public function it_can_be_hosting_prompt()
+    {
+        $this->assertEquals('hosting', StepType::HOSTING_PROMPT);
+    }
+
+    /** @test */
+    public function it_can_be_environments()
+    {
+        $this->assertEquals('environments', StepType::ENVIRONMENTS);
+    }
+
+    /** @test */
     public function it_can_return_all_types()
     {
         $this->assertEquals([
             'new-or-existing-repository',
             'git-provider',
             'github-authentication',
+            'choose-repository',
+            'hosting',
+            'environments',
         ], StepType::all());
     }
 

@@ -5,6 +5,7 @@ namespace App\Steps;
 use App\Flows\Flow;
 use App\Enums\StepType;
 use App\Steps\Shared\GitProvider;
+use App\Steps\Laravel\Environments;
 use App\Steps\Laravel\HostingPrompt;
 use App\Steps\Shared\ChooseRepository;
 use App\Steps\Shared\GithubAuthentication;
@@ -22,6 +23,7 @@ class Factory
             StepType::NEW_OR_EXISTING_REPOSITORY => new NewOrExistingRepository($flow),
             StepType::CHOOSE_REPOSITORY => new ChooseRepository($flow),
             StepType::HOSTING_PROMPT => new HostingPrompt($flow),
+            StepType::ENVIRONMENTS => new Environments($flow),
             default => throw new InvalidStepTypeException,
         };
     }

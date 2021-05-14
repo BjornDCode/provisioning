@@ -7,7 +7,7 @@ use App\Steps\Step;
 use App\Enums\StepType;
 use App\Models\Pipeline\StepConfiguration;
 
-class HostingPrompt implements Step
+class Environments implements Step
 {
 
     public function __construct(
@@ -16,27 +16,40 @@ class HostingPrompt implements Step
 
     public function type(): string
     {
-        return StepType::HOSTING_PROMPT;
+        return StepType::ENVIRONMENTS;
     }
 
     public function component(): string
     {
-        return 'Laravel/HostingPrompt';
+        return 'Laravel/Environments';
     }
     
     public function completed(): bool
     {
-        return $this->flow->pipeline->hasConfig(
+        $hostingConfig = $this->flow->pipeline->getConfig(
             StepType::fromString(
                 StepType::HOSTING_PROMPT,
             )
         );
+
+        if (is_null($hostingConfig)) {
+            return false;
+        }
+
+        // If no hosting
+        if ($hostingConfig->details['value'] === false) {
+            return true;
+        }
+
+        // Fix in next test
+        return false;
     }
 
     public function validationRules(): array
     {
         return [
-            'value' => 'required|boolean',
+            'value' => 'required|array',
+            'value.*' => 'distinct',
         ];        
     }
 
