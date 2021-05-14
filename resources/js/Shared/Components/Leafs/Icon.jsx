@@ -22,7 +22,15 @@ import {
     DiEmber,
 } from 'react-icons/di'
 
-import { FaBitbucket, FaGitlab, FaGithub } from 'react-icons/fa'
+import {
+    FaBitbucket,
+    FaGitlab,
+    FaGithub,
+    FaDigitalOcean,
+    FaAws,
+    FaLinode,
+} from 'react-icons/fa'
+import { SiVultr } from 'react-icons/si'
 
 import { match } from '@/Shared/Helpers/methods'
 
@@ -50,6 +58,11 @@ const icons = {
     Bitbucket: FaBitbucket,
     Gitlab: FaGitlab,
     Github: FaGithub,
+
+    DigitalOcean: FaDigitalOcean,
+    Linode: FaLinode,
+    Vultr: SiVultr,
+    Aws: FaAws,
 }
 
 const Icon = ({ name, ...props }) => {

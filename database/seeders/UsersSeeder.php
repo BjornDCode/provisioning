@@ -7,8 +7,10 @@ use App\Models\Auth\User;
 use App\Models\Account\Team;
 use App\Models\Billing\Plan;
 use Illuminate\Database\Seeder;
+use App\Models\Pipeline\Account;
 use App\Payments\PaymentGateway;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Crypt;
 
 class UsersSeeder extends Seeder
 {
@@ -52,6 +54,14 @@ class UsersSeeder extends Seeder
         ]);
 
         $paymentGateway->subscribeCustomerToFreePlan($customerId);
+
+        Account::factory()->create([
+            'identifier' => 'Real account',
+            'email' => $user->email,
+            'user_id' => $user->id,
+            'type' => 'forge',
+            'token' => Crypt::encryptString(env('FORGE_API_KEY')),
+        ]);
 
     }
 }

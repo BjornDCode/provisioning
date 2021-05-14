@@ -47,4 +47,22 @@ class ProductionForgeApiClientTest extends TestCase
         $this->assertEquals('Asbjørn Lindholm Hansen', $user->name);
     }
 
+    /** @test */
+    public function it_can_fetch_valid_server_providers()
+    {
+        // Given
+        $client = $this->app->make(ApiClient::class);
+        $account = Account::factory([
+            'type' => 'forge',
+            'token' => Crypt::encryptString(env('FORGE_API_KEY')),
+        ])->create();
+
+        // When
+        $providers = $client->authenticate($account)->getValidServerProviders();
+
+        // Then
+        $this->assertEquals(1, count($providers));
+        $this->assertEquals('ocean2', $providers[0]);
+    }
+
 }

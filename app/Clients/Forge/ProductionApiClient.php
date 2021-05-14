@@ -29,5 +29,34 @@ class ProductionApiClient implements ApiClient
 
         return $this->instance->user();
     }
+
+    public function getValidServerProviders(): array
+    {
+        if (is_null($this->instance)) {
+            throw new InvalidCredentialsException;
+        }
+
+        $user = $this->fetchUser();
+
+        $providers = [];
+
+        if ($user->connectedToDigitalocean) {
+            $providers[] = 'ocean2';
+        }
+
+        if ($user->connectedToLinode) {
+            $providers[] = 'linode';
+        }
+
+        if ($user->connectedToVultr) {
+            $providers[] = 'vultr';
+        }
+
+        if ($user->connectedToAws) {
+            $providers[] = 'aws';
+        }
+
+        return $providers;
+    }
     
 }

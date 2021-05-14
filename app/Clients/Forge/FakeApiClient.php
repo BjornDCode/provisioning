@@ -34,7 +34,7 @@ class FakeApiClient implements ApiClient
             'connectedToBitbucket' => false,
             'connectedToBitbucketTwo' => false,
             'connectedToDigitalocean' => true,
-            'connectedToLinode' => false,
+            'connectedToLinode' => true,
             'connectedToVultr' => false,
             'connectedToAws' => false,
             'readyForBilling' => true,
@@ -43,6 +43,14 @@ class FakeApiClient implements ApiClient
             'subscribed' => 1,
             'canCreateServers' => true,
         ]);
+    }
+
+    public function getValidServerProviders(): array
+    {
+        return [
+            'ocean2',
+            'linode',
+        ];
     }
 
 }

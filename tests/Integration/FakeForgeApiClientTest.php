@@ -48,4 +48,22 @@ class FakeForgeApiClientTest extends TestCase
         $this->assertEquals('Bjorn Lindholm', $user->name);
     }
 
+    /** @test */
+    public function it_can_fetch_valid_server_providers()
+    {
+        // Given
+        $this->app->bind(ApiClient::class, FakeApiClient::class);
+        $client = $this->app->make(ApiClient::class);
+        $account = Account::factory([
+            'type' => 'forge',
+        ])->create();
+
+        // When
+        $providers = $client->authenticate($account)->getValidServerProviders();
+
+        // Then
+        $this->assertEquals(2, count($providers));
+        $this->assertEquals('ocean2', $providers[0]);
+    }
+
 }

@@ -370,6 +370,83 @@ class LaravelFlowTest extends TestCase
         );    
     }
 
+    /** @test */
+    public function it_redirects_to_forge_server_provider()
+    {
+        $this->app->bind(ForgeApiClient::class, ForgeFakeApiClient::class);
+        
+        // Given
+        $user = $this->registerNewUser();
+        $pipeline = Pipeline::factory()->create([
+            'team_id' => $user->currentTeam->id,
+        ]);
+        $githubAccount = Account::factory()->create([
+            'user_id' => $user->id,
+            'type' => 'github',
+        ]);
+        $forgeAccount = Account::factory()->create([
+            'user_id' => $user->id,
+            'type' => 'forge',
+        ]);
+        StepConfiguration::factory()->create([
+            'pipeline_id' => $pipeline->id,
+            'type' => StepType::NEW_OR_EXISTING_REPOSITORY,
+            'details' => [
+                'value' => 'new',
+            ],
+        ]);
+        StepConfiguration::factory()->create([
+            'pipeline_id' => $pipeline->id,
+            'type' => StepType::GIT_PROVIDER,
+            'details' => [
+                'value' => 'github',
+            ],
+        ]);
+        StepConfiguration::factory()->create([
+            'pipeline_id' => $pipeline->id,
+            'type' => StepType::GITHUB_AUTHENTICATION,
+            'details' => [
+                'account_id' => $githubAccount->id,
+            ],
+        ]);
+        StepConfiguration::factory()->create([
+            'pipeline_id' => $pipeline->id,
+            'type' => StepType::HOSTING_PROMPT,
+            'details' => [
+                'value' => true,
+            ],
+        ]);
+        StepConfiguration::factory()->create([
+            'pipeline_id' => $pipeline->id,
+            'type' => StepType::ENVIRONMENTS,
+            'details' => [
+                'value' => [
+                    'Staging',
+                ],
+            ],
+        ]);
+
+        // When
+        $response = $this
+            ->post(
+                route('steps.configuration.configure', [ 
+                    'pipeline' => $pipeline->id,
+                    'step' => StepType::FORGE_AUTHENTICATION,
+                ]),
+                [
+                    'account_id' => $forgeAccount->id, 
+                ]
+            );
+
+        // Then
+        $response->assertRedirect(
+            route('steps.configuration.render', [ 
+                'pipeline' => $pipeline->id,
+                'step' => StepType::FORGE_SERVER_PROVIDER,
+            ])
+        );    
+    }
+
     // /** @test */
     // public function it_redirects_the_the_pipeline_overview_page()
     // {

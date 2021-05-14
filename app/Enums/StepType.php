@@ -12,4 +12,5 @@ class StepType extends Enum
     const HOSTING_PROMPT = 'hosting'; 
     const ENVIRONMENTS = 'environments'; 
     const FORGE_AUTHENTICATION = 'forge-authentication'; 
+    const FORGE_SERVER_PROVIDER = 'forge-server-provider'; 
 }

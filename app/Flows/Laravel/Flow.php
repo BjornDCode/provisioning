@@ -9,6 +9,7 @@ use App\Steps\Laravel\Environments;
 use App\Steps\Laravel\HostingPrompt;
 use App\Steps\Shared\ChooseRepository;
 use App\Steps\Laravel\ForgeAuthentication;
+use App\Steps\Laravel\ForgeServerProvider;
 use App\Steps\Shared\GithubAuthentication;
 use App\Steps\Shared\NewOrExistingRepository;
 
@@ -30,6 +31,7 @@ class Flow extends BaseFlow
             HostingPrompt::class,
             Environments::class,
             ForgeAuthentication::class,
+            ForgeServerProvider::class,
         ];
     }
 

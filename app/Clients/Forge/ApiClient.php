@@ -14,4 +14,6 @@ interface ApiClient
 
     public function fetchUser(): User;
 
+    public function getValidServerProviders(): array;
+
 }

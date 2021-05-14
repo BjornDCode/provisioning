@@ -44,8 +44,11 @@ class ForgeAuthentication implements Step
             return true;
         }
 
-        // Fix in next test
-        return false;
+        return $this->flow->pipeline->hasConfig(
+            StepType::fromString(
+                StepType::FORGE_AUTHENTICATION,
+            )
+        );
     }
 
     public function validationRules(): array

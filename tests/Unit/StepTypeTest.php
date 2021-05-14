@@ -51,6 +51,12 @@ class StepTypeTest extends TestCase
     }
 
     /** @test */
+    public function it_can_be_forge_server_provider()
+    {
+        $this->assertEquals('forge-server-provider', StepType::FORGE_SERVER_PROVIDER);
+    }
+
+    /** @test */
     public function it_can_return_all_types()
     {
         $this->assertEquals([
@@ -61,6 +67,7 @@ class StepTypeTest extends TestCase
             'hosting',
             'environments',
             'forge-authentication',
+            'forge-server-provider',
         ], StepType::all());
     }
 
