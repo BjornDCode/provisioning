@@ -7,6 +7,7 @@ use App\Enums\StepType;
 use App\Enums\GitProvider;
 use App\Flows\Laravel\Flow;
 use App\Models\Pipeline\Pipeline;
+use App\Steps\Laravel\HostingPrompt;
 use App\Steps\Factory as StepFactory;
 use App\Steps\Shared\ChooseRepository;
 use App\Steps\Shared\GithubAuthentication;
@@ -87,6 +88,25 @@ class StepFactoryTest extends TestCase
             ChooseRepository::class, 
             StepFactory::create(
                 StepType::fromString('choose-repository'),
+                $flow,
+            )
+        );
+    }
+
+    /** @test */
+    public function it_can_instantiate_a_hosting_prompt_step()
+    {
+        $pipeline = new Pipeline([
+            'name' => 'HEL',
+            'type' => 'laravel',
+        ]);
+
+        $flow = new Flow($pipeline);
+
+        $this->assertInstanceOf(
+            HostingPrompt::class, 
+            StepFactory::create(
+                StepType::fromString('hosting'),
                 $flow,
             )
         );
