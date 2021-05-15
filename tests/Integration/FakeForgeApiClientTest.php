@@ -66,4 +66,21 @@ class FakeForgeApiClientTest extends TestCase
         $this->assertEquals('ocean2', $providers[0]);
     }
 
+    /** @test */
+    public function it_can_list_regions_and_sizes()
+    {
+        // Given
+        $this->app->bind(ApiClient::class, FakeApiClient::class);
+        $client = $this->app->make(ApiClient::class);
+        $account = Account::factory([
+            'type' => 'forge',
+        ])->create();
+
+        // When
+        $regions = $client->authenticate($account)->listRegionsAndSizesForProvider('ocean2');
+
+        // Then
+        $this->assertEquals('ams2', $regions[0]['id']);
+    }
+
 }

@@ -44,7 +44,11 @@ class ForgeServerProvider implements Step
             return true;
         }
 
-        return false;
+        return $this->flow->pipeline->hasConfig(
+            StepType::fromString(
+                StepType::FORGE_SERVER_PROVIDER,
+            ),
+        );
     }
 
     public function validationRules(): array

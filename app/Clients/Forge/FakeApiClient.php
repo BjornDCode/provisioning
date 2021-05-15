@@ -53,4 +53,21 @@ class FakeApiClient implements ApiClient
         ];
     }
 
+    public function listRegionsAndSizesForProvider(string $provider): array
+    {
+        return [
+            [
+                'id' => 'ams2',
+                'name' => 'Amsterdam 2',
+                'sizes' => [
+                    [
+                        'id' => '01',
+                        'size' => 's-1vcpu-1gb',
+                        'name' => "1GB RAM - 1 CPU Core - 25GB SSD",
+                    ],
+                ],
+            ]
+        ];
+    }
+
 }

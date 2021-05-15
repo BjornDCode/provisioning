@@ -10,6 +10,7 @@ use App\Steps\Laravel\HostingPrompt;
 use App\Steps\Shared\ChooseRepository;
 use App\Steps\Laravel\ForgeAuthentication;
 use App\Steps\Laravel\ForgeServerProvider;
+use App\Steps\Laravel\ServerConfiguration;
 use App\Steps\Shared\GithubAuthentication;
 use App\Exceptions\InvalidStepTypeException;
 use App\Steps\Shared\NewOrExistingRepository;
@@ -28,6 +29,7 @@ class Factory
             StepType::ENVIRONMENTS => new Environments($flow),
             StepType::FORGE_AUTHENTICATION => new ForgeAuthentication($flow),
             StepType::FORGE_SERVER_PROVIDER => new ForgeServerProvider($flow),
+            StepType::SERVER_CONFIGURATION => new ServerConfiguration($flow),
             default => throw new InvalidStepTypeException,
         };
     }

@@ -5,15 +5,18 @@ namespace App\Clients\Forge;
 use Laravel\Forge\Forge;
 use App\Models\Pipeline\Account;
 use Laravel\Forge\Resources\User;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Crypt;
 use App\Exceptions\InvalidCredentialsException;
 
 class ProductionApiClient implements ApiClient
 {
+    public ?Account $account = null;
     public ?Forge $instance = null;
 
     public function authenticate(Account $account): ApiClient
     {
+        $this->account = $account;
         $this->instance = new Forge(
             Crypt::decryptString($account->token),
         );
@@ -57,6 +60,21 @@ class ProductionApiClient implements ApiClient
         }
 
         return $providers;
+    }
+
+    public function listRegionsAndSizesForProvider(string $provider): array
+    {
+        if (is_null($this->instance)) {
+            throw new InvalidCredentialsException;
+        }
+
+        $response = Http::withHeaders([
+            'Accept' => 'application/json',
+            'Content-Type' => 'application/json',
+            'Authorization' => 'Bearer ' . Crypt::decryptString($this->account->token),
+        ])->get('https://forge.laravel.com/api/v1/regions');
+
+        return collect($response->collect()->get('regions'))->get($provider);
     }
     
 }

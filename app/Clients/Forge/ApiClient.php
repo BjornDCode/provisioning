@@ -16,4 +16,6 @@ interface ApiClient
 
     public function getValidServerProviders(): array;
 
+    public function listRegionsAndSizesForProvider(string $provider): array;
+
 }
