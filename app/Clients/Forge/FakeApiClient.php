@@ -5,6 +5,7 @@ namespace App\Clients\Forge;
 use Laravel\Forge\Forge;
 use App\Models\Pipeline\Account;
 use Laravel\Forge\Resources\User;
+use Laravel\Forge\Resources\Server;
 use App\Exceptions\InvalidCredentialsException;
 
 class FakeApiClient implements ApiClient
@@ -67,6 +68,40 @@ class FakeApiClient implements ApiClient
                     ],
                 ],
             ]
+        ];
+    }
+
+    public function createServer(array $data): Server
+    {
+        return new Server($data);
+    }
+
+    public function deleteServer($id)
+    {
+        return null;
+    }
+
+    public function fetchServer($id): Server
+    {
+        return new Server([
+            'name' => 'test-provisioning',
+            'type' => 'app',
+            'provider' => 'ocean2',
+            'region' => 'nyc3',
+            'size' => '01',
+            'php_version' => 'php80',
+            'credential_id' => 1,
+        ]);
+    }
+
+    public function listCredentials(string $provider): array
+    {
+        return [
+            [
+                'id' => 1,
+                'type' => 'ocean2',
+                'name' => 'Person',
+            ],
         ];
     }
 

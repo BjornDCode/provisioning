@@ -76,5 +76,49 @@ class ProductionApiClient implements ApiClient
 
         return collect($response->collect()->get('regions'))->get($provider);
     }
+
+    public function createServer(array $data)
+    {
+        if (is_null($this->instance)) {
+            throw new InvalidCredentialsException;
+        }
+
+        return $this->instance->createServer($data);
+    }
+
+    public function deleteServer($id)
+    {
+        if (is_null($this->instance)) {
+            throw new InvalidCredentialsException;
+        }
+
+        return $this->instance->deleteServer($id);
+    }
+
+    public function fetchServer($id)
+    {
+        if (is_null($this->instance)) {
+            throw new InvalidCredentialsException;
+        }
+
+        return $this->instance->server($id);
+    }
+
+    public function listCredentials(string $provider): array
+    {
+        if (is_null($this->instance)) {
+            throw new InvalidCredentialsException;
+        }
+
+        $response = Http::withHeaders([
+            'Accept' => 'application/json',
+            'Content-Type' => 'application/json',
+            'Authorization' => 'Bearer ' . Crypt::decryptString($this->account->token),
+        ])->get('https://forge.laravel.com/api/v1/credentials');
+
+        return collect($response->collect()->get('credentials'))->filter(function ($credential) use ($provider) {
+            return $credential['type'] === $provider;
+        })->toArray();
+    }
     
 }

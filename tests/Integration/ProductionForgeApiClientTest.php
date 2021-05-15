@@ -82,4 +82,105 @@ class ProductionForgeApiClientTest extends TestCase
         $this->assertEquals('ams2', $regions[0]['id']);
     }
 
+    /** @test */
+    public function it_can_create_a_server()
+    {
+        // Given
+        $client = $this->app->make(ApiClient::class);
+        $account = Account::factory([
+            'type' => 'forge',
+            'token' => Crypt::encryptString(env('FORGE_API_KEY')),
+        ])->create();
+
+        // When
+        $server = $client->authenticate($account)->createServer([
+            'name' => 'test-provisioning',
+            'type' => 'app',
+            'provider' => 'ocean2',
+            'region' => 'nyc3',
+            'size' => '01',
+            'php_version' => 'php80',
+            'credential_id' => env('FORGE_CREDENTIALS_ID'),
+        ]);
+
+        // Then
+        $this->assertEquals('test-provisioning', $server->name);
+
+        // Cleanup
+        $client->authenticate($account)->deleteServer($server->id);
+    }
+
+    /** @test */
+    public function it_can_delete_a_server()
+    {
+        // Given
+        $client = $this->app->make(ApiClient::class);
+        $account = Account::factory([
+            'type' => 'forge',
+            'token' => Crypt::encryptString(env('FORGE_API_KEY')),
+        ])->create();
+        $server = $client->authenticate($account)->createServer([
+            'name' => 'test-provisioning',
+            'type' => 'app',
+            'provider' => 'ocean2',
+            'region' => 'nyc3',
+            'size' => '01',
+            'php_version' => 'php80',
+            'credential_id' => env('FORGE_CREDENTIALS_ID'),
+        ]);
+
+        // When
+        $response = $client->authenticate($account)->deleteServer($server->id);
+
+        // Then
+        $this->assertNull($response);
+    }
+
+
+    /** @test */
+    public function it_can_fetch_a_server()
+    {
+        // Given
+        $client = $this->app->make(ApiClient::class);
+        $account = Account::factory([
+            'type' => 'forge',
+            'token' => Crypt::encryptString(env('FORGE_API_KEY')),
+        ])->create();
+        $server = $client->authenticate($account)->createServer([
+            'name' => 'test-provisioning',
+            'type' => 'app',
+            'provider' => 'ocean2',
+            'region' => 'nyc3',
+            'size' => '01',
+            'php_version' => 'php80',
+            'credential_id' => env('FORGE_CREDENTIALS_ID'),
+        ]);
+
+        // When
+        $server = $client->authenticate($account)->fetchServer($server->id);
+
+        // Then
+        $this->assertEquals('test-provisioning', $server->name);
+
+        // Cleanup
+        $client->authenticate($account)->deleteServer($server->id);
+    }
+
+    /** @test */
+    public function it_can_list_credentials_for_provider()
+    {
+        // Given
+        $client = $this->app->make(ApiClient::class);
+        $account = Account::factory([
+            'type' => 'forge',
+            'token' => Crypt::encryptString(env('FORGE_API_KEY')),
+        ])->create();
+
+        // When
+        $credentials = $client->authenticate($account)->listCredentials('ocean2');
+
+        // Then
+        $this->assertEquals(env('FORGE_CREDENTIALS_ID'), $credentials[0]['id']);
+    }
+
 }

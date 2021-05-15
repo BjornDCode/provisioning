@@ -83,4 +83,101 @@ class FakeForgeApiClientTest extends TestCase
         $this->assertEquals('ams2', $regions[0]['id']);
     }
 
+    /** @test */
+    public function it_can_create_a_server()
+    {
+        // Given
+        $this->app->bind(ApiClient::class, FakeApiClient::class);
+        $client = $this->app->make(ApiClient::class);
+        $account = Account::factory([
+            'type' => 'forge',
+        ])->create();
+
+        // When
+        $server = $client->authenticate($account)->createServer([
+            'name' => 'test-provisioning',
+            'type' => 'app',
+            'provider' => 'ocean2',
+            'region' => 'nyc3',
+            'size' => '01',
+            'php_version' => 'php80',
+            'credential_id' => 1,
+        ]);
+
+        // Then
+        $this->assertEquals('test-provisioning', $server->name);
+    }
+
+    /** @test */
+    public function it_can_delete_a_server()
+    {
+        $this->app->bind(ApiClient::class, FakeApiClient::class);
+
+        // Given
+        $client = $this->app->make(ApiClient::class);
+        $account = Account::factory([
+            'type' => 'forge',
+        ])->create();
+        $server = $client->authenticate($account)->createServer([
+            'name' => 'test-provisioning',
+            'type' => 'app',
+            'provider' => 'ocean2',
+            'region' => 'nyc3',
+            'size' => '01',
+            'php_version' => 'php80',
+            'credential_id' => 1,
+        ]);
+
+        // When
+        $response = $client->authenticate($account)->deleteServer($server->id);
+
+        // Then
+        $this->assertNull($response);
+    }
+
+    /** @test */
+    public function it_can_fetch_a_server()
+    {
+        $this->app->bind(ApiClient::class, FakeApiClient::class);
+
+        // Given
+        $client = $this->app->make(ApiClient::class);
+        $account = Account::factory([
+            'type' => 'forge',
+        ])->create();
+        $server = $client->authenticate($account)->createServer([
+            'name' => 'test-provisioning',
+            'type' => 'app',
+            'provider' => 'ocean2',
+            'region' => 'nyc3',
+            'size' => '01',
+            'php_version' => 'php80',
+            'credential_id' => 1,
+        ]);
+
+        // When
+        $server = $client->authenticate($account)->fetchServer($server->id);
+
+        // Then
+        $this->assertEquals('test-provisioning', $server->name);
+    }
+
+    /** @test */
+    public function it_can_list_credentials()
+    {
+        $this->app->bind(ApiClient::class, FakeApiClient::class);
+        
+        // Given
+        $client = $this->app->make(ApiClient::class);
+        $account = Account::factory([
+            'type' => 'forge',
+        ])->create();
+
+        // When
+        $credentials = $client->authenticate($account)->listCredentials('ocean2');
+
+        // Then
+        $this->assertEquals(1, $credentials[0]['id']);
+    }
+
 }
