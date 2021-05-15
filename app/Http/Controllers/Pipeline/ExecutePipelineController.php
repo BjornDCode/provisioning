@@ -9,6 +9,7 @@ use App\Models\Pipeline\Pipeline;
 use Illuminate\Support\Facades\Bus;
 use App\Http\Controllers\Controller;
 use App\Flows\Factory as FlowFactory;
+use App\Jobs\ExecuteCreateServerStep;
 use Illuminate\Support\Facades\Redirect;
 use App\Jobs\ExecuteCreateRepositoryStep;
 
@@ -42,18 +43,12 @@ class ExecutePipelineController extends Controller
 
         $jobs = $pipeline->steps->map(function ($step) use ($pipeline) {
             return match($step->type) {
-                StepType::GITHUB_AUTHENTICATION => new ExecuteCreateRepositoryStep($pipeline),
+                StepType::GITHUB_AUTHENTICATION => new ExecuteCreateRepositoryStep($pipeline, $step),
+                StepType::SERVER_CONFIGURATION => new ExecuteCreateServerStep($pipeline, $step),
             };
         })->toArray();
 
-        $jobs = array_merge(
-            [
-                new ExecutePipeline,
-            ],
-            $jobs
-        );
-
-        Bus::chain($jobs)->dispatch($pipeline);
+        ExecutePipeline::dispatch()->chain($jobs);
 
         return Redirect::route('pipelines.show', [
             'pipeline' => $pipeline->id,

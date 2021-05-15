@@ -4,106 +4,35 @@ namespace Tests\Feature\Steps;
 
 use Tests\TestCase;
 use App\Enums\StepType;
-use App\Enums\GitProvider;
 use Inertia\Testing\Assert;
-use App\Models\Pipeline\Account;
 use App\Models\Pipeline\Pipeline;
 use App\Models\Pipeline\StepConfiguration;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use App\Clients\Github\ApiClient as GithubApiClient;
-use App\Clients\Github\TestApiClient as GithubTestApiClient;
 
-class ChooseRepositoryTest extends TestCase
+class EnvironmentsTest extends TestCase
 {
     use RefreshDatabase;
 
     /** @test */
-    public function it_renders_the_choose_repository_step_page()
+    public function it_renders_the_environments_step_page()
     {
-        $this->app->bind(GithubApiClient::class, GithubTestApiClient::class);
-
         // Given
         $user = $this->registerNewUser();
         $pipeline = Pipeline::factory()->create([
             'team_id' => $user->currentTeam->id,
-        ]);
-        $account = Account::factory()->create([
-            'type' => GitProvider::GITHUB,
-        ]);
-
-        StepConfiguration::factory()->create([
-            'type' => StepType::GIT_PROVIDER,
-            'pipeline_id' => $pipeline->id,
-            'details' => [
-                'value' => GitProvider::GITHUB,
-            ],
-        ]);
-
-        StepConfiguration::factory()->create([
-            'type' => StepType::GITHUB_AUTHENTICATION,
-            'pipeline_id' => $pipeline->id,
-            'details' => [
-                'account_id' => $account->id,
-            ],
         ]);
 
         // When
         $response = $this->get(
             route('steps.configuration.render', [ 
                 'pipeline' => $pipeline->id,
-                'step' => StepType::CHOOSE_REPOSITORY,
+                'step' => StepType::ENVIRONMENTS,
             ])
         );
 
         // Then
         $response->assertInertia(function (Assert $page) {
-            $page->is('Pipeline/Steps/ChooseRepository');
-        });
-    }
-
-    /** @test */
-    public function it_lists_repositories()
-    {
-        $this->app->bind(GithubApiClient::class, GithubTestApiClient::class);
-        
-        // Given
-        $user = $this->registerNewUser();
-        $pipeline = Pipeline::factory()->create([
-            'team_id' => $user->currentTeam->id,
-        ]);
-        $account = Account::factory()->create([
-            'type' => GitProvider::GITHUB,
-        ]);
-
-        StepConfiguration::factory()->create([
-            'type' => StepType::GIT_PROVIDER,
-            'pipeline_id' => $pipeline->id,
-            'details' => [
-                'value' => GitProvider::GITHUB,
-            ],
-        ]);
-
-        StepConfiguration::factory()->create([
-            'type' => StepType::GITHUB_AUTHENTICATION,
-            'pipeline_id' => $pipeline->id,
-            'details' => [
-                'account_id' => $account->id,
-            ],
-        ]);
-
-        // When
-        $response = $this->get(
-            route('steps.configuration.render', [ 
-                'pipeline' => $pipeline->id,
-                'step' => StepType::CHOOSE_REPOSITORY,
-            ])
-        );
-
-        // Then
-        $response->assertInertia(function (Assert $page) {
-            $page->has('repositories', 3);
-            $page->where('repositories.0.owner', env('GITHUB_ACCOUNT_NAME'));
-            $page->where('repositories.0.name', 'aaaaaa');
+            $page->is('Pipeline/Steps/Laravel/Environments');
         });
     }
 
@@ -121,25 +50,28 @@ class ChooseRepositoryTest extends TestCase
             ->post(
                 route('steps.configuration.configure', [ 
                     'pipeline' => $pipeline->id,
-                    'step' => StepType::CHOOSE_REPOSITORY,
+                    'step' => StepType::ENVIRONMENTS,
                 ]),
                 [
-                    'owner' => 'RepoOwner',
-                    'name' => 'repo-name',
+                    'value' => [
+                        'Staging',
+                        'Production',
+                    ], 
                 ]
             );
 
         // Then
+        $config = StepConfiguration::where('type', StepType::ENVIRONMENTS)->first();
         $this->assertDatabaseHas('step_configurations', [
             'pipeline_id' => $pipeline->id,
-            'type' => StepType::CHOOSE_REPOSITORY,
-            'details->owner' => 'RepoOwner',
-            'details->name' => 'repo-name',
+            'type' => 'environments',
         ]);
+        $this->assertEquals('Staging', $config->details['value'][0]);
+        $this->assertEquals('Production', $config->details['value'][1]);
     }
 
     /** @test */
-    public function a_repository_owner_is_required()
+    public function it_must_be_an_array()
     {
         $this->withExceptionHandling();
 
@@ -154,37 +86,37 @@ class ChooseRepositoryTest extends TestCase
             ->from(
                 route('steps.configuration.render', [ 
                     'pipeline' => $pipeline->id,
-                    'step' => StepType::CHOOSE_REPOSITORY,
+                    'step' => StepType::ENVIRONMENTS,
                 ]),
             )
             ->post(
                 route('steps.configuration.configure', [ 
                     'pipeline' => $pipeline->id,
-                    'step' => StepType::CHOOSE_REPOSITORY,
+                    'step' => StepType::ENVIRONMENTS,
                 ]),
                 [
-                    'name' => 'repo-name',
+                    'value' => 'invalid', 
                 ]
             );
 
-        // Then        
+        // Then
         $this->assertDatabaseMissing('step_configurations', [
             'pipeline_id' => $pipeline->id,
-            'type' => StepType::CHOOSE_REPOSITORY,
-            'details->name' => 'repo-name',
+            'type' => 'environments',
+            'details->value' => 'invalid',
         ]);
 
         $response->assertRedirect(
             route('steps.configuration.render', [ 
                 'pipeline' => $pipeline->id,
-                'step' => StepType::CHOOSE_REPOSITORY,
+                'step' => StepType::ENVIRONMENTS,
             ]),
         );
-        $response->assertSessionHasErrors('owner');
+        $response->assertSessionHasErrors('value');
     }
 
     /** @test */
-    public function a_repository_name_is_required()
+    public function environments_must_be_unique()
     {
         $this->withExceptionHandling();
 
@@ -199,33 +131,79 @@ class ChooseRepositoryTest extends TestCase
             ->from(
                 route('steps.configuration.render', [ 
                     'pipeline' => $pipeline->id,
-                    'step' => StepType::CHOOSE_REPOSITORY,
+                    'step' => StepType::ENVIRONMENTS,
                 ]),
             )
             ->post(
                 route('steps.configuration.configure', [ 
                     'pipeline' => $pipeline->id,
-                    'step' => StepType::CHOOSE_REPOSITORY,
+                    'step' => StepType::ENVIRONMENTS,
                 ]),
                 [
-                    'owner' => 'RepoOwner',
+                    'value' => [
+                        'Staging',
+                        'Staging',
+                    ], 
                 ]
             );
 
-        // Then        
+        // Then
         $this->assertDatabaseMissing('step_configurations', [
             'pipeline_id' => $pipeline->id,
-            'type' => StepType::CHOOSE_REPOSITORY,
-            'details->owner' => 'RepoOwner',
+            'type' => 'environments',
         ]);
 
         $response->assertRedirect(
             route('steps.configuration.render', [ 
                 'pipeline' => $pipeline->id,
-                'step' => StepType::CHOOSE_REPOSITORY,
+                'step' => StepType::ENVIRONMENTS,
             ]),
         );
-        $response->assertSessionHasErrors('name');
+        $response->assertSessionHasErrors('value.0');
+    }
+
+    /** @test */
+    public function it_must_have_at_least_one_environment()
+    {
+        $this->withExceptionHandling();
+
+        // Given
+        $user = $this->registerNewUser();
+        $pipeline = Pipeline::factory()->create([
+            'team_id' => $user->currentTeam->id,
+        ]);
+
+        // When
+        $response = $this
+            ->from(
+                route('steps.configuration.render', [ 
+                    'pipeline' => $pipeline->id,
+                    'step' => StepType::ENVIRONMENTS,
+                ]),
+            )
+            ->post(
+                route('steps.configuration.configure', [ 
+                    'pipeline' => $pipeline->id,
+                    'step' => StepType::ENVIRONMENTS,
+                ]),
+                [
+                    'value' => [], 
+                ]
+            );
+
+        // Then
+        $this->assertDatabaseMissing('step_configurations', [
+            'pipeline_id' => $pipeline->id,
+            'type' => 'environments',
+        ]);
+
+        $response->assertRedirect(
+            route('steps.configuration.render', [ 
+                'pipeline' => $pipeline->id,
+                'step' => StepType::ENVIRONMENTS,
+            ]),
+        );
+        $response->assertSessionHasErrors('value');
     }
 
     /** @test */
@@ -242,16 +220,18 @@ class ChooseRepositoryTest extends TestCase
             ->post(
                 route('steps.configuration.configure', [ 
                     'pipeline' => $pipeline->id,
-                    'step' => StepType::CHOOSE_REPOSITORY,
+                    'step' => StepType::ENVIRONMENTS,
                 ]),
                 [
-                    'owner' => 'RepoOwner',
-                    'name' => 'repo-name',
+                    'value' => [
+                        'Staging',
+                        'Production',
+                    ], 
                 ]
             );
 
         // Then
-        $config = StepConfiguration::where('type', StepType::CHOOSE_REPOSITORY)->first();
+        $config = StepConfiguration::where('type', StepType::ENVIRONMENTS)->first();
         $this->assertDatabaseMissing('steps', [
             'config_id' => $config->id,
         ]);

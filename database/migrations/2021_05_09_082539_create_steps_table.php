@@ -24,6 +24,7 @@ class CreateStepsTable extends Migration
                 'cancelled',
             ])->default('pending');
             $table->bigInteger('config_id')->unsigned();
+            $table->json('meta')->nullable();
             $table->timestamps();
         });
     }
