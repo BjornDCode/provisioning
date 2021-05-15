@@ -99,6 +99,9 @@ class ServerConfiguration implements Step
         collect($environmentsConfig->details['value'])->each(function ($environment) use ($config) {
             $config->steps()->create([
                 'title' => "Create {$environment} server",
+                'meta' => [
+                    'environment' => $environment,
+                ],
             ]);
         });
 

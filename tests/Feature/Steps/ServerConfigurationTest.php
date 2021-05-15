@@ -323,11 +323,13 @@ class ServerConfigurationTest extends TestCase
             'config_id' => $config->id,
             'title' => 'Create Staging server',
             'status' => 'pending',
+            'meta->environment' => 'Staging',
         ]);
         $this->assertDatabaseHas('steps', [
             'config_id' => $config->id,
             'title' => 'Create Production server',
             'status' => 'pending',
+            'meta->environment' => 'Production',
         ]);
     }
 

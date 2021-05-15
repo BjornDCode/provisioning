@@ -9,7 +9,7 @@ sail artisan websockets:serve
 ## Running queues
 
 ```sh
-sail artisan queue:listen
+sail artisan queue:listen --timeout=1800
 ```
 
 ## Stripe

@@ -13,6 +13,11 @@ class Step extends Model
     protected $fillable = [
         'title',
         'status',
+        'meta',
+    ];
+
+    protected $casts = [
+        'meta' => 'array',
     ];
 
     public function config()
