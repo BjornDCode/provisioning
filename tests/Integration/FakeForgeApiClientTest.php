@@ -174,7 +174,7 @@ class FakeForgeApiClientTest extends TestCase
         ])->create();
 
         // When
-        $credentials = $client->authenticate($account)->listCredentials('ocean2');
+        $credentials = $client->authenticate($account)->listCredentials();
 
         // Then
         $this->assertEquals(1, $credentials[0]['id']);

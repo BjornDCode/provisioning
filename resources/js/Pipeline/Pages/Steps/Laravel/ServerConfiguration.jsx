@@ -20,7 +20,7 @@ const ServerConfiguration = () => {
         region: configuration ? configuration.details.region : regions[0].id,
         size: configuration
             ? configuration.details.size
-            : regions[0].sizes[0].size,
+            : regions[0].sizes[0].id,
     })
 
     const onSubmit = () => {
@@ -41,7 +41,7 @@ const ServerConfiguration = () => {
     const sizeOptions = regions
         .find(region => region.id === values.region)
         .sizes.map(size => ({
-            key: size.size,
+            key: size.id,
             label: size.name,
         }))
 

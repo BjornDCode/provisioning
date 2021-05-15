@@ -94,7 +94,7 @@ class FakeApiClient implements ApiClient
         ]);
     }
 
-    public function listCredentials(string $provider): array
+    public function listCredentials(): array
     {
         return [
             [

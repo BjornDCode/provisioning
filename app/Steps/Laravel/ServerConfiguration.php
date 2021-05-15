@@ -75,7 +75,7 @@ class ServerConfiguration implements Step
         );
 
         $account = Account::find($authenticationConfig->details['account_id']);
-        $provider = $serverProviderConfig->details['value'];
+        $provider = $serverProviderConfig->details['provider'];
 
         return [
             'regions' => $client

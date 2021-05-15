@@ -25,6 +25,6 @@ interface ApiClient
 
     public function fetchServer($id): Server;
 
-    public function listCredentials(string $provider): array;
+    public function listCredentials(): array;
 
 }

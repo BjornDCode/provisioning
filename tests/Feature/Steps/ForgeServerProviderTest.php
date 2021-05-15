@@ -90,6 +90,43 @@ class ForgeServerProviderTest extends TestCase
         });
     }
 
+    /** @test */
+    public function it_lists_credentials()
+    {
+        $this->app->bind(ForgeApiClient::class, ForgeFakeApiClient::class);
+        
+        // Given
+        $user = $this->registerNewUser();
+        $pipeline = Pipeline::factory()->create([
+            'team_id' => $user->currentTeam->id,
+        ]);
+        $account = Account::factory()->create([
+            'type' => 'forge',
+        ]);
+
+        StepConfiguration::factory()->create([
+            'type' => StepType::FORGE_AUTHENTICATION,
+            'pipeline_id' => $pipeline->id,
+            'details' => [
+                'account_id' => $account->id,
+            ],
+        ]);
+
+        // When
+        $response = $this->get(
+            route('steps.configuration.render', [ 
+                'pipeline' => $pipeline->id,
+                'step' => StepType::FORGE_SERVER_PROVIDER,
+            ])
+        );
+
+        // Then
+        $response->assertInertia(function (Assert $page) {
+            $page->has('credentials', 1);
+            $page->where('credentials.0.type', 'ocean2');
+        });
+    }
+
 
     /** @test */
     public function it_can_save_the_configuration()
@@ -121,7 +158,8 @@ class ForgeServerProviderTest extends TestCase
                     'step' => StepType::FORGE_SERVER_PROVIDER,
                 ]),
                 [
-                    'value' => 'ocean2', 
+                    'provider' => 'ocean2',
+                    'credentials_id' => 1,
                 ]
             );
 
@@ -130,7 +168,8 @@ class ForgeServerProviderTest extends TestCase
         $this->assertDatabaseHas('step_configurations', [
             'pipeline_id' => $pipeline->id,
             'type' => 'forge-server-provider',
-            'details->value' => 'ocean2',
+            'details->provider' => 'ocean2',
+            'details->credentials_id' => 1,
         ]);
     }
 
@@ -171,7 +210,7 @@ class ForgeServerProviderTest extends TestCase
                     'step' => StepType::FORGE_SERVER_PROVIDER,
                 ]),
                 [
-                    'value' => 'invalid', 
+                    'provider' => 'invalid', 
                 ]
             );
 
@@ -179,7 +218,7 @@ class ForgeServerProviderTest extends TestCase
         $this->assertDatabaseMissing('step_configurations', [
             'pipeline_id' => $pipeline->id,
             'type' => 'forge-server-provider',
-            'details->value' => 'invalid',
+            'details->provider' => 'invalid',
         ]);
 
         $response->assertRedirect(
@@ -188,7 +227,64 @@ class ForgeServerProviderTest extends TestCase
                 'step' => StepType::FORGE_SERVER_PROVIDER,
             ]),
         );
-        $response->assertSessionHasErrors('value');
+        $response->assertSessionHasErrors('provider');
+    }
+
+    /** @test */
+    public function it_requires_credentials()
+    {
+        $this->withExceptionHandling();
+        $this->app->bind(ForgeApiClient::class, ForgeFakeApiClient::class);
+
+        // Given
+        $user = $this->registerNewUser();
+        $pipeline = Pipeline::factory()->create([
+            'team_id' => $user->currentTeam->id,
+        ]);
+        $account = Account::factory()->create([
+            'type' => 'forge',
+        ]);
+
+        StepConfiguration::factory()->create([
+            'type' => StepType::FORGE_AUTHENTICATION,
+            'pipeline_id' => $pipeline->id,
+            'details' => [
+                'account_id' => $account->id,
+            ],
+        ]);
+
+        // When
+        $response = $this
+            ->from(
+                route('steps.configuration.render', [ 
+                    'pipeline' => $pipeline->id,
+                    'step' => StepType::FORGE_SERVER_PROVIDER,
+                ]),
+            )
+            ->post(
+                route('steps.configuration.configure', [ 
+                    'pipeline' => $pipeline->id,
+                    'step' => StepType::FORGE_SERVER_PROVIDER,
+                ]),
+                [
+                    'provider' => 'ocean2', 
+                ]
+            );
+
+        // Then
+        $this->assertDatabaseMissing('step_configurations', [
+            'pipeline_id' => $pipeline->id,
+            'type' => 'forge-server-provider',
+            'details->credentials_id' => 'invalid',
+        ]);
+
+        $response->assertRedirect(
+            route('steps.configuration.render', [ 
+                'pipeline' => $pipeline->id,
+                'step' => StepType::FORGE_SERVER_PROVIDER,
+            ]),
+        );
+        $response->assertSessionHasErrors('credentials_id');
     }
 
     /** @test */
@@ -221,7 +317,8 @@ class ForgeServerProviderTest extends TestCase
                     'step' => StepType::FORGE_SERVER_PROVIDER,
                 ]),
                 [
-                    'value' => 'ocean2', 
+                    'provider' => 'ocean2', 
+                    'credentials_id' => 1, 
                 ]
             );
 

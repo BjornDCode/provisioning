@@ -129,7 +129,7 @@ class ServerConfigurationTest extends TestCase
                 ]),
                 [
                     'region' => 'ams2',
-                    'size' => '512MB',
+                    'size' => '01',
                 ]
             );
 
@@ -140,7 +140,7 @@ class ServerConfigurationTest extends TestCase
             'type' => 'server-configuration',
         ]);
         $this->assertEquals('ams2', $config->details['region']);
-        $this->assertEquals('512MB', $config->details['size']);
+        $this->assertEquals('01', $config->details['size']);
     }
 
     /** @test */
@@ -168,7 +168,7 @@ class ServerConfigurationTest extends TestCase
                     'step' => StepType::SERVER_CONFIGURATION,
                 ]),
                 [
-                    'size' => '512MB',
+                    'size' => '01',
                 ]
             );
 
@@ -176,7 +176,7 @@ class ServerConfigurationTest extends TestCase
         $this->assertDatabaseMissing('step_configurations', [
             'pipeline_id' => $pipeline->id,
             'type' => 'server-configuration',
-            'details->size' => '512MB',
+            'details->size' => '01',
         ]);
 
         $response->assertRedirect(
@@ -313,7 +313,7 @@ class ServerConfigurationTest extends TestCase
                 ]),
                 [
                     'region' => 'ams2',
-                    'size' => '512MB',
+                    'size' => '01',
                 ]
             );
 

@@ -54,7 +54,8 @@ class ForgeServerProvider implements Step
     public function validationRules(): array
     {
         return [
-            'value' => Rule::in($this->getValidServerProviders()),
+            'provider' => Rule::in($this->getValidServerProviders()),
+            'credentials_id' => 'required',
         ];        
     }
 
@@ -62,6 +63,7 @@ class ForgeServerProvider implements Step
     {
         return [
             'providers' => $this->getValidServerProviders(),
+            'credentials' => $this->getCredentials(),
         ];
     }
 
@@ -86,6 +88,23 @@ class ForgeServerProvider implements Step
         return $client
             ->authenticate($account)
             ->getValidServerProviders();
+    }
+
+    private function getCredentials()
+    {
+        $client = app()->make(ForgeApiClient::class);
+
+        $config = $this->flow->pipeline->getConfig(
+            StepType::fromString(
+                StepType::FORGE_AUTHENTICATION,
+            ),
+        );
+
+        $account = Account::find($config->details['account_id']);
+
+        return $client
+            ->authenticate($account)
+            ->listCredentials();
     }
 
 }

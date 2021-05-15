@@ -5,6 +5,7 @@ namespace App\Clients\Forge;
 use Laravel\Forge\Forge;
 use App\Models\Pipeline\Account;
 use Laravel\Forge\Resources\User;
+use Laravel\Forge\Resources\Server;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Crypt;
 use App\Exceptions\InvalidCredentialsException;
@@ -77,7 +78,7 @@ class ProductionApiClient implements ApiClient
         return collect($response->collect()->get('regions'))->get($provider);
     }
 
-    public function createServer(array $data)
+    public function createServer(array $data): Server
     {
         if (is_null($this->instance)) {
             throw new InvalidCredentialsException;
@@ -95,7 +96,7 @@ class ProductionApiClient implements ApiClient
         return $this->instance->deleteServer($id);
     }
 
-    public function fetchServer($id)
+    public function fetchServer($id): Server
     {
         if (is_null($this->instance)) {
             throw new InvalidCredentialsException;
@@ -104,7 +105,7 @@ class ProductionApiClient implements ApiClient
         return $this->instance->server($id);
     }
 
-    public function listCredentials(string $provider): array
+    public function listCredentials(): array
     {
         if (is_null($this->instance)) {
             throw new InvalidCredentialsException;
@@ -116,9 +117,7 @@ class ProductionApiClient implements ApiClient
             'Authorization' => 'Bearer ' . Crypt::decryptString($this->account->token),
         ])->get('https://forge.laravel.com/api/v1/credentials');
 
-        return collect($response->collect()->get('credentials'))->filter(function ($credential) use ($provider) {
-            return $credential['type'] === $provider;
-        })->toArray();
+        return $response->collect()->get('credentials');
     }
     
 }

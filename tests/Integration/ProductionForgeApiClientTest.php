@@ -177,7 +177,7 @@ class ProductionForgeApiClientTest extends TestCase
         ])->create();
 
         // When
-        $credentials = $client->authenticate($account)->listCredentials('ocean2');
+        $credentials = $client->authenticate($account)->listCredentials();
 
         // Then
         $this->assertEquals(env('FORGE_CREDENTIALS_ID'), $credentials[0]['id']);
