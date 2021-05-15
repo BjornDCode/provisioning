@@ -20,10 +20,31 @@ class ChooseRepositoryTest extends TestCase
     /** @test */
     public function it_renders_the_choose_repository_step_page()
     {
+        $this->app->bind(GithubApiClient::class, GithubTestApiClient::class);
+
         // Given
         $user = $this->registerNewUser();
         $pipeline = Pipeline::factory()->create([
             'team_id' => $user->currentTeam->id,
+        ]);
+        $account = Account::factory()->create([
+            'type' => GitProvider::GITHUB,
+        ]);
+
+        StepConfiguration::factory()->create([
+            'type' => StepType::GIT_PROVIDER,
+            'pipeline_id' => $pipeline->id,
+            'details' => [
+                'value' => GitProvider::GITHUB,
+            ],
+        ]);
+
+        StepConfiguration::factory()->create([
+            'type' => StepType::GITHUB_AUTHENTICATION,
+            'pipeline_id' => $pipeline->id,
+            'details' => [
+                'account_id' => $account->id,
+            ],
         ]);
 
         // When

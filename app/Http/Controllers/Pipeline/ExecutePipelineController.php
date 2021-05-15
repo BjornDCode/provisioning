@@ -48,15 +48,7 @@ class ExecutePipelineController extends Controller
             };
         })->toArray();
 
-        $jobs = array_merge(
-            [
-                new ExecutePipeline,
-            ],
-            $jobs
-        );
-
         ExecutePipeline::dispatch()->chain($jobs);
-        // Bus::chain($jobs)->dispatch($pipeline);
 
         return Redirect::route('pipelines.show', [
             'pipeline' => $pipeline->id,

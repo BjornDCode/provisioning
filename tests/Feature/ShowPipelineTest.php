@@ -79,7 +79,19 @@ class ShowPipelineTest extends TestCase
         StepConfiguration::factory()->create([
             'type' => StepType::NEW_OR_EXISTING_REPOSITORY,
             'pipeline_id' => $pipeline->id,
+            'details' => [
+                'value' => 'new'
+            ],
         ]);
+
+        StepConfiguration::factory()->create([
+            'type' => StepType::HOSTING_PROMPT,
+            'pipeline_id' => $pipeline->id,
+            'details' => [
+                'value' => false,
+            ],
+        ]);
+
 
         // When
         $response = $this->get(

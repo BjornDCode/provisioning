@@ -172,6 +172,14 @@ class ExecutePipelinesTest extends TestCase
             ],
         ]);
 
+        StepConfiguration::factory()->create([
+            'type' => StepType::HOSTING_PROMPT,
+            'pipeline_id' => $pipeline->id,
+            'details' => [
+                'value' => false,
+            ],
+        ]);
+
         // When
         $response = $this->post(
             route('pipelines.execute', [ 'pipeline' => $pipeline->id, ]),
@@ -265,6 +273,14 @@ class ExecutePipelinesTest extends TestCase
             'pipeline_id' => $pipeline->id,
             'details' => [
                 'value' => GitProvider::GITHUB,
+            ],
+        ]);
+
+        StepConfiguration::factory()->create([
+            'type' => StepType::HOSTING_PROMPT,
+            'pipeline_id' => $pipeline->id,
+            'details' => [
+                'value' => false,
             ],
         ]);
 

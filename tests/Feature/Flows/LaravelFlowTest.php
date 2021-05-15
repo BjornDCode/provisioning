@@ -520,7 +520,8 @@ class LaravelFlowTest extends TestCase
                     'step' => StepType::FORGE_SERVER_PROVIDER,
                 ]),
                 [
-                    'value' => 'ocean2', 
+                    'provider' => 'ocean2', 
+                    'credentials_id' => 1, 
                 ]
             );
 

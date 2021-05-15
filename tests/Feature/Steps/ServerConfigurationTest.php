@@ -40,7 +40,7 @@ class ServerConfigurationTest extends TestCase
             'type' => StepType::FORGE_SERVER_PROVIDER,
             'pipeline_id' => $pipeline->id,
             'details' => [
-                'value' => 'ocean2',
+                'provider' => 'ocean2',
             ],
         ]);
 
@@ -82,7 +82,7 @@ class ServerConfigurationTest extends TestCase
             'type' => StepType::FORGE_SERVER_PROVIDER,
             'pipeline_id' => $pipeline->id,
             'details' => [
-                'value' => 'ocean2',
+                'provider' => 'ocean2',
             ],
         ]);
 
