@@ -77,11 +77,7 @@ class ExecuteCreateServerStep implements ShouldQueue
         ]);
 
         $ready = false;
-
-        // 1. Test that the loop is working
-        // 2. Test that the init call works
-        // 3. Add a fetch call to the loop
-
+        
         while (!$ready) {
             sleep(120);
 
