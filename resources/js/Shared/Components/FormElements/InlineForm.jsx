@@ -36,7 +36,7 @@ const InlineForm = ({ onSubmit, cta, value, error, label, name }) => {
                 <Button
                     variant="secondary"
                     size="large"
-                    className="w-auto px-10 leading-3"
+                    className="!w-auto px-10 leading-3"
                     disabled={disabled}
                 >
                     {cta}
