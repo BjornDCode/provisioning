@@ -20,6 +20,8 @@ class CreateStepConfigurationsTable extends Migration
             $table->json('details');
             $table->timestamps();
 
+            $table->unique(['pipeline_id', 'type']);
+
             $table
                 ->foreign('pipeline_id')
                 ->references('id')
