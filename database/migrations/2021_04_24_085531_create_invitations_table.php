@@ -17,7 +17,7 @@ class CreateInvitationsTable extends Migration
             $table->id();
             $table->bigInteger('team_id')->unsigned();
             $table->string('email');
-            $table->string('token', 32);
+            $table->string('token', 32)->unique();
             $table->timestamps();
 
             $table->unique(['team_id', 'email']);
